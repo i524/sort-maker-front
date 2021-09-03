@@ -1,0 +1,12 @@
+<template>
+    <div>
+        <h1>ソートメーカー</h1>
+        <ul>
+            <li>作る</li>
+            <li>遊ぶ</li>
+            <li>マイページ</li>
+            <li>ログイン</li>
+            <li>ユーザー登録</li>
+        </ul>
+    </div>
+</template>
