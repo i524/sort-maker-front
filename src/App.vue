@@ -9,9 +9,9 @@
 import { Header } from './components';
 
 export default {
-    name: 'App',
-    components: {
-        Header
-    }
-}
+  name: 'App',
+  components: {
+      Header
+  }
+};
 </script>
