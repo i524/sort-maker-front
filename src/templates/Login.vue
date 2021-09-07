@@ -1,11 +1,11 @@
 <template>
     <div>
-        ホーム画面
+        ログイン画面
     </div>
 </template>
 
 <script>
 export default {
-    name: 'Home',
+    name: 'Login',
 }
 </script>

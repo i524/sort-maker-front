@@ -1,16 +1,16 @@
 <template>
     <div>
-        <VAppBar color="primary">
-            <VToolbarTitle @click="transitionPage('/')">
+        <VAppBar color="primary" class="white--text v-app-bar">
+            <VToolbarTitle class="v-toolbar-title" @click="transitionPage('/')">
                 ソートメーカー
             </VToolbarTitle>
             <VSpacer />
             <ul class="d-flex">
-                <li>作る</li>
-                <li>遊ぶ</li>
-                <li>マイページ</li>
-                <li>ログイン</li>
-                <li>ユーザー登録</li>
+                <li @click="transitionPage('/register_user')">作る</li>
+                <li @click="transitionPage('/')">遊ぶ</li>
+                <li @click="transitionPage('/mypage')">マイページ</li>
+                <li @click="transitionPage('/login')">ログイン</li>
+                <li @click="transitionPage('/register_user')">ユーザー登録</li>
             </ul>
         </VAppBar>
     </div>
@@ -20,6 +20,7 @@
 export default {
     name: 'Header',
     methods: {
+        // RouterLinkを使用するとリンクがヘッダーの下にもぐってしまうため、クリックイベントで遷移する
         transitionPage(page){
             if(page === this.$router.currentRoute.path){
                 // 同じページに遷移する場合はリロード
@@ -34,6 +35,15 @@ export default {
 </script>
 
 <style scoped>
+.v-app-bar{
+    cursor: pointer;
+}
+
+.v-toolbar-title{
+    font-family: 'Kaisei Decol';
+    font-size: 30px;
+}
+
 ul{
     list-style-type: none;
 }

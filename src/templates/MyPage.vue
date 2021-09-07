@@ -1,11 +1,11 @@
 <template>
     <div>
-        ホーム画面
+        マイページ
     </div>
 </template>
 
 <script>
 export default {
-    name: 'Home',
+    name: 'MyPage',
 }
 </script>
