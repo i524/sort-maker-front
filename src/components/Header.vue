@@ -2,6 +2,7 @@
     <div>
         <VAppBar color="primary" class="white--text v-app-bar">
             <VToolbarTitle class="v-toolbar-title" @click="transitionPage('/')">
+                <VIcon color="white">fas fa-random</VIcon>
                 ソートメーカー
             </VToolbarTitle>
             <VSpacer />
