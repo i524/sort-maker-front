@@ -10,16 +10,27 @@
                 <li @click="transitionPage('/register_user')">作る</li>
                 <li @click="transitionPage('/')">遊ぶ</li>
                 <li @click="transitionPage('/mypage')">マイページ</li>
-                <li @click="transitionPage('/login')">ログイン</li>
-                <li @click="transitionPage('/register_user')">ユーザー登録</li>
+                <template v-if="userId">
+                    <li>ログアウト</li>
+                </template>
+                <template v-else>
+                    <li @click="transitionPage('/login')">ログイン</li>
+                    <li @click="transitionPage('/register_user')">ユーザー登録</li>
+                </template>
             </ul>
         </VAppBar>
     </div>
 </template>
 
 <script>
+import { loginAuth } from '../common_functions/common';
+
 export default {
-    name: 'Header',
+    data(){
+        return{
+            userId: null,
+        }
+    },
     methods: {
         // RouterLinkを使用するとリンクがヘッダーの下にもぐってしまうため、クリックイベントで遷移する
         transitionPage(page){
@@ -32,6 +43,10 @@ export default {
             }
         }
     },
+    mounted(){
+        this.userId = loginAuth(this);
+    },
+    name: 'Header',
 }
 </script>
 
@@ -52,4 +67,4 @@ ul{
 li{
     margin-left: 20px;
 }
-</style>>
+</style>
