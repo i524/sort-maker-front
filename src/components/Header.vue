@@ -1,6 +1,6 @@
 <template>
     <div>
-        <VAppBar color="primary" class="white--text v-app-bar">
+        <VAppBar color="primary" class="white--text">
             <VToolbarTitle class="v-toolbar-title" @click="transitionPage('/')">
                 <VIcon color="white">fas fa-random</VIcon>
                 ソートメーカー
@@ -51,13 +51,10 @@ export default {
 </script>
 
 <style scoped>
-.v-app-bar{
-    cursor: pointer;
-}
-
 .v-toolbar-title{
     font-family: 'Kaisei Decol';
     font-size: 30px;
+    cursor: pointer;
 }
 
 ul{
@@ -66,5 +63,6 @@ ul{
 
 li{
     margin-left: 20px;
+    cursor: pointer;
 }
 </style>
