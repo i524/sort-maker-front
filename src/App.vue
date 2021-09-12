@@ -1,7 +1,7 @@
 <template>
     <VApp class="v-app">
         <Header />
-        <VMain>
+        <VMain class="v-main">
             <VContainer>
                 <RouterView />
             </VContainer>
@@ -23,9 +23,15 @@ export default {
 </script>
 
 <style scope>
+.v-main{
+    margin: 0 auto;
+    width: 980px;
+}
+
 .v-app{
-    font-size: 16px;
+    background: #eee;
     color: #444;
+    font-size: 16px;
     font-family: "游ゴシック","ヒラギノ角ゴシック",sans-serif;
 }
 
@@ -35,11 +41,11 @@ h1,h2,h3,h4,h5,h6,p{
 }
 
 h1{
-    font-size: 20px;
+    font-size: 30px;
 }
 
 h2{
-    font-size: 18px;
+    font-size: 24px;
 }
 
 h3,h4,h5,h6,p{
