@@ -4,25 +4,28 @@
         <CustomButton
         :block="true"
         buttonText="ソートを作る"
-        :classObject="classObject"
         color="secondary"
-        >
-        </CustomButton>
+        ></CustomButton>
+        <h1 class="text-center">ソートで遊ぶ</h1>
+        <CustomTextField
+        label="ソートを検索する"
+        prependIcon="fas fa-search"
+        v-model="searchText"
+        ></CustomTextField>
     </div>
 </template>
 
 <script>
-import { CustomButton } from '../components';
+import { CustomButton, CustomTextField } from '../components';
 
 export default {
     components: {
-        CustomButton
+        CustomButton,
+        CustomTextField
     },
     data(){
         return {
-            classObject: {
-                "custom-button": true
-            }
+            searchText: '',
         }
     },
     name: 'Home',
@@ -34,9 +37,5 @@ export default {
     & > *{
         margin-bottom: 20px;
     }
-}
-
-.custom-button{
-    margin: 0 auto;
 }
 </style>

@@ -11,15 +11,21 @@
 <script>
 export default{
     name: 'CustomButton',
-    props: [
-        'block',
-        'buttonText', 
-        'classObject',
-        'color'
-    ]
+    props: {
+        block: {
+            default: true,
+            required: false
+        },
+        buttonText: {
+            required: true
+        }, 
+        classObject: {
+            required: false
+        },
+        color: {
+            default: 'secondary',
+            required: true
+        },
+    }
 }
 </script>
-
-
-<style scoped>
-</style>

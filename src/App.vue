@@ -25,7 +25,7 @@ export default {
 <style scope>
 .v-main{
     margin: 0 auto;
-    width: 980px;
+    width: 720px;
 }
 
 .v-app{
