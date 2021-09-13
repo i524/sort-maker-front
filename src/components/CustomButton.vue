@@ -2,6 +2,7 @@
     <VBtn
     :color="color" 
     :class="classObject"
+    @click="sendClick"
     :block="block"
     >
         {{ buttonText }}
@@ -10,6 +11,11 @@
 
 <script>
 export default{
+    methods: {
+        sendClick(){
+            this.$emit('click');
+        }
+    },
     name: 'CustomButton',
     props: {
         block: {
