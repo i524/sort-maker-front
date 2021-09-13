@@ -23,8 +23,8 @@ export default{
         },
     },
     methods: {
-        updateValue: function(e){
-            this.$emit('input',e);
+        updateValue: function(value){
+            this.$emit('input', value);
         }
     }
 }
