@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { Home, MyPage, RegisterSort, Login, RegisterUser } from '../templates';
+import { Home, MyPage, RegisterSort, Login, RegisterUser } from '../views';
 
 Vue.use(VueRouter);
 
