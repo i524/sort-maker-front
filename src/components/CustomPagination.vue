@@ -1,11 +1,10 @@
 <template>
-    <VTextField
-    :label="label"
-    :prepend-icon="prependIcon"
+    <VPagination
+    :length="5"
     :value="value"
     @input="inputValue"
     >
-    </VTextField>
+    </VPagination>
 </template>
 
 <script>
@@ -15,17 +14,12 @@ export default{
             this.$emit('input', value);
         }
     },
-    name: 'CustomTextField',
+    name: 'CustomPagenation',
     props: {
-        label: {
-            required: true
-        }, 
-        prependIcon: {
-            required: false
-        },
         value: {
+            default: 1,
             required: true
-        },
+        }
     }
 }
 </script>

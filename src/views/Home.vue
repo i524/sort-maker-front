@@ -46,21 +46,27 @@
                 </SortCard>
             </VCol>
         </VRow>
+        <CustomPagenation
+        v-model="page"
+        >
+        </CustomPagenation>
     </div>
 </template>
 
 <script>
-import { CustomButton, CustomTextField, SortCard } from '../components';
+import { CustomButton, CustomPagenation, CustomTextField, SortCard } from '../components';
 import { transitionPage } from '../common_functions/common';
 
 export default {
     components: {
         CustomButton,
+        CustomPagenation,
         CustomTextField,
         SortCard
     },
     data(){
         return {
+            page: 1,
             searchText: '',
             sortCards: [
                 {
@@ -86,7 +92,7 @@ export default {
     },
     methods: {
         addFavorite(){
-            console.log('お気に入り追加');
+            console.log(this.page);
         },
         callTransitionPage(page){
             transitionPage(this,page);
