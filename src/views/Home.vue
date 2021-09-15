@@ -41,7 +41,7 @@
                 <SortCard
                 :cardTitle="sortCard.cardTitle"
                 :cardText="sortCard.cardText"
-                @click="sortCard.click"
+                :to="sortCard.to"
                 >
                 </SortCard>
             </VCol>
@@ -65,15 +65,18 @@ export default {
             sortCards: [
                 {
                     cardTitle: 'ソート1',
-                    cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
+                    cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
+                    to: 'play_sort'
                 },
                 {
                     cardTitle: 'ソート2',
                     cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
+                    to: 'play_sort'
                 },
                 {
                     cardTitle: 'ソート3',
                     cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
+                    to: 'play_sort'
                 },
             ],
         }
@@ -81,7 +84,6 @@ export default {
     methods: {
         callTransitionPage(page){
             transitionPage(this,page);
-            console.log('こんにちは');
         },
         searchSort(){
         },

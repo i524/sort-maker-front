@@ -1,8 +1,8 @@
 <template>
-    <VCard @click="sendClick">
+    <VCard :to="to" height="406px">
         <VImg :src="src"></VImg>
         <VCardTitle>{{ cardTitle }}</VCardTitle>
-        <VCardText>{{ cardText }}</VCardText>
+        <VCardText class="v-card-text">{{ cardText }}</VCardText>
     </VCard>
 </template>
 
@@ -23,8 +23,21 @@ export default{
         }, 
         src: {
             default: require('../assets/no_image.png'),
+            required: false,
+        },
+        to: {
             required: true,
         }
     }
 }
 </script>
+
+<style scoped>
+.v-card-text{
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    padding-bottom: 0;
+}
+</style>
