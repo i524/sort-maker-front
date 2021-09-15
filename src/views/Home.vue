@@ -4,7 +4,6 @@
         <CustomButton
         :block="true"
         buttonText="作る"
-        color="secondary"
         @click="callTransitionPage('/register_sort')"
         ></CustomButton>
         <h1 class="text-center mt-10">ソートで遊ぶ</h1>
@@ -16,7 +15,6 @@
         <CustomButton
         :block="true"
         buttonText="検索"
-        color="secondary"
         @click="searchSort"
         >
         </CustomButton>
@@ -24,14 +22,12 @@
             <VCol cols="6">
                 <CustomButton
                 buttonText="人気順"
-                color="secondary"
                 @click="sortByPopularity"
                 ></CustomButton>
             </VCol>
             <VCol cols="6">
                 <CustomButton
                 buttonText="新着順"
-                color="secondary"
                 @click="sortByTime"
                 ></CustomButton>
             </VCol>
@@ -39,9 +35,13 @@
         <VRow>
             <VCol cols="4" v-for="(sortCard, index) in sortCards" :key="index">
                 <SortCard
+                buttonText="遊ぶ"
                 :cardTitle="sortCard.cardTitle"
                 :cardText="sortCard.cardText"
-                :to="sortCard.to"
+                @clickButton="sortCard.clickButton"
+                @clickIcon="sortCard.clickIcon"
+                :icon="true"
+                iconName="fas fa-heart"
                 >
                 </SortCard>
             </VCol>
@@ -66,22 +66,28 @@ export default {
                 {
                     cardTitle: 'ソート1',
                     cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
-                    to: 'play_sort'
+                    clickButton: () => { this.callTransitionPage('/play_sort'); },
+                    clickIcon: () => { this.addFavorite(); }
                 },
                 {
                     cardTitle: 'ソート2',
                     cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
-                    to: 'play_sort'
+                    clickButton: () => { this.callTransitionPage('/play_sort'); },
+                    clickIcon: () => { this.addFavorite(); }
                 },
                 {
                     cardTitle: 'ソート3',
                     cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
-                    to: 'play_sort'
+                    clickButton: () => { this.callTransitionPage('/play_sort'); },
+                    clickIcon: () => { this.addFavorite(); }
                 },
             ],
         }
     },
     methods: {
+        addFavorite(){
+            console.log('お気に入り追加');
+        },
         callTransitionPage(page){
             transitionPage(this,page);
         },

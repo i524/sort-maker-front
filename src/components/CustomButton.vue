@@ -30,7 +30,7 @@ export default{
         },
         color: {
             default: 'secondary',
-            required: true
+            required: false
         },
     }
 }
