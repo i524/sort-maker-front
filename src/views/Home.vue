@@ -41,15 +41,26 @@
                 @clickButton="sortCard.clickButton"
                 @clickIcon="sortCard.clickIcon"
                 :icon="true"
-                iconName="fas fa-heart"
-                >
+                iconName="fas fa-heart">
                 </SortCard>
             </VCol>
         </VRow>
-        <CustomPagenation
-        v-model="page"
-        >
-        </CustomPagenation>
+        <CustomPagenation v-model="page"></CustomPagenation>
+        <h1 class="text-center">人気のソート</h1>
+        <VRow>
+            <VCol cols="4" v-for="(popularSortCard, index) in popularSortCards" :key="index">
+                <h2 class="mb-5 text-center">{{ index + 1 }}位</h2>
+                <SortCard
+                buttonText="遊ぶ"
+                :cardTitle="popularSortCard.cardTitle"
+                :cardText="popularSortCard.cardText"
+                @clickButton="popularSortCard.clickButton"
+                @clickIcon="popularSortCard.clickIcon"
+                :icon="true"
+                iconName="fas fa-heart">
+                </SortCard>
+            </VCol>
+        </VRow>
     </div>
 </template>
 
@@ -67,6 +78,26 @@ export default {
     data(){
         return {
             page: 1,
+            popularSortCards: [
+                {
+                    cardTitle: 'ソート1',
+                    cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
+                    clickButton: () => { this.callTransitionPage('/play_sort'); },
+                    clickIcon: () => { this.addFavorite(); }
+                },
+                {
+                    cardTitle: 'ソート2',
+                    cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
+                    clickButton: () => { this.callTransitionPage('/play_sort'); },
+                    clickIcon: () => { this.addFavorite(); }
+                },
+                {
+                    cardTitle: 'ソート3',
+                    cardText: '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
+                    clickButton: () => { this.callTransitionPage('/play_sort'); },
+                    clickIcon: () => { this.addFavorite(); }
+                }
+            ],
             searchText: '',
             sortCards: [
                 {
