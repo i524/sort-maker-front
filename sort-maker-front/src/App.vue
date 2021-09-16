@@ -11,15 +11,16 @@
 </template>
 
 <script>
-import { Header, Footer } from "./components";
+import { Header, Footer } from './components'
+const a;
 
 export default {
-  name: "App",
-  components: {
-    Header,
-    Footer,
-  },
-};
+    name: 'App',
+    components: {
+        Header,
+        Footer,
+    },
+}
 </script>
 
 <style scope>
