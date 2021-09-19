@@ -1,5 +1,3 @@
 module.exports = {
-    projects: [
-      './sort-maker-front',
-    ]
-  }
+  projects: ["./sort-maker-front"],
+};
