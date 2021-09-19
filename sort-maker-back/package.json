@@ -13,12 +13,11 @@
     "license": "ISC",
     "dependencies": {
         "express": "^4.17.1",
-        "firebase": "^9.0.2"
+        "firebase": "^8.10.0"
     },
     "devDependencies": {
         "eslint": "^6.7.2",
         "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-node": "^11.1.0",
         "prettier": "^2.2.1"
     }
 }
