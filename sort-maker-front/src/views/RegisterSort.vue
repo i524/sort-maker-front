@@ -1,9 +1,9 @@
 <template>
-  <div>ソート作成画面</div>
+    <div>ソート作成画面</div>
 </template>
 
 <script>
 export default {
-  name: "RegisterSort",
-};
+    name: 'RegisterSort',
+}
 </script>

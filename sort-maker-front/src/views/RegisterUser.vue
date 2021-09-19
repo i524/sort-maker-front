@@ -1,9 +1,9 @@
 <template>
-  <div>ユーザー登録画面</div>
+    <div>ユーザー登録画面</div>
 </template>
 
 <script>
 export default {
-  name: "RegisterUser",
-};
+    name: 'RegisterUser',
+}
 </script>

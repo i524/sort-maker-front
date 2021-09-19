@@ -1,9 +1,9 @@
 <template>
-  <div>マイページ</div>
+    <div>マイページ</div>
 </template>
 
 <script>
 export default {
-  name: "MyPage",
-};
+    name: 'MyPage',
+}
 </script>
