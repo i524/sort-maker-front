@@ -1,30 +1,44 @@
 const express = require('express')
 const firebase = require('firebase')
-const initializeApp = require('../common_functions')
+const initializeApp = require('../common_functions/initializeApp')
+const validateEmail = require('../common_functions/validateEmail')
+const validatePassword = require('../common_functions/validatePassword')
 
 const router = express.Router()
 
-router.get('/user-register', function (req, res) {
+router.post('/user-register', function (req, res) {
     // firebaseの設定
     initializeApp(firebase)
 
     // バリデーションチェック
-    // const email = req.email
-    // const pass = req.pass
-    // if (email.length)
+    const email = req.body.email
+    const pass = req.body.pass
+
+    let errorMessage = validateEmail(email)
+    errorMessage = validatePassword(pass)
+
+    if (errorMessage.length !== 0) {
+        res.send({
+            code: 1,
+            data: {},
+            message: errorMessage,
+        })
+    }
+
+    // ユーザー登録の処理
     firebase
         .auth()
-        .createUserWithEmailAndPassword('sample2@sample.com', 'sample2')
+        .createUserWithEmailAndPassword(email, pass)
         .then(() => {
             res.send({
-                code: 200,
+                code: 0,
                 data: {},
                 message: 'ユーザー登録に成功しました',
             })
         })
         .catch(() => {
             res.send({
-                code: 500,
+                code: 1,
                 data: {},
                 message: 'ユーザー登録に失敗しました',
             })

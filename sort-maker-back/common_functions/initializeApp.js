@@ -8,7 +8,9 @@ const initializeApp = function (firebase) {
         appId: '1:1076993903791:web:5398d1e3ac45046835185a',
         measurementId: 'G-ZLX17697ZS',
     }
-    firebase.initializeApp(config)
+    if (firebase.apps.length === 0) {
+        firebase.initializeApp(config)
+    }
 }
 
 module.exports = initializeApp
