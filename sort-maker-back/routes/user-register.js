@@ -15,7 +15,10 @@ router.post('/user-register', function (req, res) {
     const pass = req.body.pass
 
     let errorMessage = validateEmail(email)
-    errorMessage = validatePassword(pass)
+
+    if (errorMessage.length === 0) {
+        errorMessage = validatePassword(pass)
+    }
 
     if (errorMessage.length !== 0) {
         res.send({
@@ -23,26 +26,26 @@ router.post('/user-register', function (req, res) {
             data: {},
             message: errorMessage,
         })
+    } else {
+        // ユーザー登録の処理
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, pass)
+            .then(() => {
+                res.send({
+                    code: 0,
+                    data: {},
+                    message: 'ユーザー登録に成功しました',
+                })
+            })
+            .catch(() => {
+                res.send({
+                    code: 1,
+                    data: {},
+                    message: 'ユーザー登録に失敗しました',
+                })
+            })
     }
-
-    // ユーザー登録の処理
-    firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, pass)
-        .then(() => {
-            res.send({
-                code: 0,
-                data: {},
-                message: 'ユーザー登録に成功しました',
-            })
-        })
-        .catch(() => {
-            res.send({
-                code: 1,
-                data: {},
-                message: 'ユーザー登録に失敗しました',
-            })
-        })
 })
 
 module.exports = router
