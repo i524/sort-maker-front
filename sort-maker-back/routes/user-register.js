@@ -1,27 +1,33 @@
 const express = require('express')
 const firebase = require('firebase')
+const initializeApp = require('../common_functions')
+
 const router = express.Router()
 
 router.get('/user-register', function (req, res) {
-    const config = {
-        apiKey: 'AIzaSyCEAHNzKTE6YnO4UU1-Ik_Vzq20oWJ9Ftg',
-        authDomain: 'sort-maker-f6861.firebaseapp.com',
-        projectId: 'sort-maker-f6861',
-        storageBucket: 'sort-maker-f6861.appspot.com',
-        messagingSenderId: '1076993903791',
-        appId: '1:1076993903791:web:5398d1e3ac45046835185a',
-        measurementId: 'G-ZLX17697ZS',
-    }
-    firebase.initializeApp(config)
+    // firebaseの設定
+    initializeApp(firebase)
 
+    // バリデーションチェック
+    // const email = req.email
+    // const pass = req.pass
+    // if (email.length)
     firebase
         .auth()
-        .createUserWithEmailAndPassword('sample@sample.com', 'sample')
-        .then((user) => {
-            res.send('Create account: ', user.email)
+        .createUserWithEmailAndPassword('sample2@sample.com', 'sample2')
+        .then(() => {
+            res.send({
+                code: 200,
+                data: {},
+                message: 'ユーザー登録に成功しました',
+            })
         })
-        .catch((error) => {
-            res.send(error.message)
+        .catch(() => {
+            res.send({
+                code: 500,
+                data: {},
+                message: 'ユーザー登録に失敗しました',
+            })
         })
 })
 
