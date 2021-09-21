@@ -38,11 +38,17 @@ router.post('/user-register', function (req, res) {
                     message: 'ユーザー登録に成功しました',
                 })
             })
-            .catch(() => {
+            .catch((e) => {
+                // firebaseでユーザー登録した際に出るエラーにより返すエラーメッセージを変える
+                if (e.code === 'auth/email-already-in-use') {
+                    errorMessage = 'メールアドレスはすでに登録されています'
+                } else {
+                    errorMessage = 'ユーザー登録に失敗しました'
+                }
                 res.send({
                     code: 1,
                     data: {},
-                    message: 'ユーザー登録に失敗しました',
+                    message: errorMessage,
                 })
             })
     }
