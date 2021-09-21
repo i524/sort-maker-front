@@ -1,8 +1,13 @@
 <template>
     <div>
         <h1 class="text-center">ログイン</h1>
-        <CustomTextField label="email" v-model="email"></CustomTextField>
         <CustomTextField
+            :counter="255"
+            label="email"
+            v-model="email"
+        ></CustomTextField>
+        <CustomTextField
+            :counter="255"
             label="パスワード"
             v-model="password"
         ></CustomTextField>

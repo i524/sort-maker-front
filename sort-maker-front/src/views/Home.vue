@@ -7,11 +7,11 @@
             @click="callTransitionPage('/register_sort')"
         ></CustomButton>
         <h1 class="text-center mt-10">ソートで遊ぶ</h1>
-        <CustomTextField
+        <VTextField
             label="ソートを検索する"
             prependIcon="fas fa-search"
             v-model="searchText"
-        ></CustomTextField>
+        ></VTextField>
         <CustomButton :block="true" buttonText="検索" @click="searchSort">
         </CustomButton>
         <VRow>
@@ -67,19 +67,13 @@
 </template>
 
 <script>
-import {
-    CustomButton,
-    CustomPagenation,
-    CustomTextField,
-    SortCard,
-} from '../components'
+import { CustomButton, CustomPagenation, SortCard } from '../components'
 import { transitionPage } from '../common_functions/common'
 
 export default {
     components: {
         CustomButton,
         CustomPagenation,
-        CustomTextField,
         SortCard,
     },
     data() {

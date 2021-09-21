@@ -1,7 +1,9 @@
 <template>
     <VTextField
+        color="accent"
+        :counter="counter"
         :label="label"
-        :prepend-icon="prependIcon"
+        :rules="rules"
         :value="value"
         @input="inputValue"
     >
@@ -17,11 +19,14 @@ export default {
     },
     name: 'CustomTextField',
     props: {
+        counter: {
+            required: true,
+        },
         label: {
             required: true,
         },
-        prependIcon: {
-            required: false,
+        rules: {
+            required: true,
         },
         value: {
             required: true,
