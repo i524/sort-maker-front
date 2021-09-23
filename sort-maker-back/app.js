@@ -1,8 +1,12 @@
 const express = require('express')
 const router = require('./routes')
+const cors = require('cors')
 
 const port = process.env.port || 3000
 const app = express()
+
+// CORS有効化
+app.use(cors())
 
 // リクエストパラメータをjsonで受け取り、配列も設定できるようにする
 app.use(express.urlencoded({ extended: true }))

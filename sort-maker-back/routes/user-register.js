@@ -12,12 +12,12 @@ router.post('/user-register', function (req, res) {
 
     // バリデーションチェック
     const email = req.body.email
-    const pass = req.body.pass
+    const password = req.body.password
 
     let errorMessage = validateEmail(email)
 
     if (errorMessage.length === 0) {
-        errorMessage = validatePassword(pass)
+        errorMessage = validatePassword(password)
     }
 
     if (errorMessage.length !== 0) {
@@ -30,7 +30,7 @@ router.post('/user-register', function (req, res) {
         // ユーザー登録の処理
         firebase
             .auth()
-            .createUserWithEmailAndPassword(email, pass)
+            .createUserWithEmailAndPassword(email, password)
             .then(() => {
                 res.send({
                     code: 0,

@@ -48,6 +48,7 @@ import {
     isValidPasswordLength,
     isSamePassword,
 } from '../common_functions/validation'
+import { registerUser } from '../common_functions/request'
 
 export default {
     components: {
@@ -69,9 +70,15 @@ export default {
         }
     },
     methods: {
-        userRegister() {
+        userRegister: async function () {
+            // バリデーションチェック
             if (this.$refs.userRegisterForm.validate()) {
-                console.log('成功')
+                // バリデーション通ったらユーザー登録
+                const res = await registerUser({
+                    email: this.email,
+                    password: this.password,
+                })
+                console.log(res)
             } else {
                 console.log('失敗')
             }
