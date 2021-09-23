@@ -5,15 +5,25 @@ export const loginAuth = (component) => {
     return component.$store.getters.userId
 }
 
-// =======================
-// ページ遷移
-// =======================
-export const transitionPage = (component, page) => {
-    if (page === component.$router.currentRoute.path) {
+// ==========================================================
+// コンポーネント名に対応するパスの格納およびページ遷移用の関数
+// ==========================================================
+const urlEndPath = {
+    Home: '/',
+    Login: '/login',
+    MyPage: '/mypage',
+    PlaySort: '/play_sort',
+    RegisterSort: '/register_sort',
+    RegisterUser: '/register_user',
+}
+
+export const transitionPage = (component, componentKey) => {
+    const endPath = urlEndPath[componentKey]
+    if (endPath === component.$router.currentRoute.path) {
         // 同じページに遷移する場合はリロード
         component.$router.go({ path: component.$router.currentRoute.path })
     } else {
         // 違うページに遷移する場合はページ遷移
-        component.$router.push(page)
+        component.$router.push(endPath)
     }
 }

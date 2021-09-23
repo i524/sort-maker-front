@@ -3,22 +3,22 @@
         <VAppBar color="primary" class="white--text">
             <VToolbarTitle
                 class="v-toolbar-title"
-                @click="callTransitionPage('/')"
+                @click="callTransitionPage('Home')"
             >
                 <VIcon color="white">fas fa-random</VIcon>
                 ソートメーカー
             </VToolbarTitle>
             <VSpacer />
             <ul class="d-flex">
-                <li @click="callTransitionPage('/register_sort')">作る</li>
-                <li @click="callTransitionPage('/')">遊ぶ</li>
-                <li @click="callTransitionPage('/mypage')">マイページ</li>
+                <li @click="callTransitionPage('RegisterSort')">作る</li>
+                <li @click="callTransitionPage('Home')">遊ぶ</li>
+                <li @click="callTransitionPage('MyPage')">マイページ</li>
                 <template v-if="userId">
                     <li>ログアウト</li>
                 </template>
                 <template v-else>
-                    <li @click="callTransitionPage('/login')">ログイン</li>
-                    <li @click="callTransitionPage('/register_user')">
+                    <li @click="callTransitionPage('Login')">ログイン</li>
+                    <li @click="callTransitionPage('RegisterUser')">
                         ユーザー登録
                     </li>
                 </template>
