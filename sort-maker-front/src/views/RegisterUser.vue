@@ -1,6 +1,5 @@
 <template>
-    <div class="root">
-        <h1 class="text-center">ユーザー登録</h1>
+    <Layout subTitle="ユーザー登録">
         <VForm ref="userRegisterForm">
             <CustomTextField
                 :counter="255"
@@ -36,11 +35,11 @@
             buttonText="ユーザー登録"
             @click="userRegister"
         ></CustomButton>
-    </div>
+    </Layout>
 </template>
 
 <script>
-import { CustomTextField, CustomButton } from '../components'
+import { CustomTextField, CustomButton, Layout } from '../components'
 import {
     required,
     isValidEmailLength,
@@ -54,6 +53,7 @@ export default {
     components: {
         CustomButton,
         CustomTextField,
+        Layout,
     },
     data() {
         return {
@@ -80,11 +80,3 @@ export default {
     name: 'RegisterUser',
 }
 </script>
-
-<style lang="scss" scoped>
-.root {
-    & > * {
-        margin-bottom: 20px;
-    }
-}
-</style>

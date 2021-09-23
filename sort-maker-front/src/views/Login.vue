@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <h1 class="text-center">ログイン</h1>
+    <Layout subTitle="ログイン">
         <CustomTextField
             :counter="255"
             label="email"
@@ -16,16 +15,17 @@
             buttonText="ログイン"
             @click="login"
         ></CustomButton>
-    </div>
+    </Layout>
 </template>
 
 <script>
-import { CustomTextField, CustomButton } from '../components'
+import { CustomTextField, CustomButton, Layout } from '../components'
 
 export default {
     components: {
         CustomButton,
         CustomTextField,
+        Layout,
     },
     data() {
         return {

@@ -1,5 +1,5 @@
 <template>
-    <div class="root">
+    <Layout>
         <h1 class="text-center">ソートを作る</h1>
         <CustomButton
             :block="true"
@@ -63,11 +63,11 @@
                 </SortCard>
             </VCol>
         </VRow>
-    </div>
+    </Layout>
 </template>
 
 <script>
-import { CustomButton, CustomPagenation, SortCard } from '../components'
+import { CustomButton, CustomPagenation, SortCard, Layout } from '../components'
 import { transitionPage } from '../common_functions/common'
 
 export default {
@@ -75,6 +75,7 @@ export default {
         CustomButton,
         CustomPagenation,
         SortCard,
+        Layout,
     },
     data() {
         return {
@@ -166,11 +167,3 @@ export default {
     name: 'Home',
 }
 </script>
-
-<style lang="scss" scoped>
-.root {
-    & > * {
-        margin-bottom: 20px;
-    }
-}
-</style>
