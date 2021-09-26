@@ -1,12 +1,12 @@
 <template>
     <Layout>
-        <h1 class="text-center">ソートを作る</h1>
+        <h2 class="text-center">ソートを作る</h2>
         <CustomButton
             :block="true"
             text="作る"
             @click="callTransitionPage('RegisterSort')"
         ></CustomButton>
-        <h1 class="text-center mt-10">ソートで遊ぶ</h1>
+        <h2 class="text-center mt-10">ソートで遊ぶ</h2>
         <VTextField
             label="ソートを検索する"
             prependIcon="fas fa-search"
@@ -40,7 +40,7 @@
             </VCol>
         </VRow>
         <CustomPagenation v-model="page"></CustomPagenation>
-        <h1 class="text-center">人気のソート</h1>
+        <h2 class="text-center">人気のソート</h2>
         <VRow>
             <VCol
                 cols="4"

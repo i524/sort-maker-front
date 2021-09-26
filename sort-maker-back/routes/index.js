@@ -2,9 +2,9 @@ const express = require('express')
 const router = express.Router()
 
 // ルーティング先に指定するモジュールの読み込み
-const userRegister = require('./user-register.js')
+const registerSort = require('./register-sort.js')
 
 // ルーティング処理
-router.use('/', userRegister)
+router.use('/', registerSort)
 
 module.exports = router
