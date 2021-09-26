@@ -3,7 +3,7 @@
         <h1 class="text-center">ソートを作る</h1>
         <CustomButton
             :block="true"
-            buttonText="作る"
+            text="作る"
             @click="callTransitionPage('RegisterSort')"
         ></CustomButton>
         <h1 class="text-center mt-10">ソートで遊ぶ</h1>
@@ -12,20 +12,17 @@
             prependIcon="fas fa-search"
             v-model="searchText"
         ></VTextField>
-        <CustomButton :block="true" buttonText="検索" @click="searchSort">
+        <CustomButton :block="true" text="検索" @click="searchSort">
         </CustomButton>
         <VRow>
             <VCol cols="6">
                 <CustomButton
-                    buttonText="人気順"
+                    text="人気順"
                     @click="sortByPopularity"
                 ></CustomButton>
             </VCol>
             <VCol cols="6">
-                <CustomButton
-                    buttonText="新着順"
-                    @click="sortByTime"
-                ></CustomButton>
+                <CustomButton text="新着順" @click="sortByTime"></CustomButton>
             </VCol>
         </VRow>
         <VRow>

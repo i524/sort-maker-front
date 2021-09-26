@@ -5,7 +5,7 @@
 <script>
 export default {
     methods: {
-        inputValue: function (value) {
+        inputValue(value) {
             this.$emit('input', value)
         },
     },

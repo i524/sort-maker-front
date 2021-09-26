@@ -1,13 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import {
-    Home,
-    Login,
-    MyPage,
-    PlaySort,
-    RegisterSort,
-    RegisterUser,
-} from '../views'
+import { Home, Login, MyPage, PlaySort, RegisterSort } from '../views'
 
 Vue.use(VueRouter)
 
@@ -19,7 +12,6 @@ const router = new VueRouter({
         { path: '/mypage', component: MyPage },
         { path: '/play_sort', component: PlaySort },
         { path: '/register_sort', component: RegisterSort },
-        { path: '/register_user', component: RegisterUser },
     ],
 })
 

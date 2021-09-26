@@ -1,19 +1,19 @@
 <template>
     <VAlert :color="color" dark dismissible :value="value" @input="sendInput">{{
-        alertText
+        text
     }}</VAlert>
 </template>
 
 <script>
 export default {
     methods: {
-        sendInput: function (value) {
+        sendInput(value) {
             this.$emit('input', value)
         },
     },
     name: 'CustomAlert',
     props: {
-        alertText: {
+        text: {
             require: true,
         },
         color: {

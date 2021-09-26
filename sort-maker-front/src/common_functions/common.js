@@ -14,7 +14,6 @@ const urlEndPath = {
     MyPage: '/mypage',
     PlaySort: '/play_sort',
     RegisterSort: '/register_sort',
-    RegisterUser: '/register_user',
 }
 
 export const transitionPage = (component, componentKey) => {

@@ -1,6 +1,7 @@
 <template>
-    <VBtn :color="color" :class="classObject" @click="sendClick" :block="block">
-        {{ buttonText }}
+    <VBtn :block="block" :color="color" :class="classObject" @click="sendClick">
+        <VIcon left>{{ icon }}</VIcon>
+        {{ text }}
     </VBtn>
 </template>
 
@@ -17,7 +18,7 @@ export default {
             default: true,
             required: false,
         },
-        buttonText: {
+        text: {
             required: true,
         },
         classObject: {
@@ -25,6 +26,9 @@ export default {
         },
         color: {
             default: 'secondary',
+            required: false,
+        },
+        icon: {
             required: false,
         },
     },

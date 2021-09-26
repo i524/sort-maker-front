@@ -18,9 +18,6 @@
                 </template>
                 <template v-else>
                     <li @click="callTransitionPage('Login')">ログイン</li>
-                    <li @click="callTransitionPage('RegisterUser')">
-                        ユーザー登録
-                    </li>
                 </template>
             </ul>
         </VAppBar>

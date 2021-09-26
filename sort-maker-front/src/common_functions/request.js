@@ -7,19 +7,19 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL
 // =======================================
 
 const apiEndPath = {
-    'user-register': '/user-register',
+    login: '/login',
 }
 
 const apiRequest = async (functionKey, postData) => {
-    const endPath = apiEndPath['user-register']
+    const endPath = apiEndPath[functionKey]
     return await axios.post(endPath, postData)
 }
 
 // =======================================
-// ユーザー登録
+// ログイン
 // =======================================
-export const registerUser = async (postData) => {
-    return await apiRequest('user-register', postData)
+export const login = async (postData) => {
+    return await apiRequest('login', postData)
         .then((res) => {
             return res.data
         })

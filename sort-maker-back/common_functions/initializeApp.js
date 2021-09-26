@@ -1,12 +1,12 @@
 const initializeApp = function (firebase) {
     const config = {
-        apiKey: 'AIzaSyCEAHNzKTE6YnO4UU1-Ik_Vzq20oWJ9Ftg',
-        authDomain: 'sort-maker-f6861.firebaseapp.com',
-        projectId: 'sort-maker-f6861',
-        storageBucket: 'sort-maker-f6861.appspot.com',
-        messagingSenderId: '1076993903791',
-        appId: '1:1076993903791:web:5398d1e3ac45046835185a',
-        measurementId: 'G-ZLX17697ZS',
+        apiKey: 'AIzaSyAVQtyr4Qnc2bdlU2irOWWQT4DX6DnIIDE',
+        authDomain: 'sort-maker-97261.firebaseapp.com',
+        projectId: 'sort-maker-97261',
+        storageBucket: 'sort-maker-97261.appspot.com',
+        messagingSenderId: '17511495381',
+        appId: '1:17511495381:web:8d02a5f106f2e12026145c',
+        measurementId: 'G-FN10FEGE2W',
     }
     if (firebase.apps.length === 0) {
         firebase.initializeApp(config)
