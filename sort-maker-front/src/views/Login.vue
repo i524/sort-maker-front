@@ -9,15 +9,22 @@
             textColor="white"
             @click="login"
         ></CustomButton>
+        <CustomCard
+            title="ソートメーカーでツイッターログインすると下記のことができます"
+            text="・ソートを作成する
+            ・ソートのお気に入り登録をする"
+        >
+        </CustomCard>
     </Layout>
 </template>
 
 <script>
-import { CustomButton, Layout } from '../components'
+import { CustomButton, CustomCard, Layout } from '../components'
 
 export default {
     components: {
         CustomButton,
+        CustomCard,
         Layout,
     },
     data() {
