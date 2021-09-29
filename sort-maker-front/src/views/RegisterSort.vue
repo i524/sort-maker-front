@@ -11,7 +11,7 @@
                     v-model="name"
                 >
                 </CustomTextField>
-                <ImageFileInput label="タイトル画像"> </ImageFileInput>
+                <CroppingImageInput> </CroppingImageInput>
                 <CustomButton
                     :block="true"
                     text="ソート作成"
@@ -25,9 +25,9 @@
 
 <script>
 import {
+    CroppingImageInput,
     CustomAlert,
     CustomButton,
-    ImageFileInput,
     CustomTextField,
     Layout,
 } from '../components'
@@ -36,9 +36,9 @@ import { required, isValidTextLength } from '../common_functions/validation'
 
 export default {
     components: {
+        CroppingImageInput,
         CustomAlert,
         CustomButton,
-        ImageFileInput,
         CustomTextField,
         Layout,
     },
