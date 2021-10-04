@@ -1,5 +1,7 @@
 <template>
     <Layout subTitle="ログイン">
+        <CustomAlert :text="errorMessage" color="warning" v-model="alert">
+        </CustomAlert>
         <CustomButton
             :block="true"
             color="#1D9BF0"
@@ -15,24 +17,25 @@
             ・ソートのお気に入り登録をする"
         >
         </CustomCard>
-        <h1>{{ message }}</h1>
     </Layout>
 </template>
 
 <script>
-import { CustomButton, CustomCard, Layout } from '../components'
+import { mapActions } from 'vuex'
+import { CustomAlert, CustomButton, CustomCard, Layout } from '../components'
 import { initializeApp } from '../common_functions/common'
 
 export default {
     components: {
+        CustomAlert,
         CustomButton,
         CustomCard,
         Layout,
     },
     data() {
         return {
-            firebase: '',
-            message: 'メッセージ',
+            alert: false,
+            errorMessage: '',
         }
     },
     methods: {
@@ -40,25 +43,30 @@ export default {
             // firebaseの初期設定
             const firebase = initializeApp()
 
+            // 初期設定ができていたらツイッターでログイン処理、できていなかったらエラーメッセージを出す
             if (firebase) {
                 const provider = new firebase.auth.TwitterAuthProvider()
 
-                firebase.auth().signInWithRedirect(provider)
+                // ログイン処理が終了したらvuexに認証情報を保管
+                firebase
+                    .auth()
+                    .signInWithPopup(provider)
+                    .then((res) => {
+                        this.updateUid(res.user.uid)
+                        this.updateDisplayName(res.user.displayName)
+                        this.updatePhotoURL(res.user.photoURL)
+                    })
+                    .catch(() => {
+                        this.errorMessage =
+                            'ツイッターでのログインに失敗しました'
+                        this.alert = true
+                    })
             } else {
-                console.log('失敗b')
+                this.errorMessage = 'ツイッターでのログインに失敗しました'
+                this.alert = true
             }
         },
-        mounted() {
-            // firebaseの初期設定
-            // const firebase = initializeApp()
-            // firebase.auth().onAuthStateChanged((user) => {
-            //     if (user) {
-            //         console.log(user)
-            //     } else {
-            //         console.log('userなし')
-            //     }
-            // })
-        },
+        ...mapActions(['updateUid', 'updateDisplayName', 'updatePhotoURL']),
     },
     name: 'Login',
 }

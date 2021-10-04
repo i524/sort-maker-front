@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     plugins: [
         createPersistedState({
             key: 'sortMaker',
-            paths: ['auth.userId'],
+            paths: ['auth'],
             storage: window.localStorage,
         }),
     ],

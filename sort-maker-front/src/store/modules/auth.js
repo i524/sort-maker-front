@@ -1,22 +1,42 @@
 const state = {
-    userId: null,
+    uid: null,
+    displayName: null,
+    photoURL: null,
 }
 
 const getters = {
-    userId(state) {
-        return state.userId
+    uid(state) {
+        return state.uid
+    },
+    displayName(state) {
+        return state.displayName
+    },
+    photoURL(state) {
+        return state.photoURL
     },
 }
 
 const mutations = {
-    setUserId(state, payload) {
-        state.userId = payload.userId
+    setUid(state, payload) {
+        state.uid = payload.uid
+    },
+    setDisplayName(state, payload) {
+        state.displayName = payload.displayName
+    },
+    setPhotoURL(state, payload) {
+        state.photoURL = payload.photoURL
     },
 }
 
 const actions = {
-    doUpdate({ commit }, userId) {
-        commit('setUserId', { userId })
+    updateUid({ commit }, uid) {
+        commit('setUid', { uid })
+    },
+    updateDisplayName({ commit }, displayName) {
+        commit('setDisplayName', { displayName })
+    },
+    updatePhotoURL({ commit }, photoURL) {
+        commit('setPhotoURL', { photoURL })
     },
 }
 

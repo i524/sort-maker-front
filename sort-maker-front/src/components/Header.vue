@@ -10,6 +10,13 @@
             </VToolbarTitle>
             <VSpacer />
             <ul class="d-flex">
+                <li>
+                    <CustomImage
+                        :width="50"
+                        :height="50"
+                        :src="src"
+                    ></CustomImage>
+                </li>
                 <li @click="callTransitionPage('RegisterSort')">作る</li>
                 <li @click="callTransitionPage('Home')">遊ぶ</li>
                 <li @click="callTransitionPage('MyPage')">マイページ</li>
@@ -25,11 +32,17 @@
 </template>
 
 <script>
+// import { mapGetters } from 'vuex'
+import { CustomImage } from '../components'
 import { loginAuth, transitionPage } from '../common_functions/common'
 
 export default {
+    components: {
+        CustomImage,
+    },
     data() {
         return {
+            src: this.$store.getters.uid,
             userId: null,
         }
     },
