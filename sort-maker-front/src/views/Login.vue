@@ -15,11 +15,13 @@
             ・ソートのお気に入り登録をする"
         >
         </CustomCard>
+        <h1>{{ message }}</h1>
     </Layout>
 </template>
 
 <script>
 import { CustomButton, CustomCard, Layout } from '../components'
+import { initializeApp } from '../common_functions/common'
 
 export default {
     components: {
@@ -28,11 +30,34 @@ export default {
         Layout,
     },
     data() {
-        return {}
+        return {
+            firebase: '',
+            message: 'メッセージ',
+        }
     },
     methods: {
         login() {
-            console.log('ログイン')
+            // firebaseの初期設定
+            const firebase = initializeApp()
+
+            if (firebase) {
+                const provider = new firebase.auth.TwitterAuthProvider()
+
+                firebase.auth().signInWithRedirect(provider)
+            } else {
+                console.log('失敗b')
+            }
+        },
+        mounted() {
+            // firebaseの初期設定
+            // const firebase = initializeApp()
+            // firebase.auth().onAuthStateChanged((user) => {
+            //     if (user) {
+            //         console.log(user)
+            //     } else {
+            //         console.log('userなし')
+            //     }
+            // })
         },
     },
     name: 'Login',
