@@ -21,24 +21,27 @@
                 <li @click="callTransitionPage('Home')">遊ぶ</li>
                 <li @click="callTransitionPage('MyPage')">マイページ</li>
                 <template v-if="uid">
-                    <li>ログアウト</li>
+                    <li @click="logout">ログアウト</li>
                 </template>
                 <template v-else>
                     <li @click="callTransitionPage('Login')">ログイン</li>
                 </template>
             </ul>
         </VAppBar>
+        <CustomAlert :text="errorMessage" color="warning" v-model="alert">
+        </CustomAlert>
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { CustomUserIcon } from '../components'
-import { transitionPage } from '../common_functions/common'
+import { mapActions, mapGetters } from 'vuex'
+import { CustomAlert, CustomUserIcon } from '../components'
+import { initializeApp, transitionPage } from '../common_functions/common'
 
 export default {
     components: {
         CustomUserIcon,
+        CustomAlert,
     },
     computed: {
         src: function () {
@@ -52,13 +55,39 @@ export default {
     },
     data() {
         return {
-            userId: null,
+            alert: false,
+            errorMessage: '',
         }
     },
     methods: {
         callTransitionPage(page) {
             transitionPage(this, page)
         },
+        logout() {
+            // firebaseの初期設定
+            const firebase = initializeApp()
+
+            // 初期設定ができていたらログアウト処理、できていなかったらエラーメッセージを出す
+            if (firebase) {
+                // firebaseでのログアウト処理
+                firebase
+                    .auth()
+                    .signOut()
+                    .then(() => {
+                        // vuexの認証情報を削除
+                        this.deleteAuthInfo()
+                        this.callTransitionPage('Home')
+                    })
+                    .catch(() => {
+                        this.errorMessage = 'ログアウトに失敗しました'
+                        this.alert = true
+                    })
+            } else {
+                this.errorMessage = 'ログアウトに失敗しました'
+                this.alert = true
+            }
+        },
+        ...mapActions(['deleteAuthInfo']),
     },
     name: 'Header',
 }

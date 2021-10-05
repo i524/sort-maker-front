@@ -23,7 +23,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { CustomAlert, CustomButton, CustomCard, Layout } from '../components'
-import { initializeApp } from '../common_functions/common'
+import { transitionPage, initializeApp } from '../common_functions/common'
 
 export default {
     components: {
@@ -47,7 +47,7 @@ export default {
             if (firebase) {
                 const provider = new firebase.auth.TwitterAuthProvider()
 
-                // ログイン処理が終了したらvuexに認証情報を保管
+                // ログイン処理が終了したらvuexに認証情報を保管後、Homeに画面遷移
                 firebase
                     .auth()
                     .signInWithPopup(provider)
@@ -55,6 +55,7 @@ export default {
                         this.updateUid(res.user.uid)
                         this.updateDisplayName(res.user.displayName)
                         this.updatePhotoURL(res.user.photoURL)
+                        transitionPage(this, 'Home')
                     })
                     .catch(() => {
                         this.errorMessage =

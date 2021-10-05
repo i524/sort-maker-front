@@ -26,6 +26,11 @@ const mutations = {
     setPhotoURL(state, payload) {
         state.photoURL = payload.photoURL
     },
+    deleteAuthInfo(state) {
+        state.uid = ''
+        state.displayName = ''
+        state.photoURL = ''
+    },
 }
 
 const actions = {
@@ -37,6 +42,9 @@ const actions = {
     },
     updatePhotoURL({ commit }, photoURL) {
         commit('setPhotoURL', { photoURL })
+    },
+    deleteAuthInfo({ commit }) {
+        commit('deleteAuthInfo')
     },
 }
 

@@ -19,7 +19,7 @@ export const initializeApp = function () {
         firebase.initializeApp(config)
         return firebase
     } else {
-        return null
+        return firebase
     }
 }
 
