@@ -1,10 +1,10 @@
 <template>
-    <VImg :src="src" :width="width" :height="height"></VImg>
+    <VImg class="v-img" :src="src" :width="width" :height="height"></VImg>
 </template>
 
 <script>
 export default {
-    name: 'CustomImage',
+    name: 'CustomUserIcon',
     props: {
         height: {
             required: true,
@@ -18,3 +18,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.v-img {
+    border-radius: 50%;
+}
+</style>

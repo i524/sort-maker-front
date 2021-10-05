@@ -6,24 +6,11 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL
 // 関数名に対応するパスの格納および共通関数
 // =======================================
 
-const apiEndPath = {
-    login: '/login',
-}
+// const apiEndPath = {
+//     login: '/login',
+// }
 
-const apiRequest = async (functionKey, postData) => {
-    const endPath = apiEndPath[functionKey]
-    return await axios.post(endPath, postData)
-}
-
-// =======================================
-// ログイン
-// =======================================
-export const login = async (postData) => {
-    return await apiRequest('login', postData)
-        .then((res) => {
-            return res.data
-        })
-        .catch(() => {
-            return null
-        })
-}
+// const apiRequest = async (functionKey, postData) => {
+//     const endPath = apiEndPath[functionKey]
+//     return await axios.post(endPath, postData)
+// }

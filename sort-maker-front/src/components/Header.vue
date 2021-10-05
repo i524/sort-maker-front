@@ -11,16 +11,16 @@
             <VSpacer />
             <ul class="d-flex">
                 <li>
-                    <CustomImage
-                        :width="50"
-                        :height="50"
+                    <CustomUserIcon
+                        :width="48"
+                        :height="48"
                         :src="src"
-                    ></CustomImage>
+                    ></CustomUserIcon>
                 </li>
                 <li @click="callTransitionPage('RegisterSort')">作る</li>
                 <li @click="callTransitionPage('Home')">遊ぶ</li>
                 <li @click="callTransitionPage('MyPage')">マイページ</li>
-                <template v-if="userId">
+                <template v-if="uid">
                     <li>ログアウト</li>
                 </template>
                 <template v-else>
@@ -32,17 +32,26 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
-import { CustomImage } from '../components'
-import { loginAuth, transitionPage } from '../common_functions/common'
+import { mapGetters } from 'vuex'
+import { CustomUserIcon } from '../components'
+import { transitionPage } from '../common_functions/common'
 
 export default {
     components: {
-        CustomImage,
+        CustomUserIcon,
+    },
+    computed: {
+        src: function () {
+            if (this.photoURL) {
+                return this.photoURL
+            } else {
+                return require('../assets/no_user_image.png')
+            }
+        },
+        ...mapGetters(['uid', 'photoURL']),
     },
     data() {
         return {
-            src: this.$store.getters.uid,
             userId: null,
         }
     },
@@ -50,9 +59,6 @@ export default {
         callTransitionPage(page) {
             transitionPage(this, page)
         },
-    },
-    mounted() {
-        this.userId = loginAuth(this)
     },
     name: 'Header',
 }
@@ -72,5 +78,6 @@ ul {
 li {
     margin-left: 20px;
     cursor: pointer;
+    line-height: 48px;
 }
 </style>
