@@ -17,18 +17,33 @@
                 class="croppa"
                 :file-size-limit="1677721"
                 :height="216"
+                @new-image-drawn="newImagedrawn"
                 remove-button-color="#FEC81A"
                 :show-loading="true"
                 :show-remove-button="true"
                 :width="216"
                 v-model="croppa"
+                @zoom="zoom"
+                :zoom-speed="4"
             ></croppa>
-            <VBtn @click="clickIcon" :color="color" icon>
-                <VIcon>{{ iconName }}</VIcon>
-            </VBtn>
-            <VBtn @click="clickIcon" :color="color" icon>
-                <VIcon>{{ iconName }}</VIcon>
-            </VBtn>
+            <VSlider
+                class="v-slider"
+                color="secondary"
+                @input="sliderInput"
+                :max="sliderMax"
+                :min="sliderMin"
+                :step="0.001"
+                track-color="secondary"
+                v-model="sliderValue"
+            >
+                <template v-slot:prepend>
+                    <VIcon color="secondary"> fas fa-minus-circle </VIcon>
+                </template>
+
+                <template v-slot:append>
+                    <VIcon color="secondary"> fas fa-plus-circle </VIcon>
+                </template>
+            </VSlider>
         </VCard>
     </VDialog>
 </template>
@@ -39,10 +54,32 @@ export default {
         return {
             croppa: {},
             dialog: false,
+            sliderMax: 1,
+            sliderMin: 0,
+            sliderValue: 0,
             src: require('../assets/no_image.png'),
         }
     },
-    methods: {},
+    methods: {
+        newImagedrawn() {
+            this.sliderValue = this.croppa.scaleRatio
+            this.sliderMin = this.croppa.scaleRatio
+            this.sliderMax = this.croppa.scaleRatio * 5
+        },
+        sliderInput(e) {
+            this.croppa.scaleRatio = e
+        },
+        zoom() {
+            // 画像をズームした時にスライダーの範囲外にscaleRatioが出ないようにする処理
+            if (this.croppa.scaleRatio >= this.sliderMax) {
+                this.croppa.scaleRatio = this.sliderMax
+            } else if (this.croppa.scaleRatio <= this.sliderMin) {
+                this.croppa.scaleRatio = this.sliderMin
+            }
+
+            this.sliderValue = this.croppa.scaleRatio
+        },
+    },
     name: 'CroppingImageInput',
     props: {},
 }
