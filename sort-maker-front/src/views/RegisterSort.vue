@@ -9,7 +9,7 @@
                     v-model="name"
                 >
                 </CustomTextField>
-                <CroppingImageInput> </CroppingImageInput>
+                <CroppingImageInput @sendSrc="acceptSrc"> </CroppingImageInput>
                 <CustomButton
                     :block="true"
                     text="ソート作成"
@@ -41,16 +41,15 @@ export default {
         return {
             name: '',
             required,
+            src: 'hello',
             isValidTextLength,
         }
     },
     methods: {
-        registerSort: async () => {
-            // バリデーションチェック
-            if (this.$refs.registerSortForm.validate()) {
-                console.log('登録')
-            }
+        acceptSrc(src) {
+            this.src = src
         },
+        registerSort() {},
     },
     name: 'RegisterSort',
 }

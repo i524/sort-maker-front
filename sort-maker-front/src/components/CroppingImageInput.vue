@@ -1,5 +1,12 @@
 <template>
-    <VDialog v-model="dialog" width="500">
+    <VDialog
+        @click:outside="
+            generateDataUrl()
+            sendSrc()
+        "
+        v-model="dialog"
+        width="500"
+    >
         <template v-slot:activator="{ on, attrs }">
             <VImg
                 class="v-img"
@@ -10,28 +17,34 @@
                 v-on="on"
             ></VImg>
         </template>
-        <VCard class="v-card">
-            <h1>テスト</h1>
+        <VCard class="text-center v-card">
+            <h2 class="mb-5">画像編集</h2>
             <croppa
-                accept="image/*"
+                accept=".png, .jpg, .jpeg"
+                canvas-color="#CBCBCB"
                 class="croppa"
+                @file-size-exceed="fileSizeExceed"
+                @file-type-mismatch="fileTypeMismatch"
                 :file-size-limit="1677721"
                 :height="216"
                 @new-image-drawn="newImagedrawn"
+                placeholder="NO IMAGE"
+                :placeholder-font-size="25"
+                placeholder-color="#FFF"
                 remove-button-color="#FEC81A"
                 :show-loading="true"
                 :show-remove-button="true"
                 :width="216"
                 v-model="croppa"
                 @zoom="zoom"
-                :zoom-speed="4"
+                :zoom-speed="15"
             ></croppa>
             <VSlider
                 class="v-slider"
                 color="secondary"
-                @input="sliderInput"
-                :max="sliderMax"
-                :min="sliderMin"
+                @input="input"
+                :max="max"
+                :min="min"
                 :step="0.001"
                 track-color="secondary"
                 v-model="sliderValue"
@@ -44,6 +57,11 @@
                     <VIcon color="secondary"> fas fa-plus-circle </VIcon>
                 </template>
             </VSlider>
+            <VMessages
+                class="text-center"
+                color="primary"
+                :value="message"
+            ></VMessages>
         </VCard>
     </VDialog>
 </template>
@@ -54,41 +72,57 @@ export default {
         return {
             croppa: {},
             dialog: false,
-            sliderMax: 1,
-            sliderMin: 0,
+            message: [],
+            max: 1,
+            min: 0,
             sliderValue: 0,
             src: require('../assets/no_image.png'),
         }
     },
     methods: {
-        newImagedrawn() {
-            this.sliderValue = this.croppa.scaleRatio
-            this.sliderMin = this.croppa.scaleRatio
-            this.sliderMax = this.croppa.scaleRatio * 5
+        fileSizeExceed() {
+            this.message = ['ファイルのサイズが許容サイズを超えています']
         },
-        sliderInput(e) {
+        fileTypeMismatch() {
+            this.message = ['ファイルの拡張子が.png、.jpg、.jpegではありません']
+        },
+        generateDataUrl() {
+            if (this.croppa.hasImage()) {
+                this.src = this.croppa.generateDataUrl()
+            } else {
+                this.src = require('../assets/no_image.png')
+            }
+        },
+        newImagedrawn() {
+            this.message = []
+            this.sliderValue = this.croppa.scaleRatio
+            this.min = this.croppa.scaleRatio
+            this.max = this.croppa.scaleRatio * 5
+        },
+        input(e) {
             this.croppa.scaleRatio = e
+        },
+        sendSrc() {
+            this.$emit('sendSrc', this.src)
         },
         zoom() {
             // 画像をズームした時にスライダーの範囲外にscaleRatioが出ないようにする処理
-            if (this.croppa.scaleRatio >= this.sliderMax) {
-                this.croppa.scaleRatio = this.sliderMax
-            } else if (this.croppa.scaleRatio <= this.sliderMin) {
-                this.croppa.scaleRatio = this.sliderMin
+            if (this.croppa.scaleRatio >= this.max) {
+                this.croppa.scaleRatio = this.max
+            } else if (this.croppa.scaleRatio <= this.min) {
+                this.croppa.scaleRatio = this.min
             }
 
             this.sliderValue = this.croppa.scaleRatio
         },
     },
     name: 'CroppingImageInput',
-    props: {},
 }
 </script>
 
 <style scoped>
 .v-card {
     padding: 16px;
-    text-align: center;
 }
 
 .v-img:hover {
