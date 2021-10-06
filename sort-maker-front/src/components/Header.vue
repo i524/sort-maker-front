@@ -44,6 +44,7 @@ export default {
         CustomAlert,
     },
     computed: {
+        // ツイッターのアイコン画像のurlが無いときユーザーのアイコンの写真をNoImageにする処理
         src: function () {
             if (this.photoURL) {
                 return this.photoURL

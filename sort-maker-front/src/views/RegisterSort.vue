@@ -32,7 +32,6 @@ import {
     Layout,
 } from '../components'
 import { required, isValidTextLength } from '../common_functions/validation'
-// import { transitionPage } from '../common_functions/common'
 
 export default {
     components: {
