@@ -11,25 +11,24 @@
             ></VImg>
         </template>
         <VCard class="v-card">
+            <h1>テスト</h1>
             <croppa
+                accept="image/*"
                 class="croppa"
-                :width="216"
+                :file-size-limit="1677721"
                 :height="216"
-                :show-remove-button="true"
                 remove-button-color="#FEC81A"
                 :show-loading="true"
-                :file-size-limit="1677721"
-                accept="image/*"
+                :show-remove-button="true"
+                :width="216"
+                v-model="croppa"
             ></croppa>
-            <VSlider class="v-slider" color="secondary" track-color="secondary">
-                <template v-slot:prepend>
-                    <VIcon color="secondary"> fas fa-minus-circle </VIcon>
-                </template>
-
-                <template v-slot:append>
-                    <VIcon color="secondary"> fas fa-plus-circle </VIcon>
-                </template>
-            </VSlider>
+            <VBtn @click="clickIcon" :color="color" icon>
+                <VIcon>{{ iconName }}</VIcon>
+            </VBtn>
+            <VBtn @click="clickIcon" :color="color" icon>
+                <VIcon>{{ iconName }}</VIcon>
+            </VBtn>
         </VCard>
     </VDialog>
 </template>
@@ -38,6 +37,7 @@
 export default {
     data() {
         return {
+            croppa: {},
             dialog: false,
             src: require('../assets/no_image.png'),
         }

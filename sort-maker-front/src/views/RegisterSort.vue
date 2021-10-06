@@ -1,7 +1,5 @@
 <template>
     <div>
-        <CustomAlert :text="resErrorMessage" color="warning" v-model="alert">
-        </CustomAlert>
         <Layout subTitle="ソートを作る">
             <VForm ref="registerSortForm" class="v-form">
                 <CustomTextField
@@ -26,7 +24,6 @@
 <script>
 import {
     CroppingImageInput,
-    CustomAlert,
     CustomButton,
     CustomTextField,
     Layout,
@@ -36,7 +33,6 @@ import { required, isValidTextLength } from '../common_functions/validation'
 export default {
     components: {
         CroppingImageInput,
-        CustomAlert,
         CustomButton,
         CustomTextField,
         Layout,
