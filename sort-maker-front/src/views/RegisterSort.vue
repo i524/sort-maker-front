@@ -2,14 +2,18 @@
     <div>
         <Layout subTitle="ソートを作る">
             <VForm ref="registerSortForm" class="v-form">
-                <CustomTextField
-                    counter="255"
-                    label="ソートの名前"
-                    :rules="[required, isValidTextLength]"
-                    v-model="name"
-                >
-                </CustomTextField>
-                <CroppingImageInput @sendSrc="acceptSrc"> </CroppingImageInput>
+                <h2>ソートのタイトル</h2>
+                <SortCardInput
+                    :description="description"
+                    :name="name"
+                    :src="src"
+                    :width="300"
+                ></SortCardInput>
+                <h2>ソートアイテム</h2>
+                <SortItemInput :src="itemSrc" v-model="itemName" :width="300">
+                </SortItemInput>
+                <CustomButton :block="true" text="追加" @click="addSortItem">
+                </CustomButton>
                 <CustomButton
                     :block="true"
                     text="ソート作成"
@@ -23,25 +27,28 @@
 
 <script>
 import {
-    CroppingImageInput,
     CustomButton,
-    CustomTextField,
     Layout,
+    SortCardInput,
+    SortItemInput,
 } from '../components'
 import { required, isValidTextLength } from '../common_functions/validation'
 
 export default {
     components: {
-        CroppingImageInput,
         CustomButton,
-        CustomTextField,
         Layout,
+        SortCardInput,
+        SortItemInput,
     },
     data() {
         return {
+            description: '',
             name: '',
             required,
-            src: 'hello',
+            src: '',
+            itemName: '',
+            itemSrc: '',
             isValidTextLength,
         }
     },
@@ -49,6 +56,7 @@ export default {
         acceptSrc(src) {
             this.src = src
         },
+        addSortItem() {},
         registerSort() {},
     },
     name: 'RegisterSort',

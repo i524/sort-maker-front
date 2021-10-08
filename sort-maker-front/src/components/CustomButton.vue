@@ -15,7 +15,7 @@ export default {
     name: 'CustomButton',
     props: {
         block: {
-            default: true,
+            default: false,
             required: false,
         },
         text: {

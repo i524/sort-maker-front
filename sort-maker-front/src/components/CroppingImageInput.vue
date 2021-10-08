@@ -8,14 +8,7 @@
         width="500"
     >
         <template v-slot:activator="{ on, attrs }">
-            <VImg
-                class="v-img"
-                :src="src"
-                :width="216"
-                :height="216"
-                v-bind="attrs"
-                v-on="on"
-            ></VImg>
+            <VImg class="v-img" :src="src" v-bind="attrs" v-on="on"></VImg>
         </template>
         <VCard class="text-center v-card">
             <h2 class="mb-5">画像編集</h2>
@@ -26,7 +19,6 @@
                 @file-size-exceed="fileSizeExceed"
                 @file-type-mismatch="fileTypeMismatch"
                 :file-size-limit="1677721"
-                :height="216"
                 @new-image-drawn="newImagedrawn"
                 placeholder="NO IMAGE"
                 :placeholder-font-size="25"
@@ -34,7 +26,6 @@
                 remove-button-color="#FEC81A"
                 :show-loading="true"
                 :show-remove-button="true"
-                :width="216"
                 v-model="croppa"
                 @zoom="zoom"
                 :zoom-speed="15"
@@ -87,6 +78,7 @@ export default {
             this.message = ['ファイルの拡張子が.png、.jpg、.jpegではありません']
         },
         generateDataUrl() {
+            // 画像がダイアログ上でアップロードされなかった時はnoImageの画像を画面上の画像に渡す処理
             if (this.croppa.hasImage()) {
                 this.src = this.croppa.generateDataUrl()
             } else {
