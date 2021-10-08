@@ -2,15 +2,24 @@
     <div>
         <Layout subTitle="ソートを作る">
             <VForm ref="registerSortForm" class="v-form">
-                <h2>ソートのタイトル</h2>
+                <h2 class="text-center">ソートのタイトル</h2>
                 <SortCardInput
+                    className="justify-center"
                     :description="description"
                     :name="name"
                     :src="src"
                     :width="300"
+                    @inputDescription="inputDescription"
+                    @inputName="inputName"
+                    @sendSrc="sendSrc"
                 ></SortCardInput>
                 <h2>ソートアイテム</h2>
-                <SortItemInput :src="itemSrc" v-model="itemName" :width="300">
+                <SortItemInput
+                    :src="itemSrc"
+                    v-model="itemName"
+                    :width="300"
+                    @sendSrc="sendItemSrc"
+                >
                 </SortItemInput>
                 <CustomButton :block="true" text="追加" @click="addSortItem">
                 </CustomButton>
@@ -49,14 +58,29 @@ export default {
             src: '',
             itemName: '',
             itemSrc: '',
+            items: [],
             isValidTextLength,
         }
     },
     methods: {
-        acceptSrc(src) {
+        addSortItem() {
+            this.items.push({
+                itemName: this.itemName,
+                itemSrc: this.itemSrc,
+            })
+        },
+        inputDescription(value) {
+            this.description = value
+        },
+        inputName(value) {
+            this.name = value
+        },
+        sendItemSrc(src) {
+            this.itemSrc = src
+        },
+        sendSrc(src) {
             this.src = src
         },
-        addSortItem() {},
         registerSort() {},
     },
     name: 'RegisterSort',

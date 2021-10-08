@@ -17,12 +17,17 @@
         <VRow>
             <VCol cols="6">
                 <CustomButton
+                    :block="true"
                     text="人気順"
                     @click="sortByPopularity"
                 ></CustomButton>
             </VCol>
             <VCol cols="6">
-                <CustomButton text="新着順" @click="sortByTime"></CustomButton>
+                <CustomButton
+                    :block="true"
+                    text="新着順"
+                    @click="sortByTime"
+                ></CustomButton>
             </VCol>
         </VRow>
         <VRow>

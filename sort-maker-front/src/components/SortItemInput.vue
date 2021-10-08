@@ -1,13 +1,13 @@
 <template>
     <VCard :width="width">
-        <CroppingImageInput :src="src"> </CroppingImageInput>
+        <CroppingImageInput :src="src" @sendSrc="sendSrc"> </CroppingImageInput>
         <VCardTitle>
             <CustomTextField
                 counter="255"
                 label="アイテムの名前"
                 :rules="[required, isValidTextLength]"
-                :value="name"
-                @input="inputName"
+                :value="value"
+                @input="inputItemName"
             ></CustomTextField
         ></VCardTitle>
     </VCard>
@@ -29,20 +29,23 @@ export default {
         }
     },
     methods: {
-        inputName(name) {
-            this.$emit('input', name)
+        inputItemName(itemName) {
+            this.$emit('input', itemName)
+        },
+        sendSrc(src) {
+            this.$emit('sendSrc', src)
         },
     },
     name: 'SortItemInput',
     props: {
-        name: {
-            required: true,
-        },
         src: {
             required: true,
         },
         width: {
             required: false,
+        },
+        value: {
+            required: true,
         },
     },
 }

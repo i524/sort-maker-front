@@ -10,7 +10,7 @@
         <VCardTitle>{{ cardTitle }}</VCardTitle>
         <VCardText class="v-card-text">{{ cardText }}</VCardText>
         <VCardActions>
-            <CustomButton @click="clickButton" :text="buttonText">
+            <CustomButton :block="true" @click="clickButton" :text="buttonText">
             </CustomButton>
         </VCardActions>
     </VCard>

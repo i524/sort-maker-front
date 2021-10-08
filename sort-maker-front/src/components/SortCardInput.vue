@@ -1,6 +1,6 @@
 <template>
-    <VCard :width="width">
-        <CroppingImageInput :src="src"></CroppingImageInput>
+    <VCard :width="width" class="className">
+        <CroppingImageInput :src="src" @sendSrc="sendSrc"></CroppingImageInput>
         <VCardTitle
             ><CustomTextField
                 counter="255"
@@ -46,14 +46,20 @@ export default {
     },
     methods: {
         inputDescription(description) {
-            this.$emit('input', description)
+            this.$emit('inputDescription', description)
         },
         inputName(name) {
-            this.$emit('input', name)
+            this.$emit('inputName', name)
+        },
+        sendSrc(src) {
+            this.$emit('sendSrc', src)
         },
     },
     name: 'SortCardInput',
     props: {
+        className: {
+            rquired: false,
+        },
         description: {
             required: true,
         },
