@@ -23,6 +23,23 @@
                 </SortItemInput>
                 <CustomButton :block="true" text="追加" @click="addSortItem">
                 </CustomButton>
+                <VRow
+                    v-for="row in Math.floor(items.length / 3)"
+                    :key="'row' + row"
+                >
+                    <VCol
+                        cols="4"
+                        v-for="(item, index) in items"
+                        :key="'col' + index"
+                    >
+                        <SortItemInput
+                            :initialImage="items[index].itemSrc"
+                            :src="items[index].itemSrc"
+                            v-model="items[index].itemName"
+                            @sendSrc="sendEditedItemSrc(index, $event)"
+                        ></SortItemInput>
+                    </VCol>
+                </VRow>
                 <CustomButton
                     :block="true"
                     text="ソート作成"
@@ -43,6 +60,8 @@ import {
 } from '../components'
 import { required, isValidTextLength } from '../common_functions/validation'
 
+const noImage = require('../assets/no_image.png')
+
 export default {
     components: {
         CustomButton,
@@ -53,11 +72,12 @@ export default {
     data() {
         return {
             description: '',
+            initialImage: require('../assets/no_user_image.png'),
             name: '',
             required,
-            src: '',
+            src: noImage,
             itemName: '',
-            itemSrc: '',
+            itemSrc: noImage,
             items: [],
             isValidTextLength,
         }
@@ -74,6 +94,9 @@ export default {
         },
         inputName(value) {
             this.name = value
+        },
+        sendEditedItemSrc(index, src) {
+            this.items[index].itemSrc = src
         },
         sendItemSrc(src) {
             this.itemSrc = src

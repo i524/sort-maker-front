@@ -1,6 +1,11 @@
 <template>
     <VCard :width="width">
-        <CroppingImageInput :src="src" @sendSrc="sendSrc"> </CroppingImageInput>
+        <CroppingImageInput
+            :initialImage="initialImage"
+            :src="src"
+            @sendSrc="sendSrc"
+        >
+        </CroppingImageInput>
         <VCardTitle>
             <CustomTextField
                 counter="255"
@@ -38,6 +43,9 @@ export default {
     },
     name: 'SortItemInput',
     props: {
+        initialImage: {
+            required: false,
+        },
         src: {
             required: true,
         },

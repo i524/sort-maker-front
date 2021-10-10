@@ -1,6 +1,10 @@
 <template>
     <VCard :width="width" class="className">
-        <CroppingImageInput :src="src" @sendSrc="sendSrc"></CroppingImageInput>
+        <CroppingImageInput
+            :initialImage="initialImage"
+            :src="src"
+            @sendSrc="sendSrc"
+        ></CroppingImageInput>
         <VCardTitle
             ><CustomTextField
                 counter="255"
@@ -62,6 +66,9 @@ export default {
         },
         description: {
             required: true,
+        },
+        initialImage: {
+            required: false,
         },
         name: {
             required: true,

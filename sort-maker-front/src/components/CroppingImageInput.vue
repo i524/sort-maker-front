@@ -1,12 +1,5 @@
 <template>
-    <VDialog
-        @click:outside="
-            generateDataUrl()
-            sendSrc()
-        "
-        v-model="dialog"
-        width="500"
-    >
+    <VDialog @click:outside="sendSrc()" v-model="dialog" width="500">
         <template v-slot:activator="{ on, attrs }">
             <VImg class="v-img" :src="src" v-bind="attrs" v-on="on"></VImg>
         </template>
@@ -19,6 +12,7 @@
                 @file-size-exceed="fileSizeExceed"
                 @file-type-mismatch="fileTypeMismatch"
                 :file-size-limit="1677721"
+                :initial-image="initialImage"
                 @new-image-drawn="newImagedrawn"
                 placeholder="NO IMAGE"
                 :placeholder-font-size="25"
@@ -67,7 +61,6 @@ export default {
             max: 1,
             min: 0,
             sliderValue: 0,
-            src: require('../assets/no_image.png'),
         }
     },
     methods: {
@@ -76,14 +69,6 @@ export default {
         },
         fileTypeMismatch() {
             this.message = ['ファイルの拡張子が.png、.jpg、.jpegではありません']
-        },
-        generateDataUrl() {
-            // 画像がダイアログ上でアップロードされなかった時はnoImageの画像を画面上の画像に渡す処理
-            if (this.croppa.hasImage()) {
-                this.src = this.croppa.generateDataUrl()
-            } else {
-                this.src = require('../assets/no_image.png')
-            }
         },
         newImagedrawn() {
             this.message = []
@@ -95,7 +80,12 @@ export default {
             this.croppa.scaleRatio = e
         },
         sendSrc() {
-            this.$emit('sendSrc', this.src)
+            // 画像がダイアログ上でアップロードされなかった時はnoImageの画像を親コンポーネントに渡す処理
+            if (this.croppa.hasImage()) {
+                this.$emit('sendSrc', this.croppa.generateDataUrl())
+            } else {
+                this.$emit('sendSrc', require('../assets/no_image.png'))
+            }
         },
         zoom() {
             // 画像をズームした時にスライダーの範囲外にscaleRatioが出ないようにする処理
@@ -109,6 +99,14 @@ export default {
         },
     },
     name: 'CroppingImageInput',
+    props: {
+        initialImage: {
+            required: false,
+        },
+        src: {
+            required: true,
+        },
+    },
 }
 </script>
 
