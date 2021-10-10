@@ -1,7 +1,13 @@
 <template>
     <VDialog @click:outside="sendSrc()" v-model="dialog" width="500">
         <template v-slot:activator="{ on, attrs }">
-            <VImg class="v-img" :src="src" v-bind="attrs" v-on="on"></VImg>
+            <VImg class="v-img" :src="src" v-bind="attrs" v-on="on">
+                <template v-if="icon">
+                    <VBtn @click="clickIcon" color="warning" icon>
+                        <VIcon>fas fa-minus-circle</VIcon>
+                    </VBtn>
+                </template>
+            </VImg>
         </template>
         <VCard class="text-center v-card">
             <h2 class="mb-5">画像編集</h2>
@@ -64,6 +70,9 @@ export default {
         }
     },
     methods: {
+        clickIcon() {
+            this.$emit('clickIcon')
+        },
         fileSizeExceed() {
             this.message = ['ファイルのサイズが許容サイズを超えています']
         },
@@ -100,6 +109,10 @@ export default {
     },
     name: 'CroppingImageInput',
     props: {
+        icon: {
+            required: false,
+            default: false,
+        },
         initialImage: {
             required: false,
         },

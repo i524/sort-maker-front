@@ -23,20 +23,30 @@
                 </SortItemInput>
                 <CustomButton :block="true" text="追加" @click="addSortItem">
                 </CustomButton>
+                <!-- 行を一行に3列アイテムが置かれるときの行数だけ作成する -->
                 <VRow
-                    v-for="row in Math.floor(items.length / 3)"
+                    v-for="row in Math.floor(items.length / 3) + 1"
                     :key="'row' + row"
                 >
-                    <VCol
-                        cols="4"
-                        v-for="(item, index) in items"
-                        :key="'col' + index"
-                    >
+                    <!-- 列を一行に3列作り、行と列の値からitems配列中から表示する要素のindexを計算する -->
+                    <VCol cols="4" v-for="col in 3" :key="'col' + col">
                         <SortItemInput
-                            :initialImage="items[index].itemSrc"
-                            :src="items[index].itemSrc"
-                            v-model="items[index].itemName"
-                            @sendSrc="sendEditedItemSrc(index, $event)"
+                            :icon="true"
+                            :initialImage="
+                                items[(row - 1) * 3 + (col - 1)].itemSrc
+                            "
+                            :src="items[(row - 1) * 3 + (col - 1)].itemSrc"
+                            v-if="items[(row - 1) * 3 + (col - 1)]"
+                            v-model="items[(row - 1) * 3 + (col - 1)].itemName"
+                            @clickIcon="
+                                removeSortItem((row - 1) * 3 + (col - 1))
+                            "
+                            @sendSrc="
+                                sendEditedItemSrc(
+                                    (row - 1) * 3 + (col - 1),
+                                    $event
+                                )
+                            "
                         ></SortItemInput>
                     </VCol>
                 </VRow>
@@ -104,7 +114,15 @@ export default {
         sendSrc(src) {
             this.src = src
         },
-        registerSort() {},
+        registerSort() {
+            console.log(this.src)
+            console.log(this.name)
+            console.log(this.description)
+            console.log(this.items)
+        },
+        removeSortItem(index) {
+            this.items.splice(index, 1)
+        },
     },
     name: 'RegisterSort',
 }

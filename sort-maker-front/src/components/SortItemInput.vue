@@ -1,8 +1,10 @@
 <template>
     <VCard :width="width">
         <CroppingImageInput
+            :icon="icon"
             :initialImage="initialImage"
             :src="src"
+            @clickIcon="clickIcon"
             @sendSrc="sendSrc"
         >
         </CroppingImageInput>
@@ -34,6 +36,9 @@ export default {
         }
     },
     methods: {
+        clickIcon() {
+            this.$emit('clickIcon')
+        },
         inputItemName(itemName) {
             this.$emit('input', itemName)
         },
@@ -43,6 +48,10 @@ export default {
     },
     name: 'SortItemInput',
     props: {
+        icon: {
+            required: false,
+            default: false,
+        },
         initialImage: {
             required: false,
         },
