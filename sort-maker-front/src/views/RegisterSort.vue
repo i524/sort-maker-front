@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { postTweet } from '../common_functions/request'
 import {
     CustomButton,
     Layout,
@@ -114,11 +115,9 @@ export default {
         sendSrc(src) {
             this.src = src
         },
-        registerSort() {
-            console.log(this.src)
-            console.log(this.name)
-            console.log(this.description)
-            console.log(this.items)
+        registerSort: async () => {
+            const res = await postTweet()
+            console.log(res)
         },
         removeSortItem(index) {
             this.items.splice(index, 1)
