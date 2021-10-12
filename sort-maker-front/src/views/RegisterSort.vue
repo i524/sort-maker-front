@@ -81,6 +81,7 @@ import {
     SortItemInput,
 } from '../components'
 import { required, isValidTextLength } from '../common_functions/validation'
+import { initializeApp } from '@/common_functions/common'
 
 const noImage = require('../assets/no_image.png')
 
@@ -138,8 +139,11 @@ export default {
         sendSrc(src) {
             this.src = src
         },
-        registerSort: async () => {
+        registerSort() {
             // const res = await postTweet()
+            const firebase = initializeApp()
+            const storage = firebase.storage()
+            storage.ref('/images/sample.png').put(this.blob)
         },
         removeSortItem(index) {
             this.items.splice(index, 1)
