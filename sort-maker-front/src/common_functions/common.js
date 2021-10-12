@@ -3,6 +3,7 @@
 // ======================
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/storage'
 
 export const initializeApp = function () {
     const config = {

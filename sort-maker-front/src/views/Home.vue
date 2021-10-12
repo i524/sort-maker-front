@@ -156,9 +156,7 @@ export default {
         }
     },
     methods: {
-        addFavorite() {
-            console.log(this.page)
-        },
+        addFavorite() {},
         callTransitionPage(page) {
             transitionPage(this, page)
         },

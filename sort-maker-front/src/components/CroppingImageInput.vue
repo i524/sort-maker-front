@@ -1,5 +1,12 @@
 <template>
-    <VDialog @click:outside="sendSrc()" v-model="dialog" width="500">
+    <VDialog
+        @click:outside="
+            sendSrc()
+            sendBlob()
+        "
+        v-model="dialog"
+        width="500"
+    >
         <template v-slot:activator="{ on, attrs }">
             <VImg class="v-img" :src="src" v-bind="attrs" v-on="on">
                 <template v-if="icon">
@@ -88,6 +95,20 @@ export default {
         input(e) {
             this.croppa.scaleRatio = e
         },
+        sendBlob() {
+            // 画像がダイアログ上でアップロードされなかった時はBlobになにも渡さない処理
+            if (this.croppa.hasImage()) {
+                this.croppa.generateBlob(
+                    (blob) => {
+                        this.$emit('sendBlob', blob)
+                    },
+                    'image/jpeg',
+                    0.8
+                )
+            } else {
+                this.$emit('sendBlob', '')
+            }
+        },
         sendSrc() {
             // 画像がダイアログ上でアップロードされなかった時はnoImageの画像を親コンポーネントに渡す処理
             if (this.croppa.hasImage()) {
@@ -109,6 +130,9 @@ export default {
     },
     name: 'CroppingImageInput',
     props: {
+        blob: {
+            required: true,
+        },
         icon: {
             required: false,
             default: false,

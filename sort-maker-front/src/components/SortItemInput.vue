@@ -1,10 +1,12 @@
 <template>
     <VCard :width="width">
         <CroppingImageInput
+            :blob="blob"
             :icon="icon"
             :initialImage="initialImage"
             :src="src"
             @clickIcon="clickIcon"
+            @sendBlob="sendBlob"
             @sendSrc="sendSrc"
         >
         </CroppingImageInput>
@@ -42,12 +44,18 @@ export default {
         inputItemName(itemName) {
             this.$emit('input', itemName)
         },
+        sendBlob(blob) {
+            this.$emit('sendBlob', blob)
+        },
         sendSrc(src) {
             this.$emit('sendSrc', src)
         },
     },
     name: 'SortItemInput',
     props: {
+        blob: {
+            required: true,
+        },
         icon: {
             required: false,
             default: false,

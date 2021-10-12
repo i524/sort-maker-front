@@ -55,15 +55,12 @@ export default {
                         this.updateUid(res.user.uid)
                         this.updateDisplayName(res.user.displayName)
                         this.updatePhotoURL(res.user.photoURL)
-                        const credential = res.credential
-                        const token = credential.accessToken
-                        const secret = credential.secret
-                        console.log(token)
-                        console.log(secret)
+                        // const credential = res.credential
+                        // const token = credential.accessToken
+                        // const secret = credential.secret
                         transitionPage(this, 'Home')
                     })
-                    .catch((e) => {
-                        console.log(e)
+                    .catch(() => {
                         this.errorMessage =
                             'ツイッターでのログインに失敗しました'
                         this.alert = true

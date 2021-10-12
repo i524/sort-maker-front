@@ -5,19 +5,23 @@
                 <h2 class="text-center">ソートのタイトル</h2>
                 <SortCardInput
                     className="justify-center"
+                    :blob="blob"
                     :description="description"
                     :name="name"
                     :src="src"
                     :width="300"
                     @inputDescription="inputDescription"
                     @inputName="inputName"
+                    @sendBlob="sendBlob"
                     @sendSrc="sendSrc"
                 ></SortCardInput>
                 <h2>ソートアイテム</h2>
                 <SortItemInput
+                    :blob="itemBlob"
                     :src="itemSrc"
                     v-model="itemName"
                     :width="300"
+                    @sendBlob="sendItemBlob"
                     @sendSrc="sendItemSrc"
                 >
                 </SortItemInput>
@@ -31,6 +35,7 @@
                     <!-- 列を一行に3列作り、行と列の値からitems配列中から表示する要素のindexを計算する -->
                     <VCol cols="4" v-for="col in 3" :key="'col' + col">
                         <SortItemInput
+                            :blob="items[(row - 1) * 3 + (col - 1)].itemBlob"
                             :icon="true"
                             :initialImage="
                                 items[(row - 1) * 3 + (col - 1)].itemSrc
@@ -40,6 +45,12 @@
                             v-model="items[(row - 1) * 3 + (col - 1)].itemName"
                             @clickIcon="
                                 removeSortItem((row - 1) * 3 + (col - 1))
+                            "
+                            @sendBlob="
+                                sendEditedItemBlob(
+                                    (row - 1) * 3 + (col - 1),
+                                    $event
+                                )
                             "
                             @sendSrc="
                                 sendEditedItemSrc(
@@ -62,7 +73,7 @@
 </template>
 
 <script>
-import { postTweet } from '../common_functions/request'
+// import { postTweet } from '../common_functions/request'
 import {
     CustomButton,
     Layout,
@@ -82,6 +93,7 @@ export default {
     },
     data() {
         return {
+            blob: null,
             description: '',
             initialImage: require('../assets/no_user_image.png'),
             name: '',
@@ -89,6 +101,7 @@ export default {
             src: noImage,
             itemName: '',
             itemSrc: noImage,
+            itemBlob: null,
             items: [],
             isValidTextLength,
         }
@@ -96,6 +109,7 @@ export default {
     methods: {
         addSortItem() {
             this.items.push({
+                itemBlob: this.itemBlob,
                 itemName: this.itemName,
                 itemSrc: this.itemSrc,
             })
@@ -106,18 +120,26 @@ export default {
         inputName(value) {
             this.name = value
         },
+        sendItemBlob(blob) {
+            this.itemBlob = blob
+        },
+        sendEditedItemBlob(index, blob) {
+            this.items[index].itemBlob = blob
+        },
         sendEditedItemSrc(index, src) {
             this.items[index].itemSrc = src
         },
         sendItemSrc(src) {
             this.itemSrc = src
         },
+        sendBlob(blob) {
+            this.blob = blob
+        },
         sendSrc(src) {
             this.src = src
         },
         registerSort: async () => {
-            const res = await postTweet()
-            console.log(res)
+            // const res = await postTweet()
         },
         removeSortItem(index) {
             this.items.splice(index, 1)
