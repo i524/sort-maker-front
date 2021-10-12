@@ -1,12 +1,5 @@
 <template>
-    <VDialog
-        @click:outside="
-            sendSrc()
-            sendBlob()
-        "
-        v-model="dialog"
-        width="500"
-    >
+    <VDialog @click:outside="sendBlob()" v-model="dialog" width="500">
         <template v-slot:activator="{ on, attrs }">
             <VImg class="v-img" :src="src" v-bind="attrs" v-on="on">
                 <template v-if="icon">
@@ -66,6 +59,15 @@
 
 <script>
 export default {
+    computed: {
+        src() {
+            if (this.blob) {
+                return URL.createObjectURL(this.blob)
+            } else {
+                return require('../assets/no_image.png')
+            }
+        },
+    },
     data() {
         return {
             croppa: {},
@@ -109,14 +111,6 @@ export default {
                 this.$emit('sendBlob', '')
             }
         },
-        sendSrc() {
-            // 画像がダイアログ上でアップロードされなかった時はnoImageの画像を親コンポーネントに渡す処理
-            if (this.croppa.hasImage()) {
-                this.$emit('sendSrc', this.croppa.generateDataUrl())
-            } else {
-                this.$emit('sendSrc', require('../assets/no_image.png'))
-            }
-        },
         zoom() {
             // 画像をズームした時にスライダーの範囲外にscaleRatioが出ないようにする処理
             if (this.croppa.scaleRatio >= this.max) {
@@ -139,9 +133,6 @@ export default {
         },
         initialImage: {
             required: false,
-        },
-        src: {
-            required: true,
         },
     },
 }

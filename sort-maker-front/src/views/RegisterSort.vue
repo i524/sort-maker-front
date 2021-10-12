@@ -8,21 +8,17 @@
                     :blob="blob"
                     :description="description"
                     :name="name"
-                    :src="src"
                     :width="300"
                     @inputDescription="inputDescription"
                     @inputName="inputName"
                     @sendBlob="sendBlob"
-                    @sendSrc="sendSrc"
                 ></SortCardInput>
                 <h2>ソートアイテム</h2>
                 <SortItemInput
                     :blob="itemBlob"
-                    :src="itemSrc"
                     v-model="itemName"
                     :width="300"
                     @sendBlob="sendItemBlob"
-                    @sendSrc="sendItemSrc"
                 >
                 </SortItemInput>
                 <CustomButton :block="true" text="追加" @click="addSortItem">
@@ -37,10 +33,7 @@
                         <SortItemInput
                             :blob="items[(row - 1) * 3 + (col - 1)].itemBlob"
                             :icon="true"
-                            :initialImage="
-                                items[(row - 1) * 3 + (col - 1)].itemSrc
-                            "
-                            :src="items[(row - 1) * 3 + (col - 1)].itemSrc"
+                            :initialImage="createInitialImage(col, row)"
                             v-if="items[(row - 1) * 3 + (col - 1)]"
                             v-model="items[(row - 1) * 3 + (col - 1)].itemName"
                             @clickIcon="
@@ -48,12 +41,6 @@
                             "
                             @sendBlob="
                                 sendEditedItemBlob(
-                                    (row - 1) * 3 + (col - 1),
-                                    $event
-                                )
-                            "
-                            @sendSrc="
-                                sendEditedItemSrc(
                                     (row - 1) * 3 + (col - 1),
                                     $event
                                 )
@@ -81,9 +68,7 @@ import {
     SortItemInput,
 } from '../components'
 import { required, isValidTextLength } from '../common_functions/validation'
-import { initializeApp } from '@/common_functions/common'
-
-const noImage = require('../assets/no_image.png')
+// import { initializeApp } from '@/common_functions/common'
 
 export default {
     components: {
@@ -99,9 +84,7 @@ export default {
             initialImage: require('../assets/no_user_image.png'),
             name: '',
             required,
-            src: noImage,
             itemName: '',
-            itemSrc: noImage,
             itemBlob: null,
             items: [],
             isValidTextLength,
@@ -112,8 +95,15 @@ export default {
             this.items.push({
                 itemBlob: this.itemBlob,
                 itemName: this.itemName,
-                itemSrc: this.itemSrc,
             })
+        },
+        createInitialImage(col, row) {
+            const blob = this.items[(row - 1) * 3 + (col - 1)].itemBlob
+            if (blob !== null) {
+                return URL.createObjectURL(blob)
+            } else {
+                return require('../assets/no_image.png')
+            }
         },
         inputDescription(value) {
             this.description = value
@@ -127,23 +117,15 @@ export default {
         sendEditedItemBlob(index, blob) {
             this.items[index].itemBlob = blob
         },
-        sendEditedItemSrc(index, src) {
-            this.items[index].itemSrc = src
-        },
-        sendItemSrc(src) {
-            this.itemSrc = src
-        },
         sendBlob(blob) {
             this.blob = blob
         },
-        sendSrc(src) {
-            this.src = src
-        },
         registerSort() {
             // const res = await postTweet()
-            const firebase = initializeApp()
-            const storage = firebase.storage()
-            storage.ref('/images/sample.png').put(this.blob)
+            // const firebase = initializeApp()
+            // const storage = firebase.storage()
+            // storage.ref('/images/sample.png').put(this.blob)
+            console.log(this.blob, this.items)
         },
         removeSortItem(index) {
             this.items.splice(index, 1)

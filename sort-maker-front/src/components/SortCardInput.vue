@@ -3,9 +3,7 @@
         <CroppingImageInput
             :blob="blob"
             :initialImage="initialImage"
-            :src="src"
             @sendBlob="sendBlob"
-            @sendSrc="sendSrc"
         ></CroppingImageInput>
         <VCardTitle
             ><CustomTextField
@@ -60,9 +58,6 @@ export default {
         sendBlob(blob) {
             this.$emit('sendBlob', blob)
         },
-        sendSrc(src) {
-            this.$emit('sendSrc', src)
-        },
     },
     name: 'SortCardInput',
     props: {
@@ -79,9 +74,6 @@ export default {
             required: false,
         },
         name: {
-            required: true,
-        },
-        src: {
             required: true,
         },
         width: {
