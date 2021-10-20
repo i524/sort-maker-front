@@ -7,12 +7,31 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL
 // =======================================
 
 const apiEndPath = {
+    'register-sort': '/register-sort',
     'post-tweet': '/post-tweet',
 }
 
 const apiRequest = async (functionKey, postData) => {
     const endPath = apiEndPath[functionKey]
     return await axios.post(endPath, postData)
+}
+
+// ========================================
+// ソートの登録
+//=========================================
+
+export const registerSort = async (postData) => {
+    return await apiRequest('register-sort', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return true
+            } else {
+                return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
 }
 
 // ========================================

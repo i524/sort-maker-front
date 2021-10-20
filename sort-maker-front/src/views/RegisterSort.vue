@@ -60,15 +60,14 @@
 </template>
 
 <script>
-// import { postTweet } from '../common_functions/request'
 import {
     CustomButton,
     Layout,
     SortCardInput,
     SortItemInput,
 } from '../components'
-import { required, isValidTextLength } from '../common_functions/validation'
 // import { initializeApp } from '@/common_functions/common'
+import { registerSort } from '@/common_functions/common'
 
 export default {
     components: {
@@ -77,17 +76,18 @@ export default {
         SortCardInput,
         SortItemInput,
     },
+    computed: {
+        ...mapGetters(['uid']),
+    },
     data() {
         return {
             blob: null,
             description: '',
             initialImage: require('../assets/no_user_image.png'),
             name: '',
-            required,
             itemName: '',
             itemBlob: null,
             items: [],
-            isValidTextLength,
         }
     },
     methods: {
@@ -121,11 +121,14 @@ export default {
             this.blob = blob
         },
         registerSort() {
-            // const res = await postTweet()
             // const firebase = initializeApp()
             // const storage = firebase.storage()
             // storage.ref('/images/sample.png').put(this.blob)
-            console.log(this.blob, this.items)
+
+            // ポストデータを作成する
+            const postData = {
+                user_id: uid,
+            }
         },
         removeSortItem(index) {
             this.items.splice(index, 1)
