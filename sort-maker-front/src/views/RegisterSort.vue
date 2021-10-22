@@ -68,7 +68,7 @@ import {
     SortItemInput,
 } from '../components'
 import { initializeApp } from '@/common_functions/common'
-import { registerSort } from '@/common_functions/request'
+import { registerSort, registerSortImage } from '@/common_functions/request'
 
 export default {
     components: {
@@ -122,26 +122,26 @@ export default {
         },
         registerSort: async function () {
             // ソートとソートアイテムをデータベースに登録
-            const postData = {
+            let postData = {
                 user_id: this.uid,
                 name: this.name,
                 description: this.description,
                 itemNames: this.itemNames,
             }
 
-            const res = await registerSort(postData)
+            let res = await registerSort(postData)
 
             if (!res) return
 
             // firebaseCloudStorageに画像を登録
             // 保存する画像の名前に使用するidをとってくる
             const sortId = res.sort_id
-            // const sortItemIds = res.sort_item_ids
+            const sortItemIds = res.sort_item_ids
 
             // ソートのタイトル画像の登録
             const firebase = initializeApp()
             const storageRef = firebase.storage().ref()
-            const metadata = {
+            let metadata = {
                 contentType: this.blob.type,
             }
 
@@ -158,52 +158,76 @@ export default {
                     return
             }
 
-            const uploadTask = storageRef
+            // firebaseCloudStorageに画像を登録して画像のURLを取得
+            let image = ''
+            let itemImages = []
+
+            await storageRef
                 .child(`/images/sort_titles/${this.uid}_${sortId}.${extension}`)
                 .put(this.blob, metadata)
 
-            uploadTask.on(
-                'state_changed',
-                // アップロード中に行う処理
-                () => {},
-                // アップロード中にエラーが発生した際に行う処理
-                () => {
+            await storageRef
+                .child(`/images/sort_titles/${this.uid}_${sortId}.${extension}`)
+                .getDownloadURL()
+                .then((downloadURL) => {
+                    image = downloadURL
+                })
+                .catch(() => {
                     return
-                },
-                // アップロードが終わった後に行う処理
-                () => {
-                    uploadTask.snapshot.ref
-                        .getDownloadURL()
-                        .then((downloadURL) => {
-                            console.log(downloadURL)
-                        })
+                })
+
+            // ソートアイテムの画像の登録
+            for (let i in sortItemIds) {
+                metadata = {
+                    contentType: this.itemBlobs[i].type,
                 }
-            )
 
-            // // ソートアイテムの画像の登録
-            // for (let i in sortItemIds) {
-            //     let metadata = {
-            //         contentType: this.itemBlobs[i].type,
-            //     }
+                extension
+                switch (this.itemBlobs[i].type) {
+                    case 'image/jpeg':
+                        extension = 'jpg'
+                        break
+                    case 'image/png':
+                        extension = 'png'
+                        break
+                    default:
+                        return
+                }
 
-            //     let extension
-            //     switch (this.blob.type) {
-            //         case 'image/jpeg':
-            //             extension = 'jpg'
-            //             break
-            //         case 'image/png':
-            //             extension = 'png'
-            //             break
-            //         default:
-            //             return
-            //     }
+                // firebaseCloudStorageに画像を登録して画像のURLを取得
+                await storageRef
+                    .child(
+                        `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
+                    )
+                    .put(this.itemBlobs[i].type, metadata)
 
-            //     storage
-            //         .ref(
-            //             `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
-            //         )
-            //         .put(this.itemBlobs[i], metadata)
-            // }
+                await storageRef
+                    .child(
+                        `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
+                    )
+                    .getDownloadURL()
+                    .then((downloadURL) => {
+                        itemImages[i] = downloadURL
+                    })
+                    .catch(() => {
+                        return
+                    })
+            }
+
+            // 画像のURLをデータベースに登録
+            postData = {
+                user_id: this.uid,
+                image: image,
+                item_images: itemImages,
+                sort_id: sortId,
+                sort_item_ids: sortItemIds,
+            }
+
+            console.log(postData)
+
+            res = await registerSortImage(postData)
+
+            if (!res) return
         },
         removeSortItem(index) {
             this.itemNames.splice(index, 1)

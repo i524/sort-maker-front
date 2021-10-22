@@ -8,6 +8,7 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL
 
 const apiEndPath = {
     'register-sort': '/register-sort',
+    'register-sort-image': '/register-sort-image',
     'post-tweet': '/post-tweet',
 }
 
@@ -27,6 +28,24 @@ export const registerSort = async (postData) => {
                 return res.data.data
             } else {
                 return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
+// ソート画像の登録
+//=========================================
+
+export const registerSortImage = async (postData) => {
+    return await apiRequest('register-sort-image', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return res.data.data
+            } else {
+                return res
             }
         })
         .catch(() => {

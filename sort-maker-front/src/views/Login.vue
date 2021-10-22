@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { createHash } from 'crypto'
 import { CustomAlert, CustomButton, CustomCard, Layout } from '../components'
 import { transitionPage, initializeApp } from '../common_functions/common'
@@ -32,6 +32,9 @@ export default {
         CustomButton,
         CustomCard,
         Layout,
+    },
+    computed: {
+        ...mapGetters(['isDisplayAlert', 'message']),
     },
     data() {
         return {
@@ -68,16 +71,23 @@ export default {
                         transitionPage(this, 'Home')
                     })
                     .catch(() => {
-                        this.errorMessage =
+                        this.updateMessage(
                             'ツイッターでのログインに失敗しました'
-                        this.alert = true
+                        )
+                        this.updateIsDisplayAlert(true)
                     })
             } else {
-                this.errorMessage = 'ツイッターでのログインに失敗しました'
-                this.alert = true
+                this.updateMessage('ツイッターでのログインに失敗しました')
+                this.updateIsDisplayAlert(true)
             }
         },
-        ...mapActions(['updateUid', 'updateDisplayName', 'updatePhotoURL']),
+        ...mapActions([
+            'updateUid',
+            'updateDisplayName',
+            'updatePhotoURL',
+            'updateIsDisplayAlert',
+            'updateMessage',
+        ]),
     },
     name: 'Login',
 }

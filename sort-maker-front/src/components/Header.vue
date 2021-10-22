@@ -28,7 +28,12 @@
                 </template>
             </ul>
         </VAppBar>
-        <CustomAlert :text="errorMessage" color="warning" v-model="alert">
+        <CustomAlert
+            :text="message"
+            color="warning"
+            v-bind:value="isDisplayAlert"
+            @input="inputAlert"
+        >
         </CustomAlert>
     </div>
 </template>
@@ -52,15 +57,12 @@ export default {
                 return require('../assets/no_user_image.png')
             }
         },
-        ...mapGetters(['uid', 'photoURL']),
-    },
-    data() {
-        return {
-            alert: false,
-            errorMessage: '',
-        }
+        ...mapGetters(['uid', 'photoURL', 'isDisplayAlert', 'message']),
     },
     methods: {
+        inputAlert() {
+            this.updateIsDisplayAlert(!this.isDisplayAlert)
+        },
         callTransitionPage(page) {
             transitionPage(this, page)
         },
@@ -80,15 +82,19 @@ export default {
                         this.callTransitionPage('Home')
                     })
                     .catch(() => {
-                        this.errorMessage = 'ログアウトに失敗しました'
-                        this.alert = true
+                        this.updateMessage('ログアウトに失敗しました')
+                        this.updateIsDisplayAlert(true)
                     })
             } else {
-                this.errorMessage = 'ログアウトに失敗しました'
-                this.alert = true
+                this.updateMessage('ログアウトに失敗しました')
+                this.updateIsDisplayAlert(true)
             }
         },
-        ...mapActions(['deleteAuthInfo']),
+        ...mapActions([
+            'deleteAuthInfo',
+            'updateIsDisplayAlert',
+            'updateMessage',
+        ]),
     },
     name: 'Header',
 }
