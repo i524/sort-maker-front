@@ -43,9 +43,9 @@ export const registerSortImage = async (postData) => {
     return await apiRequest('register-sort-image', postData)
         .then((res) => {
             if (res.data.code === 0) {
-                return res.data.data
+                return true
             } else {
-                return res
+                return false
             }
         })
         .catch(() => {

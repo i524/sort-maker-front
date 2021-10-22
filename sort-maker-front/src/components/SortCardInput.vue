@@ -1,8 +1,7 @@
 <template>
-    <VCard :width="width" class="className">
+    <VCard :width="width" :class="className">
         <CroppingImageInput
             :blob="blob"
-            :initialImage="initialImage"
             @sendBlob="sendBlob"
         ></CroppingImageInput>
         <VCardTitle

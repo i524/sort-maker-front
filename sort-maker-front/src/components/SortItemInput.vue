@@ -1,5 +1,5 @@
 <template>
-    <VCard :width="width">
+    <VCard :width="width" :class="className">
         <CroppingImageInput
             :blob="blob"
             :icon="icon"
@@ -50,6 +50,9 @@ export default {
     props: {
         blob: {
             required: true,
+        },
+        className: {
+            rquired: false,
         },
         icon: {
             required: false,

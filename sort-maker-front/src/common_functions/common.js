@@ -50,7 +50,8 @@ export const transitionPage = (component, componentKey) => {
 // =======================
 // アラートの表示
 // =======================
-export const showAlert = (message) => {
+export const showAlert = (message, color = 'warning') => {
     store.dispatch('updateMessage', message)
+    store.dispatch('updateColor', color)
     store.dispatch('updateIsShowAlert', true)
 }

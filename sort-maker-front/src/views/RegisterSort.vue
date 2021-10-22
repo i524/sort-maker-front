@@ -4,7 +4,7 @@
             <VForm ref="form" class="v-form" v-model="valid">
                 <h2 class="text-center">ソートのタイトル</h2>
                 <SortCardInput
-                    className="justify-center"
+                    className="mx-auto"
                     :blob="blob"
                     :description="description"
                     :name="name"
@@ -12,17 +12,17 @@
                     @inputDescription="inputDescription"
                     @inputName="inputName"
                     @sendBlob="sendBlob"
-                ></SortCardInput>
-                <h2>ソートアイテム</h2>
+                />
+                <h2 class="text-center">ソートアイテム</h2>
                 <SortItemInput
                     :blob="itemBlob"
+                    className="mx-auto"
                     v-model="itemName"
                     :width="300"
                     @sendBlob="sendItemBlob"
-                >
-                </SortItemInput>
+                />
                 <CustomButton :block="true" text="追加" @click="addSortItem" />
-                <CustomMessages color="primary" :value="messages" />
+                <p class="primary--text text-caption">{{ message }}</p>
                 <!-- 行を一行に3列アイテムが置かれるときの行数だけ作成する -->
                 <VRow
                     v-for="row in Math.floor(itemNames.length / 3) + 1"
@@ -45,15 +45,14 @@
                                     $event
                                 )
                             "
-                        ></SortItemInput>
+                        />
                     </VCol>
                 </VRow>
                 <CustomButton
                     :block="true"
                     text="ソート作成"
                     @click="registerSort"
-                >
-                </CustomButton>
+                />
             </VForm>
         </Layout>
     </div>
@@ -63,18 +62,16 @@
 import { mapGetters } from 'vuex'
 import {
     CustomButton,
-    CustomMessages,
     Layout,
     SortCardInput,
     SortItemInput,
 } from '../components'
-// import { initializeApp, showAlert } from '@/common_functions/common'
-// import { registerSort, registerSortImage } from '@/common_functions/request'
+import { initializeApp, showAlert } from '@/common_functions/common'
+import { registerSort, registerSortImage } from '@/common_functions/request'
 
 export default {
     components: {
         CustomButton,
-        CustomMessages,
         Layout,
         SortCardInput,
         SortItemInput,
@@ -84,13 +81,12 @@ export default {
     },
     data() {
         return {
-            blob: null,
+            blob: require('../assets/no_image.png'),
             description: '',
-            initialImage: require('../assets/no_user_image.png'),
-            messages: [],
+            message: '',
             name: '',
             itemName: '',
-            itemBlob: null,
+            itemBlob: require('../assets/no_image.png'),
             itemNames: [],
             itemBlobs: [],
             valid: true,
@@ -100,7 +96,7 @@ export default {
         addSortItem() {
             // ソートアイテムの数が範囲外の時エラーメッセージをだす
             if (this.itemNames.length + 1 > 100) {
-                this.messages = ['1個以上100個以下で設定してください']
+                this.message = '1個以上100個以下で設定してください'
                 return
             }
 
@@ -110,7 +106,10 @@ export default {
         },
         createInitialImage(col, row) {
             const blob = this.itemBlobs[(row - 1) * 3 + (col - 1)]
-            if (blob !== null) {
+            if (
+                !(blob === '') &&
+                !(blob === require('../assets/no_image.png'))
+            ) {
                 return URL.createObjectURL(blob)
             } else {
                 return require('../assets/no_image.png')
@@ -123,135 +122,175 @@ export default {
             this.name = value
         },
         sendItemBlob(blob) {
+            // もしアップロードされた画像が空だったらno_imageを設定する
+            if (!blob) {
+                this.itemBlob = require('../assets/no_image.png')
+                return
+            }
+
             this.itemBlob = blob
         },
         sendEditedItemBlob(index, blob) {
+            // もしアップロードされた画像が空だったらno_imageを設定する
+            if (!blob) {
+                this.itemBlobs[index] = require('../assets/no_image.png')
+
+                // computedで値を見張っているためspliceで値を更新したかったができなかったのでpushとpopで更新
+                this.itemBlobs.push('')
+                this.itemBlobs.pop()
+                return
+            }
+
             this.itemBlobs[index] = blob
+
+            // computedで値を見張っているためspliceで値を更新したかったができなかったのでpushとpopで更新
+            this.itemBlobs.push('')
+            this.itemBlobs.pop()
         },
         sendBlob(blob) {
+            // もしアップロードされた画像が空だったらno_imageを設定する
+            if (!blob) {
+                this.blob = require('../assets/no_image.png')
+                return
+            }
+
             this.blob = blob
         },
         registerSort: async function () {
             // バリデーション
             this.$refs.form.validate()
             if (!this.valid) return
-            // // ソートとソートアイテムをデータベースに登録
-            // let postData = {
-            //     user_id: this.uid,
-            //     name: this.name,
-            //     description: this.description,
-            //     itemNames: this.itemNames,
-            // }
+            // ソートとソートアイテムをデータベースに登録
+            let postData = {
+                user_id: this.uid,
+                name: this.name,
+                description: this.description,
+                itemNames: this.itemNames,
+            }
 
-            // let res = await registerSort(postData)
+            let res = await registerSort(postData)
 
-            // if (!res) {
-            //     showAlert('ソートの登録に失敗しました')
-            //     return
-            // }
+            if (!res) {
+                showAlert('ソートの登録に失敗しました')
+                return
+            }
 
-            // // firebaseCloudStorageに画像を登録
-            // // 保存する画像の名前に使用するidをとってくる
-            // const sortId = res.sort_id
-            // const sortItemIds = res.sort_item_ids
+            // firebaseCloudStorageに画像を登録(アップロードされた画像がno_image.pngで無かった時)
+            // 保存する画像の名前に使用するidをとってくる
+            const sortId = res.sort_id
+            const sortItemIds = res.sort_item_ids
 
-            // // ソートのタイトル画像の登録
-            // const firebase = initializeApp()
-            // const storageRef = firebase.storage().ref()
-            // let metadata = {
-            //     contentType: this.blob.type,
-            // }
+            // ソートのタイトル画像の登録
+            const firebase = initializeApp()
+            const storageRef = firebase.storage().ref()
+            let metadata
+            if (this.blob !== require('../assets/no_image.png')) {
+                metadata = {
+                    contentType: this.blob.type,
+                }
+            }
 
-            // // ファイルの末尾に記載する拡張子を設定
-            // let extension
-            // switch (this.blob.type) {
-            //     case 'image/jpeg':
-            //         extension = 'jpg'
-            //         break
-            //     case 'image/png':
-            //         extension = 'png'
-            //         break
-            //     default:
-            //         showAlert('ソートの登録に失敗しました')
-            //         return
-            // }
+            // ファイルの末尾に記載する拡張子を設定
+            let extension
+            if (this.blob !== require('../assets/no_image.png')) {
+                switch (this.blob.type) {
+                    case 'image/jpeg':
+                        extension = 'jpg'
+                        break
+                    case 'image/png':
+                        extension = 'png'
+                        break
+                    default:
+                        showAlert('ソートの登録に失敗しました')
+                        return
+                }
+            }
 
-            // // firebaseCloudStorageに画像を登録して画像のURLを取得
-            // let image = ''
-            // let itemImages = []
+            // firebaseCloudStorageに画像を登録して画像のURLを取得
+            let image = ''
+            let itemImages = []
+            if (this.blob !== require('../assets/no_image.png')) {
+                await storageRef
+                    .child(
+                        `/images/sort_titles/${this.uid}_${sortId}.${extension}`
+                    )
+                    .put(this.blob, metadata)
 
-            // await storageRef
-            //     .child(`/images/sort_titles/${this.uid}_${sortId}.${extension}`)
-            //     .put(this.blob, metadata)
+                await storageRef
+                    .child(
+                        `/images/sort_titles/${this.uid}_${sortId}.${extension}`
+                    )
+                    .getDownloadURL()
+                    .then((downloadURL) => {
+                        image = downloadURL
+                    })
+                    .catch(() => {
+                        showAlert('ソートの登録に失敗しました')
+                        return
+                    })
+            }
 
-            // await storageRef
-            //     .child(`/images/sort_titles/${this.uid}_${sortId}.${extension}`)
-            //     .getDownloadURL()
-            //     .then((downloadURL) => {
-            //         image = downloadURL
-            //     })
-            //     .catch(() => {
-            //         showAlert('ソートの登録に失敗しました')
-            //         return
-            //     })
+            // ソートアイテムの画像の登録
+            for (let i in sortItemIds) {
+                if (this.itemBlobs[i] !== require('../assets/no_image.png')) {
+                    metadata = {
+                        contentType: this.itemBlobs[i].type,
+                    }
 
-            // // ソートアイテムの画像の登録
-            // for (let i in sortItemIds) {
-            //     metadata = {
-            //         contentType: this.itemBlobs[i].type,
-            //     }
+                    extension
+                    switch (this.itemBlobs[i].type) {
+                        case 'image/jpeg':
+                            extension = 'jpg'
+                            break
+                        case 'image/png':
+                            extension = 'png'
+                            break
+                        default:
+                            showAlert('ソートの登録に失敗しました')
+                            return
+                    }
 
-            //     extension
-            //     switch (this.itemBlobs[i].type) {
-            //         case 'image/jpeg':
-            //             extension = 'jpg'
-            //             break
-            //         case 'image/png':
-            //             extension = 'png'
-            //             break
-            //         default:
-            //             showAlert('ソートの登録に失敗しました')
-            //             return
-            //     }
+                    // firebaseCloudStorageに画像を登録して画像のURLを取得(アップロードされた画像がno_image.pngで無かった時)
+                    await storageRef
+                        .child(
+                            `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
+                        )
+                        .put(this.itemBlobs[i], metadata)
 
-            //     // firebaseCloudStorageに画像を登録して画像のURLを取得
-            //     await storageRef
-            //         .child(
-            //             `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
-            //         )
-            //         .put(this.itemBlobs[i].type, metadata)
+                    await storageRef
+                        .child(
+                            `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
+                        )
+                        .getDownloadURL()
+                        .then((downloadURL) => {
+                            itemImages[i] = downloadURL
+                        })
+                        .catch(() => {
+                            showAlert('ソートの登録に失敗しました')
+                            return
+                        })
+                } else {
+                    itemImages[i] = ''
+                }
+            }
 
-            //     await storageRef
-            //         .child(
-            //             `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
-            //         )
-            //         .getDownloadURL()
-            //         .then((downloadURL) => {
-            //             itemImages[i] = downloadURL
-            //         })
-            //         .catch(() => {
-            //             showAlert('ソートの登録に失敗しました')
-            //             return
-            //         })
-            // }
+            // 画像のURLをデータベースに登録
+            postData = {
+                user_id: this.uid,
+                image: image,
+                item_images: itemImages,
+                sort_id: sortId,
+                sort_item_ids: sortItemIds,
+            }
 
-            // // 画像のURLをデータベースに登録
-            // postData = {
-            //     user_id: this.uid,
-            //     image: image,
-            //     item_images: itemImages,
-            //     sort_id: sortId,
-            //     sort_item_ids: sortItemIds,
-            // }
+            res = await registerSortImage(postData)
 
-            // console.log(postData)
+            if (!res) {
+                showAlert('ソートの登録に失敗しました')
+                return
+            }
 
-            // res = await registerSortImage(postData)
-
-            // if (!res) {
-            //     showAlert('ソートの登録に失敗しました')
-            //     return
-            // }
+            showAlert('ソートを登録しました', 'success')
         },
         removeSortItem(index) {
             this.itemNames.splice(index, 1)

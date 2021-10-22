@@ -1,6 +1,7 @@
 const state = {
     isShowAlert: false,
     message: '',
+    color: 'warning',
 }
 
 const getters = {
@@ -9,6 +10,9 @@ const getters = {
     },
     message(state) {
         return state.message
+    },
+    color(state) {
+        return state.color
     },
 }
 
@@ -19,6 +23,9 @@ const mutations = {
     setMessage(state, payload) {
         state.message = payload.message
     },
+    setColor(state, payload) {
+        state.color = payload.color
+    },
 }
 
 const actions = {
@@ -28,13 +35,16 @@ const actions = {
     updateMessage({ commit }, message) {
         commit('setMessage', { message })
     },
+    updateColor({ commit }, color) {
+        commit('setColor', { color })
+    },
 }
 
-const auth = {
+const ui = {
     state,
     getters,
     mutations,
     actions,
 }
 
-export default auth
+export default ui

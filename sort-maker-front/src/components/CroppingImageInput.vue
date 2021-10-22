@@ -3,7 +3,7 @@
         <template v-slot:activator="{ on, attrs }">
             <VImg class="v-img" :src="src" v-bind="attrs" v-on="on">
                 <template v-if="icon">
-                    <VBtn @click="clickIcon" color="warning" icon>
+                    <VBtn @click="clickIcon" color="secondary" icon>
                         <VIcon>fas fa-minus-circle</VIcon>
                     </VBtn>
                 </template>
@@ -48,25 +48,19 @@
                     <VIcon color="secondary"> fas fa-plus-circle </VIcon>
                 </template>
             </VSlider>
-            <CustomMessages
-                classes="text-center"
-                color="primary"
-                :value="messages"
-            ></CustomMessages>
+            <p class="text-caption text--center primary--text">{{ message }}</p>
         </VCard>
     </VDialog>
 </template>
 
 <script>
-import { CustomMessages } from '../components'
-
 export default {
-    components: {
-        CustomMessages,
-    },
     computed: {
         src() {
-            if (this.blob) {
+            if (
+                !(this.blob === '') &&
+                !(this.blob === require('../assets/no_image.png'))
+            ) {
                 return URL.createObjectURL(this.blob)
             } else {
                 return require('../assets/no_image.png')
@@ -77,7 +71,7 @@ export default {
         return {
             croppa: {},
             dialog: false,
-            messages: [],
+            message: '',
             max: 1,
             min: 0,
             sliderValue: 0,
@@ -88,15 +82,13 @@ export default {
             this.$emit('clickIcon')
         },
         fileSizeExceed() {
-            this.messages = ['ファイルのサイズが許容サイズを超えています']
+            this.message = 'ファイルのサイズが許容サイズを超えています'
         },
         fileTypeMismatch() {
-            this.messages = [
-                'ファイルの拡張子が.png、.jpg、.jpegではありません',
-            ]
+            this.message = 'ファイルの拡張子が.png、.jpg、.jpegではありません'
         },
         newImagedrawn() {
-            this.messages = []
+            this.message = ''
             this.sliderValue = this.croppa.scaleRatio
             this.min = this.croppa.scaleRatio
             this.max = this.croppa.scaleRatio * 5

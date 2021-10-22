@@ -1,5 +1,12 @@
 <template>
     <div>
+        <CustomAlert
+            :text="message"
+            :color="color"
+            v-bind:value="isShowAlert"
+            @input="inputAlert"
+        >
+        </CustomAlert>
         <VAppBar color="primary" class="white--text">
             <VToolbarTitle
                 class="v-toolbar-title"
@@ -28,13 +35,6 @@
                 </template>
             </ul>
         </VAppBar>
-        <CustomAlert
-            :text="message"
-            color="warning"
-            v-bind:value="isShowAlert"
-            @input="inputAlert"
-        >
-        </CustomAlert>
     </div>
 </template>
 
@@ -61,7 +61,7 @@ export default {
                 return require('../assets/no_user_image.png')
             }
         },
-        ...mapGetters(['uid', 'photoURL', 'isShowAlert', 'message']),
+        ...mapGetters(['uid', 'photoURL', 'isShowAlert', 'message', 'color']),
     },
     methods: {
         inputAlert() {

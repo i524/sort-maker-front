@@ -1,7 +1,13 @@
 <template>
-    <VAlert :color="color" dark dismissible :value="value" @input="sendInput">{{
-        text
-    }}</VAlert>
+    <VAlert
+        :color="color"
+        class="v-alert"
+        dark
+        dismissible
+        :value="value"
+        @input="sendInput"
+        >{{ text }}</VAlert
+    >
 </template>
 
 <script>
@@ -17,7 +23,7 @@ export default {
             require: true,
         },
         color: {
-            default: 'success',
+            default: 'warning',
             require: true,
         },
         value: {
@@ -27,3 +33,11 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.v-alert {
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+}
+</style>
