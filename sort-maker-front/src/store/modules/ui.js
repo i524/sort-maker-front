@@ -1,11 +1,11 @@
 const state = {
-    isDisplayAlert: false,
+    isShowAlert: false,
     message: '',
 }
 
 const getters = {
-    isDisplayAlert(state) {
-        return state.isDisplayAlert
+    isShowAlert(state) {
+        return state.isShowAlert
     },
     message(state) {
         return state.message
@@ -13,8 +13,8 @@ const getters = {
 }
 
 const mutations = {
-    setIsDisplayAlert(state, payload) {
-        state.isDisplayAlert = payload.isDisplayAlert
+    setIsShowAlert(state, payload) {
+        state.isShowAlert = payload.isShowAlert
     },
     setMessage(state, payload) {
         state.message = payload.message
@@ -22,8 +22,8 @@ const mutations = {
 }
 
 const actions = {
-    updateIsDisplayAlert({ commit }, isDisplayAlert) {
-        commit('setIsDisplayAlert', { isDisplayAlert })
+    updateIsShowAlert({ commit }, isShowAlert) {
+        commit('setIsShowAlert', { isShowAlert })
     },
     updateMessage({ commit }, message) {
         commit('setMessage', { message })

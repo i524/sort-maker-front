@@ -4,6 +4,7 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/storage'
+import { store } from '../store'
 
 export const initializeApp = function () {
     const config = {
@@ -44,4 +45,12 @@ export const transitionPage = (component, componentKey) => {
         // 違うページに遷移する場合はページ遷移
         component.$router.push(endPath)
     }
+}
+
+// =======================
+// アラートの表示
+// =======================
+export const showAlert = (message) => {
+    store.dispatch('updateMessage', message)
+    store.dispatch('updateIsShowAlert', true)
 }

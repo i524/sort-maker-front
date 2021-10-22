@@ -31,7 +31,7 @@
         <CustomAlert
             :text="message"
             color="warning"
-            v-bind:value="isDisplayAlert"
+            v-bind:value="isShowAlert"
             @input="inputAlert"
         >
         </CustomAlert>
@@ -41,7 +41,11 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { CustomAlert, CustomUserIcon } from '../components'
-import { initializeApp, transitionPage } from '../common_functions/common'
+import {
+    initializeApp,
+    showAlert,
+    transitionPage,
+} from '../common_functions/common'
 
 export default {
     components: {
@@ -57,11 +61,11 @@ export default {
                 return require('../assets/no_user_image.png')
             }
         },
-        ...mapGetters(['uid', 'photoURL', 'isDisplayAlert', 'message']),
+        ...mapGetters(['uid', 'photoURL', 'isShowAlert', 'message']),
     },
     methods: {
         inputAlert() {
-            this.updateIsDisplayAlert(!this.isDisplayAlert)
+            this.updateIsShowAlert(!this.isShowAlert)
         },
         callTransitionPage(page) {
             transitionPage(this, page)
@@ -82,19 +86,13 @@ export default {
                         this.callTransitionPage('Home')
                     })
                     .catch(() => {
-                        this.updateMessage('ログアウトに失敗しました')
-                        this.updateIsDisplayAlert(true)
+                        showAlert('ログアウトに失敗しました')
                     })
             } else {
-                this.updateMessage('ログアウトに失敗しました')
-                this.updateIsDisplayAlert(true)
+                showAlert('ログアウトに失敗しました')
             }
         },
-        ...mapActions([
-            'deleteAuthInfo',
-            'updateIsDisplayAlert',
-            'updateMessage',
-        ]),
+        ...mapActions(['deleteAuthInfo', 'updateIsShowAlert']),
     },
     name: 'Header',
 }

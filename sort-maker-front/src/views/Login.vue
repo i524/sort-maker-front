@@ -21,10 +21,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import { createHash } from 'crypto'
 import { CustomAlert, CustomButton, CustomCard, Layout } from '../components'
-import { transitionPage, initializeApp } from '../common_functions/common'
+import {
+    showAlert,
+    transitionPage,
+    initializeApp,
+} from '../common_functions/common'
 
 export default {
     components: {
@@ -32,9 +36,6 @@ export default {
         CustomButton,
         CustomCard,
         Layout,
-    },
-    computed: {
-        ...mapGetters(['isDisplayAlert', 'message']),
     },
     data() {
         return {
@@ -46,11 +47,9 @@ export default {
         login() {
             // firebaseの初期設定
             const firebase = initializeApp()
-
             // 初期設定ができていたらツイッターでログイン処理、できていなかったらエラーメッセージを出す
             if (firebase) {
                 const provider = new firebase.auth.TwitterAuthProvider()
-
                 // ログイン処理が終了したらvuexに認証情報を保管後、Homeに画面遷移
                 firebase
                     .auth()
@@ -60,7 +59,6 @@ export default {
                         const hash = createHash('sha256')
                         hash.update(res.user.uid)
                         const hashedUid = hash.digest('hex')
-
                         // vuexに認証情報を保管
                         this.updateUid(hashedUid)
                         this.updateDisplayName(res.user.displayName)
@@ -71,23 +69,13 @@ export default {
                         transitionPage(this, 'Home')
                     })
                     .catch(() => {
-                        this.updateMessage(
-                            'ツイッターでのログインに失敗しました'
-                        )
-                        this.updateIsDisplayAlert(true)
+                        showAlert('ツイッターでのログインに失敗しました')
                     })
             } else {
-                this.updateMessage('ツイッターでのログインに失敗しました')
-                this.updateIsDisplayAlert(true)
+                showAlert('ツイッターでのログインに失敗しました')
             }
         },
-        ...mapActions([
-            'updateUid',
-            'updateDisplayName',
-            'updatePhotoURL',
-            'updateIsDisplayAlert',
-            'updateMessage',
-        ]),
+        ...mapActions(['updateUid', 'updateDisplayName', 'updatePhotoURL']),
     },
     name: 'Login',
 }

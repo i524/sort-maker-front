@@ -48,17 +48,22 @@
                     <VIcon color="secondary"> fas fa-plus-circle </VIcon>
                 </template>
             </VSlider>
-            <VMessages
-                class="text-center"
+            <CustomMessages
+                classes="text-center"
                 color="primary"
-                :value="message"
-            ></VMessages>
+                :value="messages"
+            ></CustomMessages>
         </VCard>
     </VDialog>
 </template>
 
 <script>
+import { CustomMessages } from '../components'
+
 export default {
+    components: {
+        CustomMessages,
+    },
     computed: {
         src() {
             if (this.blob) {
@@ -72,7 +77,7 @@ export default {
         return {
             croppa: {},
             dialog: false,
-            message: [],
+            messages: [],
             max: 1,
             min: 0,
             sliderValue: 0,
@@ -83,13 +88,15 @@ export default {
             this.$emit('clickIcon')
         },
         fileSizeExceed() {
-            this.message = ['ファイルのサイズが許容サイズを超えています']
+            this.messages = ['ファイルのサイズが許容サイズを超えています']
         },
         fileTypeMismatch() {
-            this.message = ['ファイルの拡張子が.png、.jpg、.jpegではありません']
+            this.messages = [
+                'ファイルの拡張子が.png、.jpg、.jpegではありません',
+            ]
         },
         newImagedrawn() {
-            this.message = []
+            this.messages = []
             this.sliderValue = this.croppa.scaleRatio
             this.min = this.croppa.scaleRatio
             this.max = this.croppa.scaleRatio * 5
