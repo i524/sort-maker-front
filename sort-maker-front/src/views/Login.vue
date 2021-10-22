@@ -22,6 +22,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { createHash } from 'crypto'
 import { CustomAlert, CustomButton, CustomCard, Layout } from '../components'
 import { transitionPage, initializeApp } from '../common_functions/common'
 
@@ -52,7 +53,13 @@ export default {
                     .auth()
                     .signInWithPopup(provider)
                     .then((res) => {
-                        this.updateUid(res.user.uid)
+                        // uidをハッシュ化
+                        const hash = createHash('sha256')
+                        hash.update(res.user.uid)
+                        const hashedUid = hash.digest('hex')
+
+                        // vuexに認証情報を保管
+                        this.updateUid(hashedUid)
                         this.updateDisplayName(res.user.displayName)
                         this.updatePhotoURL(res.user.photoURL)
                         // const credential = res.credential

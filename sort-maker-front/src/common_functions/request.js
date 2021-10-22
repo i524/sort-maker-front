@@ -23,8 +23,8 @@ const apiRequest = async (functionKey, postData) => {
 export const registerSort = async (postData) => {
     return await apiRequest('register-sort', postData)
         .then((res) => {
-            if (res.code === 0) {
-                return res.data
+            if (res.data.code === 0) {
+                return res.data.data
             } else {
                 return false
             }

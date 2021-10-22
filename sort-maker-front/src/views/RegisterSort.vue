@@ -3,7 +3,6 @@
         <Layout subTitle="ソートを作る">
             <VForm ref="registerSortForm" class="v-form">
                 <h2 class="text-center">ソートのタイトル</h2>
-                <p>{{ uid }}</p>
                 <SortCardInput
                     className="justify-center"
                     :blob="blob"
@@ -68,8 +67,8 @@ import {
     SortCardInput,
     SortItemInput,
 } from '../components'
-// import { initializeApp } from '@/common_functions/common'
-// import { registerSort } from '@/common_functions/common'
+import { initializeApp } from '@/common_functions/common'
+import { registerSort } from '@/common_functions/request'
 
 export default {
     components: {
@@ -121,38 +120,94 @@ export default {
         sendBlob(blob) {
             this.blob = blob
         },
-        registerSort: function () {
+        registerSort: async function () {
             // ソートとソートアイテムをデータベースに登録
-            // const postData = {
-            //     user_id: this.uid,
-            //     name: this.name,
-            //     description: this.description,
-            //     itemNames: this.itemNames,
-            // }
-            //     const res = await registerSort(postData)
-            //     if (!res) return
-            //     // firebaseCloudStorageに画像を登録
-            //     // 保存する画像の名前に使用するidをとってくる
-            //     const sortId = res.sort_id
-            //     const sortItemIds = res.sort_item_ids
-            //     // ソートのタイトル画像の登録
-            //     const firebase = initializeApp()
-            //     const storage = firebase.storage()
-            //     storage
-            //         .ref(`/images/sort_titles/${this.uid}_${sortId}`)
-            //         .put(this.blob)
-            //     // ソートアイテムの画像の登録
-            //     for (let i in sortItemIds) {
-            //         storage
-            //             .ref(
-            //                 `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}`
-            //             )
-            //             .put(this.itemBlob[i])
+            const postData = {
+                user_id: this.uid,
+                name: this.name,
+                description: this.description,
+                itemNames: this.itemNames,
+            }
+
+            const res = await registerSort(postData)
+
+            if (!res) return
+
+            // firebaseCloudStorageに画像を登録
+            // 保存する画像の名前に使用するidをとってくる
+            const sortId = res.sort_id
+            // const sortItemIds = res.sort_item_ids
+
+            // ソートのタイトル画像の登録
+            const firebase = initializeApp()
+            const storageRef = firebase.storage().ref()
+            const metadata = {
+                contentType: this.blob.type,
+            }
+
+            // ファイルの末尾に記載する拡張子を設定
+            let extension
+            switch (this.blob.type) {
+                case 'image/jpeg':
+                    extension = 'jpg'
+                    break
+                case 'image/png':
+                    extension = 'png'
+                    break
+                default:
+                    return
+            }
+
+            const uploadTask = storageRef
+                .child(`/images/sort_titles/${this.uid}_${sortId}.${extension}`)
+                .put(this.blob, metadata)
+
+            uploadTask.on(
+                'state_changed',
+                // アップロード中に行う処理
+                () => {},
+                // アップロード中にエラーが発生した際に行う処理
+                () => {
+                    return
+                },
+                // アップロードが終わった後に行う処理
+                () => {
+                    uploadTask.snapshot.ref
+                        .getDownloadURL()
+                        .then((downloadURL) => {
+                            console.log(downloadURL)
+                        })
+                }
+            )
+
+            // // ソートアイテムの画像の登録
+            // for (let i in sortItemIds) {
+            //     let metadata = {
+            //         contentType: this.itemBlobs[i].type,
             //     }
-            // },
-            // removeSortItem(index) {
-            //     this.itemNames.splice(index, 1)
-            //     this.itemBlobs.splice(index, 1)
+
+            //     let extension
+            //     switch (this.blob.type) {
+            //         case 'image/jpeg':
+            //             extension = 'jpg'
+            //             break
+            //         case 'image/png':
+            //             extension = 'png'
+            //             break
+            //         default:
+            //             return
+            //     }
+
+            //     storage
+            //         .ref(
+            //             `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
+            //         )
+            //         .put(this.itemBlobs[i], metadata)
+            // }
+        },
+        removeSortItem(index) {
+            this.itemNames.splice(index, 1)
+            this.itemBlobs.splice(index, 1)
         },
     },
     name: 'RegisterSort',
