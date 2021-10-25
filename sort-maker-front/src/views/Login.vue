@@ -29,6 +29,7 @@ import {
     transitionPage,
     initializeApp,
 } from '../common_functions/common'
+import { registerUser } from '../common_functions/request'
 
 export default {
     components: {
@@ -54,11 +55,22 @@ export default {
                 firebase
                     .auth()
                     .signInWithPopup(provider)
-                    .then((res) => {
+                    .then(async (res) => {
                         // uidをハッシュ化
                         const hash = createHash('sha256')
                         hash.update(res.user.uid)
                         const hashedUid = hash.digest('hex')
+
+                        // ユーザーを登録
+                        const postData = {
+                            id: hashedUid,
+                        }
+                        const resOfRegisterUser = await registerUser(postData)
+                        if (!resOfRegisterUser) {
+                            showAlert('ツイッターでのログインに失敗しました')
+                            return
+                        }
+
                         // vuexに認証情報を保管
                         this.updateUid(hashedUid)
                         this.updateDisplayName(res.user.displayName)
@@ -66,6 +78,7 @@ export default {
                         // const credential = res.credential
                         // const token = credential.accessToken
                         // const secret = credential.secret
+                        // home画面に遷移
                         transitionPage(this, 'home')
                     })
                     .catch(() => {

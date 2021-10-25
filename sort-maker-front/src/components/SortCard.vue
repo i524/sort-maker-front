@@ -1,5 +1,5 @@
 <template>
-    <VCard :height="450" @click="clickCard">
+    <VCard :class="className" :width="240" :height="450" @click="clickCard">
         <VImg :src="src">
             <template v-if="icon">
                 <VBtn @click="clickIcon" :color="color" icon>
@@ -29,6 +29,9 @@ export default {
         },
         cardText: {
             required: true,
+        },
+        className: {
+            required: false,
         },
         color: {
             default: 'warning',

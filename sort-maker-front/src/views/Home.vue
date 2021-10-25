@@ -39,8 +39,7 @@
                     @clickIcon="sortCard.clickIcon"
                     :icon="true"
                     iconName="fas fa-heart"
-                >
-                </SortCard>
+                />
             </VCol>
         </VRow>
         <CustomPagenation v-model="page"></CustomPagenation>
@@ -121,7 +120,7 @@ export default {
                     cardText:
                         '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
                     clickCard: () => {
-                        this.callTransitionPage('play_sort', { sortId: 1 })
+                        this.callTransitionPage('play_sort', { sortId: 88 })
                     },
                     clickIcon: () => {
                         this.addFavorite()

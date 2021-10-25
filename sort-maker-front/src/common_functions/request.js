@@ -9,6 +9,8 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL
 const apiEndPath = {
     'register-sort': '/register-sort',
     'register-sort-image': '/register-sort-image',
+    'register-user': '/register-user',
+    'search-sort': 'search-sort',
     'post-tweet': '/post-tweet',
 }
 
@@ -46,6 +48,42 @@ export const registerSortImage = async (postData) => {
                 return true
             } else {
                 return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
+// ユーザーの登録
+//=========================================
+
+export const registerUser = async (postData) => {
+    return await apiRequest('register-user', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return true
+            } else {
+                return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
+// ソートの検索
+//=========================================
+
+export const searchSort = async (postData) => {
+    return await apiRequest('search-sort', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return res.data.data
+            } else {
+                return res
             }
         })
         .catch(() => {
