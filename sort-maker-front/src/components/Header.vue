@@ -10,7 +10,7 @@
         <VAppBar color="primary" class="white--text">
             <VToolbarTitle
                 class="v-toolbar-title"
-                @click="callTransitionPage('Home')"
+                @click="callTransitionPage('home')"
             >
                 <VIcon color="white">fas fa-random</VIcon>
                 ソートメーカー
@@ -24,14 +24,14 @@
                         :src="src"
                     ></CustomUserIcon>
                 </li>
-                <li @click="callTransitionPage('RegisterSort')">作る</li>
-                <li @click="callTransitionPage('Home')">遊ぶ</li>
-                <li @click="callTransitionPage('MyPage')">マイページ</li>
+                <li @click="callTransitionPage('register_sort')">作る</li>
+                <li @click="callTransitionPage('home')">遊ぶ</li>
+                <li @click="callTransitionPage('mypage')">マイページ</li>
                 <template v-if="uid">
                     <li @click="logout">ログアウト</li>
                 </template>
                 <template v-else>
-                    <li @click="callTransitionPage('Login')">ログイン</li>
+                    <li @click="callTransitionPage('login')">ログイン</li>
                 </template>
             </ul>
         </VAppBar>
@@ -67,8 +67,8 @@ export default {
         inputAlert() {
             this.updateIsShowAlert(!this.isShowAlert)
         },
-        callTransitionPage(page) {
-            transitionPage(this, page)
+        callTransitionPage(name) {
+            transitionPage(this, name)
         },
         logout() {
             // firebaseの初期設定
@@ -83,7 +83,7 @@ export default {
                     .then(() => {
                         // vuexの認証情報を削除
                         this.deleteAuthInfo()
-                        this.callTransitionPage('Home')
+                        this.callTransitionPage('home')
                     })
                     .catch(() => {
                         showAlert('ログアウトに失敗しました')

@@ -211,15 +211,11 @@ export default {
             let itemImages = []
             if (this.blob !== require('../assets/no_image.png')) {
                 await storageRef
-                    .child(
-                        `/images/sort_titles/${this.uid}_${sortId}.${extension}`
-                    )
+                    .child(`/images/sort_titles/${sortId}.${extension}`)
                     .put(this.blob, metadata)
 
                 await storageRef
-                    .child(
-                        `/images/sort_titles/${this.uid}_${sortId}.${extension}`
-                    )
+                    .child(`/images/sort_titles/${sortId}.${extension}`)
                     .getDownloadURL()
                     .then((downloadURL) => {
                         image = downloadURL
@@ -253,13 +249,13 @@ export default {
                     // firebaseCloudStorageに画像を登録して画像のURLを取得(アップロードされた画像がno_image.pngで無かった時)
                     await storageRef
                         .child(
-                            `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
+                            `/images/sort_items/${sortId}_${sortItemIds[i]}.${extension}`
                         )
                         .put(this.itemBlobs[i], metadata)
 
                     await storageRef
                         .child(
-                            `/images/sort_items/${this.uid}_${sortId}_${sortItemIds[i]}.${extension}`
+                            `/images/sort_items/${sortId}_${sortItemIds[i]}.${extension}`
                         )
                         .getDownloadURL()
                         .then((downloadURL) => {

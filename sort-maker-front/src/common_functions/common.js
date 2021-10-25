@@ -25,25 +25,19 @@ export const initializeApp = function () {
     }
 }
 
-// ==========================================================
-// コンポーネント名に対応するパスの格納およびページ遷移用の関数
-// ==========================================================
-const urlEndPath = {
-    Home: '/',
-    Login: '/login',
-    MyPage: '/mypage',
-    PlaySort: '/play_sort',
-    RegisterSort: '/register_sort',
-}
-
-export const transitionPage = (component, componentKey) => {
-    const endPath = urlEndPath[componentKey]
-    if (endPath === component.$router.currentRoute.path) {
+// ===========
+// ページ遷移
+// ===========
+export const transitionPage = (component, name, params = {}) => {
+    if (name === component.$router.currentRoute.name) {
         // 同じページに遷移する場合はリロード
-        component.$router.go({ path: component.$router.currentRoute.path })
+        component.$router.go({
+            name: component.$router.currentRoute.name,
+            params: params,
+        })
     } else {
         // 違うページに遷移する場合はページ遷移
-        component.$router.push(endPath)
+        component.$router.push({ name: name, params: params })
     }
 }
 

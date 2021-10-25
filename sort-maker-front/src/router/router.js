@@ -7,11 +7,17 @@ Vue.use(VueRouter)
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/', component: Home },
-        { path: '/login', component: Login },
-        { path: '/mypage', component: MyPage, meta: { requiresAuth: true } },
-        { path: '/play_sort', component: PlaySort },
+        { name: 'home', path: '/', component: Home },
+        { name: 'login', path: '/login', component: Login },
         {
+            name: 'mypage',
+            path: '/mypage',
+            component: MyPage,
+            meta: { requiresAuth: true },
+        },
+        { name: 'play_sort', path: '/play_sort/:sortId', component: PlaySort },
+        {
+            name: 'register_sort',
             path: '/register_sort',
             component: RegisterSort,
             meta: { requiresAuth: true },
@@ -30,7 +36,7 @@ router.beforeEach((to, from, next) => {
 
     // 画面遷移の際に認証が必要かつユーザーidが存在しない時ログイン画面に遷移
     if (to.matched.some((record) => record.meta.requiresAuth) && !uid) {
-        next({ path: '/login' })
+        next({ name: 'login' })
     } else {
         next()
     }

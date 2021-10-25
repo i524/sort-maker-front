@@ -66,7 +66,7 @@ export default {
                         // const credential = res.credential
                         // const token = credential.accessToken
                         // const secret = credential.secret
-                        transitionPage(this, 'Home')
+                        transitionPage(this, 'home')
                     })
                     .catch(() => {
                         showAlert('ツイッターでのログインに失敗しました')

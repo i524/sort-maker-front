@@ -1,5 +1,7 @@
 <template>
-    <div>ソートで遊ぶ</div>
+    <div>
+        <div>ソートで遊ぶ</div>
+    </div>
 </template>
 
 <script>

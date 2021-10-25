@@ -1,5 +1,5 @@
 <template>
-    <VCard height="442">
+    <VCard :height="450" @click="clickCard">
         <VImg :src="src">
             <template v-if="icon">
                 <VBtn @click="clickIcon" :color="color" icon>
@@ -8,24 +8,15 @@
             </template>
         </VImg>
         <VCardTitle>{{ cardTitle }}</VCardTitle>
-        <VCardText class="v-card-text">{{ cardText }}</VCardText>
-        <VCardActions>
-            <CustomButton :block="true" @click="clickButton" :text="buttonText">
-            </CustomButton>
-        </VCardActions>
+        <VCardText>{{ cardText }}</VCardText>
     </VCard>
 </template>
 
 <script>
-import { CustomButton } from '../components'
-
 export default {
-    components: {
-        CustomButton,
-    },
     methods: {
-        clickButton() {
-            this.$emit('clickButton')
+        clickCard() {
+            this.$emit('clickCard')
         },
         clickIcon() {
             this.$emit('clickIcon')
@@ -33,9 +24,6 @@ export default {
     },
     name: 'SortCard',
     props: {
-        buttonText: {
-            required: true,
-        },
         cardTitle: {
             required: true,
         },
@@ -60,13 +48,3 @@ export default {
     },
 }
 </script>
-
-<style scoped>
-.v-card-text {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-    padding-bottom: 0;
-}
-</style>
