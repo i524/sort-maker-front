@@ -12,7 +12,9 @@ const apiEndPath = {
     'register-sort': '/register-sort',
     'register-sort-image': '/register-sort-image',
     'register-user': '/register-user',
-    'search-sort': 'search-sort',
+    'search-sort': '/search-sort',
+    'search-sort-items': 'search-sort-items',
+    'search-like': '/search-like',
     'post-tweet': '/post-tweet',
 }
 
@@ -94,6 +96,24 @@ export const registerUser = async (postData) => {
 }
 
 // ========================================
+// お気に入りの検索
+//=========================================
+
+export const searchLike = async (postData) => {
+    return await apiRequest('search-like', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return res.data.data
+            } else {
+                return res
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
 // ソートの検索
 //=========================================
 
@@ -104,6 +124,24 @@ export const searchSort = async (postData) => {
                 return res.data.data
             } else {
                 return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
+// ソートアイテムの検索
+//=========================================
+
+export const searchSortItems = async (postData) => {
+    return await apiRequest('search-sort-items', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return res.data.data
+            } else {
+                return res
             }
         })
         .catch(() => {

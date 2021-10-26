@@ -15,7 +15,11 @@
 
 <script>
 import { Layout, SortCard } from '../components'
-import { initializeApp, showAlert } from '../common_functions/common'
+import {
+    initializeApp,
+    transitionPage,
+    showAlert,
+} from '../common_functions/common'
 import { searchSort } from '../common_functions/request'
 
 export default {
@@ -27,7 +31,7 @@ export default {
         return {
             cardTitle: '',
             cardText: '',
-            id: 0,
+            id: this.$route.params.sortId,
             name: '',
             playCount: 0,
             src: '',
@@ -35,12 +39,12 @@ export default {
         }
     },
     methods: {
-        clickCard() {},
+        clickCard() {
+            transitionPage(this, 'play_sort_process', { sortId: this.id })
+        },
     },
     async mounted() {
         // ソートidを渡してソートのデータを取ってくる
-        this.id = this.$route.params.sortId
-
         const postData = {
             id: this.id,
         }

@@ -18,7 +18,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import { showAlert } from '../common_functions/common'
-import { deleteLike, registerLike } from '../common_functions/request'
+import {
+    deleteLike,
+    searchLike,
+    registerLike,
+} from '../common_functions/request'
 
 export default {
     computed: {
@@ -66,6 +70,27 @@ export default {
                 this.icon = 'fas fa-heart'
             }
         },
+    },
+    async mounted() {
+        // お気に入りを検索する
+        const postData = {
+            user_id: this.uid,
+            sort_id: this.id,
+        }
+
+        const res = await searchLike(postData)
+
+        if (!res) {
+            showAlert('お気に入りの表示に失敗しました')
+            return
+        }
+
+        // お気に入りが登録されていたらfas fa-heartを、登録されていなかったらfar fa-heartを表示する
+        if (res['delete_flg']) {
+            this.icon = 'far fa-heart'
+        } else {
+            this.icon = 'fas fa-heart'
+        }
     },
     name: 'SortCard',
     props: {

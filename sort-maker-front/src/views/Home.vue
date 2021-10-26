@@ -80,7 +80,9 @@ export default {
                     cardText:
                         '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
                     clickCard: () => {
-                        this.callTransitionPage('play_sort')
+                        this.callTransitionPage('play_sort_title', {
+                            sortId: 103,
+                        })
                     },
                     id: 0,
                 },
@@ -89,7 +91,7 @@ export default {
                     cardText:
                         '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
                     clickCard: () => {
-                        this.callTransitionPage('play_sort')
+                        this.callTransitionPage('play_sort_title')
                     },
                     id: 0,
                 },
@@ -110,7 +112,9 @@ export default {
                     cardText:
                         '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
                     clickCard: () => {
-                        this.callTransitionPage('play_sort', { sortId: 103 })
+                        this.callTransitionPage('play_sort_title', {
+                            sortId: 103,
+                        })
                     },
                     id: 103,
                 },
@@ -119,7 +123,7 @@ export default {
                     cardText:
                         '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
                     clickCard: () => {
-                        this.callTransitionPage('play_sort')
+                        this.callTransitionPage('play_sort_title')
                     },
                     id: 0,
                 },
@@ -128,7 +132,7 @@ export default {
                     cardText:
                         '面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。面白いソートです。',
                     clickCard: () => {
-                        this.callTransitionPage('play_sort')
+                        this.callTransitionPage('play_sort_title')
                     },
                     id: 0,
                 },
