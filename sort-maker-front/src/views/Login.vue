@@ -48,45 +48,48 @@ export default {
         login() {
             // firebaseの初期設定
             const firebase = initializeApp()
-            // 初期設定ができていたらツイッターでログイン処理、できていなかったらエラーメッセージを出す
-            if (firebase) {
-                const provider = new firebase.auth.TwitterAuthProvider()
-                // ログイン処理が終了したらvuexに認証情報を保管後、Homeに画面遷移
-                firebase
-                    .auth()
-                    .signInWithPopup(provider)
-                    .then(async (res) => {
-                        // uidをハッシュ化
-                        const hash = createHash('sha256')
-                        hash.update(res.user.uid)
-                        const hashedUid = hash.digest('hex')
-
-                        // ユーザーを登録
-                        const postData = {
-                            id: hashedUid,
-                        }
-                        const resOfRegisterUser = await registerUser(postData)
-                        if (!resOfRegisterUser) {
-                            showAlert('ツイッターでのログインに失敗しました')
-                            return
-                        }
-
-                        // vuexに認証情報を保管
-                        this.updateUid(hashedUid)
-                        this.updateDisplayName(res.user.displayName)
-                        this.updatePhotoURL(res.user.photoURL)
-                        // const credential = res.credential
-                        // const token = credential.accessToken
-                        // const secret = credential.secret
-                        // home画面に遷移
-                        transitionPage(this, 'home')
-                    })
-                    .catch(() => {
-                        showAlert('ツイッターでのログインに失敗しました')
-                    })
-            } else {
+            // 初期設定ができていなかったらエラーメッセージを出す
+            if (!firebase) {
                 showAlert('ツイッターでのログインに失敗しました')
+                return
             }
+
+            // ツイッターでログイン処理
+            const provider = new firebase.auth.TwitterAuthProvider()
+            // ログイン処理が終了したらvuexに認証情報を保管後、Homeに画面遷移
+            firebase
+                .auth()
+                .signInWithPopup(provider)
+                .then(async (res) => {
+                    // uidをハッシュ化
+                    const hash = createHash('sha256')
+                    hash.update(res.user.uid)
+                    const hashedUid = hash.digest('hex')
+
+                    // ユーザーを登録
+                    const postData = {
+                        id: hashedUid,
+                        name: res.user.displayName,
+                    }
+                    const resOfRegisterUser = await registerUser(postData)
+                    if (!resOfRegisterUser) {
+                        showAlert('ツイッターでのログインに失敗しました')
+                        return
+                    }
+
+                    // vuexに認証情報を保管
+                    this.updateUid(hashedUid)
+                    this.updateDisplayName(res.user.displayName)
+                    this.updatePhotoURL(res.user.photoURL)
+                    // const credential = res.credential
+                    // const token = credential.accessToken
+                    // const secret = credential.secret
+                    // home画面に遷移
+                    transitionPage(this, 'home')
+                })
+                .catch(() => {
+                    showAlert('ツイッターでのログインに失敗しました')
+                })
         },
         ...mapActions(['updateUid', 'updateDisplayName', 'updatePhotoURL']),
     },

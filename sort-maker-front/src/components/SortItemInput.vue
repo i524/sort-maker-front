@@ -1,5 +1,5 @@
 <template>
-    <VCard :width="width" :class="className">
+    <VCard :width="width" :class="className + ' text-left'">
         <CroppingImageInput
             :blob="blob"
             :icon="icon"

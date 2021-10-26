@@ -2,7 +2,7 @@
     <div>
         <Layout subTitle="ソートを作る">
             <VForm ref="form" class="v-form" v-model="valid">
-                <h2 class="text-center">ソートのタイトル</h2>
+                <h2>ソートのタイトル</h2>
                 <SortCardInput
                     className="mx-auto"
                     :blob="blob"
@@ -13,14 +13,16 @@
                     @inputName="inputName"
                     @sendBlob="sendBlob"
                 />
-                <h2 class="text-center">ソートアイテム</h2>
-                <SortItemInput
-                    :blob="itemBlob"
-                    className="mx-auto"
-                    v-model="itemName"
-                    :width="300"
-                    @sendBlob="sendItemBlob"
-                />
+                <h2>ソートアイテム</h2>
+                <VForm ref="itemForm" v-model="itemValid">
+                    <SortItemInput
+                        :blob="itemBlob"
+                        className="mx-auto"
+                        v-model="itemName"
+                        :width="300"
+                        @sendBlob="sendItemBlob"
+                    />
+                </VForm>
                 <CustomButton :block="true" text="追加" @click="addSortItem" />
                 <p class="primary--text text-caption">{{ message }}</p>
                 <!-- 行を一行に3列アイテムが置かれるときの行数だけ作成する -->
@@ -89,11 +91,16 @@ export default {
             itemBlob: require('../assets/no_image.png'),
             itemNames: [],
             itemBlobs: [],
+            itemValid: true,
             valid: true,
         }
     },
     methods: {
         addSortItem() {
+            // バリデーション
+            this.$refs.itemForm.validate()
+            if (!this.itemValid) return
+
             // ソートアイテムの数が範囲外の時エラーメッセージをだす
             if (this.itemNames.length + 1 > 100) {
                 this.message = '1個以上100個以下で設定してください'
@@ -201,32 +208,27 @@ export default {
                         extension = 'png'
                         break
                     default:
-                        showAlert('ソートの登録に失敗しました')
+                        showAlert('画像の登録に失敗しました')
                         return
                 }
             }
 
-            // firebaseCloudStorageに画像を登録して画像のURLを取得
+            // firebaseCloudStorageに画像を登録
             let image = ''
-            let itemImages = []
             if (this.blob !== require('../assets/no_image.png')) {
-                await storageRef
-                    .child(`/images/sort_titles/${sortId}.${extension}`)
-                    .put(this.blob, metadata)
+                image = `${sortId}.${extension}`
 
                 await storageRef
-                    .child(`/images/sort_titles/${sortId}.${extension}`)
-                    .getDownloadURL()
-                    .then((downloadURL) => {
-                        image = downloadURL
-                    })
+                    .child(`/images/sort_titles/${image}`)
+                    .put(this.blob, metadata)
                     .catch(() => {
-                        showAlert('ソートの登録に失敗しました')
+                        showAlert('画像の登録に失敗しました')
                         return
                     })
             }
 
             // ソートアイテムの画像の登録
+            let itemImages = []
             for (let i in sortItemIds) {
                 if (this.itemBlobs[i] !== require('../assets/no_image.png')) {
                     metadata = {
@@ -242,27 +244,17 @@ export default {
                             extension = 'png'
                             break
                         default:
-                            showAlert('ソートの登録に失敗しました')
+                            showAlert('画像の登録に失敗しました')
                             return
                     }
 
-                    // firebaseCloudStorageに画像を登録して画像のURLを取得(アップロードされた画像がno_image.pngで無かった時)
+                    // firebaseCloudStorageに画像を登録して画像の名前を取得(アップロードされた画像がno_image.pngで無かった時)
+                    itemImages[i] = `${sortId}_${sortItemIds[i]}.${extension}`
                     await storageRef
-                        .child(
-                            `/images/sort_items/${sortId}_${sortItemIds[i]}.${extension}`
-                        )
+                        .child(`/images/sort_items/${itemImages[i]}`)
                         .put(this.itemBlobs[i], metadata)
-
-                    await storageRef
-                        .child(
-                            `/images/sort_items/${sortId}_${sortItemIds[i]}.${extension}`
-                        )
-                        .getDownloadURL()
-                        .then((downloadURL) => {
-                            itemImages[i] = downloadURL
-                        })
                         .catch(() => {
-                            showAlert('ソートの登録に失敗しました')
+                            showAlert('画像の登録に失敗しました')
                             return
                         })
                 } else {

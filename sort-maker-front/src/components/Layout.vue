@@ -1,6 +1,6 @@
 <template>
     <div class="root">
-        <h1 class="text-center">{{ subTitle }}</h1>
+        <h1>{{ subTitle }}</h1>
         <slot></slot>
     </div>
 </template>
@@ -22,5 +22,6 @@ export default {
     & > * {
         margin-bottom: 20px;
     }
+    text-align: center;
 }
 </style>

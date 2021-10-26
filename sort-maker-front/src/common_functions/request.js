@@ -7,6 +7,8 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL
 // =======================================
 
 const apiEndPath = {
+    'delete-like': 'delete-like',
+    'register-like': '/register-like',
     'register-sort': '/register-sort',
     'register-sort-image': '/register-sort-image',
     'register-user': '/register-user',
@@ -17,6 +19,24 @@ const apiEndPath = {
 const apiRequest = async (functionKey, postData) => {
     const endPath = apiEndPath[functionKey]
     return await axios.post(endPath, postData)
+}
+
+// ========================================
+// お気に入りの登録
+//=========================================
+
+export const registerLike = async (postData) => {
+    return await apiRequest('register-like', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return true
+            } else {
+                return res
+            }
+        })
+        .catch(() => {
+            return false
+        })
 }
 
 // ========================================
@@ -83,7 +103,25 @@ export const searchSort = async (postData) => {
             if (res.data.code === 0) {
                 return res.data.data
             } else {
-                return res
+                return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
+// お気に入りの削除
+//=========================================
+
+export const deleteLike = async (postData) => {
+    return await apiRequest('delete-like', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return true
+            } else {
+                return false
             }
         })
         .catch(() => {

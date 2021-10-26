@@ -1,11 +1,14 @@
 <template>
-    <VCard :class="className" :width="240" :height="450" @click="clickCard">
+    <VCard
+        :class="className + ' text-left'"
+        :width="240"
+        :height="450"
+        @click="clickCard"
+    >
         <VImg :src="src">
-            <template v-if="icon">
-                <VBtn @click="clickIcon" :color="color" icon>
-                    <VIcon>{{ iconName }}</VIcon>
-                </VBtn>
-            </template>
+            <VBtn @click="clickIcon" color="warning" icon>
+                <VIcon>{{ icon }}</VIcon>
+            </VBtn>
         </VImg>
         <VCardTitle>{{ cardTitle }}</VCardTitle>
         <VCardText>{{ cardText }}</VCardText>
@@ -13,13 +16,55 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { showAlert } from '../common_functions/common'
+import { deleteLike, registerLike } from '../common_functions/request'
+
 export default {
+    computed: {
+        ...mapGetters(['uid']),
+    },
+    data() {
+        return {
+            icon: 'fas fa-heart',
+        }
+    },
     methods: {
         clickCard() {
             this.$emit('clickCard')
         },
-        clickIcon() {
-            this.$emit('clickIcon')
+        clickIcon: async function () {
+            if (this.icon === 'fas fa-heart') {
+                // お気に入り削除をする
+                const postData = {
+                    user_id: this.uid,
+                    sort_id: this.id,
+                }
+
+                const res = await deleteLike(postData)
+
+                if (!res) {
+                    showAlert('お気に入り削除に失敗しました')
+                    return
+                }
+
+                this.icon = 'far fa-heart'
+            } else {
+                // お気に入り登録する
+                const postData = {
+                    user_id: this.uid,
+                    sort_id: this.id,
+                }
+
+                const res = await registerLike(postData)
+
+                if (!res) {
+                    showAlert('お気に入り登録に失敗しました')
+                    return
+                }
+
+                this.icon = 'fas fa-heart'
+            }
         },
     },
     name: 'SortCard',
@@ -33,16 +78,8 @@ export default {
         className: {
             required: false,
         },
-        color: {
-            default: 'warning',
-            required: false,
-        },
-        icon: {
-            default: false,
-            required: false,
-        },
-        iconName: {
-            required: false,
+        id: {
+            required: true,
         },
         src: {
             default: require('../assets/no_image.png'),
