@@ -40,7 +40,10 @@ export default {
                     clickCard: () => {},
                 },
             ],
+            pivotId: 0,
             sortItems: [],
+            startId: 0,
+            endId: 0,
         }
     },
     async mounted() {
@@ -58,6 +61,19 @@ export default {
 
         // ソートアイテムの一覧を変数に格納する
         this.sortItems = res
+
+        console.log(typeof this.sortItems)
+        // sortItemsの真ん中の要素とその一個左の要素をitemCardsに入れる
+        this.pivotId = Math.floor(this.sortItems.length / 2)
+
+        this.itemCards[0]['cardTitle'] =
+            this.sortItems[this.pivotId - 1]['name']
+        this.itemCards[0]['src'] = this.sortItems[this.pivotId - 1]['src']
+        this.itemCards[0]['id'] = this.pivotId - 1
+
+        this.itemCards[1]['cardTitle'] = this.sortItems[this.pivotId]['name']
+        this.itemCards[1]['src'] = this.sortItems[this.pivotId]['src']
+        this.itemCards[1]['id'] = this.pivotId
     },
     name: 'PlaySortProcess',
 }
