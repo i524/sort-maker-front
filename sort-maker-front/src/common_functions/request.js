@@ -87,7 +87,7 @@ export const registerUser = async (postData) => {
             if (res.data.code === 0) {
                 return true
             } else {
-                return false
+                return res
             }
         })
         .catch(() => {

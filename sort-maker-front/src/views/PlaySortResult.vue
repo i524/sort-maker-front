@@ -1,15 +1,26 @@
 <template>
     <Layout subTitle="結果">
         <CustomDataTable :headers="headers" :items="items" />
+        <CustomButton
+            :block="true"
+            color="twitter"
+            class="white--text"
+            icon="fab fa-twitter"
+            text="ツイッターで結果をシェアする"
+            textColor="white"
+            @click="share"
+        />
+        <CustomButton :block="true" text="もう一度遊ぶ" @click="replay" />
     </Layout>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { CustomDataTable, Layout } from '../components'
+import { CustomButton, CustomDataTable, Layout } from '../components'
 
 export default {
     components: {
+        CustomButton,
         CustomDataTable,
         Layout,
     },
@@ -22,6 +33,10 @@ export default {
             ],
             items: [],
         }
+    },
+    methods: {
+        replay() {},
+        share() {},
     },
     mounted() {
         // vuexからソートの結果を取得して、itemsに格納する

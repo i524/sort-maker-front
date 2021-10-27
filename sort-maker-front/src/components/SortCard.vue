@@ -17,7 +17,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { showAlert } from '../common_functions/common'
+import { transitionPage, showAlert } from '../common_functions/common'
 import {
     deleteLike,
     searchLike,
@@ -30,7 +30,7 @@ export default {
     },
     data() {
         return {
-            icon: 'fas fa-heart',
+            icon: 'far fa-heart',
         }
     },
     methods: {
@@ -38,6 +38,12 @@ export default {
             this.$emit('clickCard')
         },
         clickIcon: async function () {
+            // もしユーザーがログインしてなかったらログインページに遷移する
+            if (!this.uid) {
+                transitionPage(this, 'login')
+                return
+            }
+
             if (this.icon === 'fas fa-heart') {
                 // お気に入り削除をする
                 const postData = {
@@ -72,6 +78,9 @@ export default {
         },
     },
     async mounted() {
+        // もしユーザーがログインしてなかったらお気に入りを検索しない
+        if (!this.uid) return
+
         // お気に入りを検索する
         const postData = {
             user_id: this.uid,

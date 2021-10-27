@@ -1,28 +1,27 @@
 <template>
     <Layout subTitle="ログイン">
-        <CustomAlert :text="errorMessage" color="warning" v-model="alert">
-        </CustomAlert>
+        <CustomAlert :text="errorMessage" color="warning" v-model="alert" />
         <CustomButton
             :block="true"
-            color="#1D9BF0"
+            color="twitter"
             class="white--text"
             icon="fab fa-twitter"
             text="ツイッターでログインする"
             textColor="white"
             @click="login"
-        ></CustomButton>
+        />
         <CustomCard
             title="ソートメーカーでツイッターログインすると下記のことができます"
             text="・ソートを作成する
             ・ソートのお気に入り登録をする"
-        >
-        </CustomCard>
+        />
     </Layout>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { createHash } from 'crypto'
+import crypto from 'crypto-js'
 import { CustomAlert, CustomButton, CustomCard, Layout } from '../components'
 import {
     showAlert,
@@ -66,10 +65,26 @@ export default {
                     hash.update(res.user.uid)
                     const hashedUid = hash.digest('hex')
 
+                    // credential,accesToken,secretを暗号化
+                    const credential = res.credential
+                    const key = 'zEaM4cfD8jzSUdgbn3ZgxEe9rVZw'
+
+                    const encryptedOfAccessToken = crypto.AES.encrypt(
+                        credential.accessToken,
+                        key
+                    ).toString()
+
+                    const encryptedOfSecret = crypto.AES.encrypt(
+                        credential.secret,
+                        key
+                    ).toString()
+
                     // ユーザーを登録
                     const postData = {
                         id: hashedUid,
                         name: res.user.displayName,
+                        access_token: encryptedOfAccessToken,
+                        secret: encryptedOfSecret,
                     }
                     const resOfRegisterUser = await registerUser(postData)
                     if (!resOfRegisterUser) {
@@ -81,9 +96,6 @@ export default {
                     this.updateUid(hashedUid)
                     this.updateDisplayName(res.user.displayName)
                     this.updatePhotoURL(res.user.photoURL)
-                    // const credential = res.credential
-                    // const token = credential.accessToken
-                    // const secret = credential.secret
                     // home画面に遷移
                     transitionPage(this, 'home')
                 })
