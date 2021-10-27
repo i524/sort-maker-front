@@ -6,6 +6,7 @@ import {
     MyPage,
     PlaySortProcess,
     PlaySortTitle,
+    PlaySortResult,
     RegisterSort,
 } from '../views'
 
@@ -31,6 +32,11 @@ const router = new VueRouter({
             name: 'play_sort_process',
             path: '/play_sort/process/:sortId',
             component: PlaySortProcess,
+        },
+        {
+            name: 'play_sort_result',
+            path: '/play_sort/result/',
+            component: PlaySortResult,
         },
         {
             name: 'register_sort',

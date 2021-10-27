@@ -6,7 +6,7 @@
                     :cardTitle="itemCard.cardTitle"
                     :id="itemCard.id"
                     :src="itemCard.src"
-                    @click="itemCard.clickCard"
+                    @clickCard="clickCard(itemCard.id)"
                 />
             </VCol>
         </VRow>
@@ -15,7 +15,7 @@
 
 <script>
 import { Layout, SortItemCard } from '../components'
-import { showAlert } from '../common_functions/common'
+import { transitionPage, showAlert } from '../common_functions/common'
 import { searchSortItems } from '../common_functions/request'
 
 export default {
@@ -31,20 +31,56 @@ export default {
                     cardTitle: '',
                     src: '',
                     id: 0,
-                    clickCard: () => {},
                 },
                 {
                     cardTitle: '',
                     src: '',
                     id: 0,
-                    clickCard: () => {},
                 },
             ],
-            pivotId: 0,
+            topIndex: 0,
+            leftIndex: 0,
             sortItems: [],
-            startId: 0,
-            endId: 0,
         }
+    },
+    methods: {
+        clickCard(choosedIndex) {
+            // もし右に位置する要素がユーザーに選ばれた要素だったら入れ替えを行う
+            if (!(this.leftIndex === choosedIndex)) {
+                let temp = this.sortItems[this.leftIndex]
+                this.sortItems[this.leftIndex] =
+                    this.sortItems[this.leftIndex + 1]
+                this.sortItems[this.leftIndex + 1] = temp
+            }
+
+            // もし左に位置する要素が基点の要素だったら左に一する要素を最後の要素に戻し、基点の要素を右に一つずらす
+            if (this.leftIndex === this.topIndex) {
+                this.leftIndex = this.sortItems.length - 2
+                this.topIndex++
+
+                // もし基点の要素が最後の要素だったら並び替えは終了
+                if (this.topIndex === this.sortItems.length - 1) {
+                    // vuexに結果を格納する
+
+                    // 結果ページに遷移する
+                    transitionPage(this, 'play_sort_result')
+                }
+            } else {
+                // もし左に位置する要素が基点の要素でなかったら左に位置する要素を一つ左にずらす
+                this.leftIndex--
+            }
+
+            // 表示する要素を変更する
+            this.itemCards[0]['cardTitle'] =
+                this.sortItems[this.leftIndex]['name']
+            this.itemCards[0]['src'] = this.sortItems[this.leftIndex]['src']
+            this.itemCards[0]['id'] = this.leftIndex
+
+            this.itemCards[1]['cardTitle'] =
+                this.sortItems[this.leftIndex + 1]['name']
+            this.itemCards[1]['src'] = this.sortItems[this.leftIndex + 1]['src']
+            this.itemCards[1]['id'] = this.leftIndex + 1
+        },
     },
     async mounted() {
         // ソートidを渡してソートアイテムのデータを取得する
@@ -60,20 +96,24 @@ export default {
         }
 
         // ソートアイテムの一覧を変数に格納する
-        this.sortItems = res
+        this.sortItems = res['sort_items']
 
-        console.log(typeof this.sortItems)
-        // sortItemsの真ん中の要素とその一個左の要素をitemCardsに入れる
-        this.pivotId = Math.floor(this.sortItems.length / 2)
+        // 基点にする要素と選択される際に左に位置する要素のインデックスを格納する
+        this.topIndex = 0
+        this.leftIndex = this.sortItems.length - 2
 
+        // sortItemsの最後の要素とその一個前の要素をitemCardsに格納する
         this.itemCards[0]['cardTitle'] =
-            this.sortItems[this.pivotId - 1]['name']
-        this.itemCards[0]['src'] = this.sortItems[this.pivotId - 1]['src']
-        this.itemCards[0]['id'] = this.pivotId - 1
+            this.sortItems[this.sortItems.length - 2]['name']
+        this.itemCards[0]['src'] =
+            this.sortItems[this.sortItems.length - 2]['src']
+        this.itemCards[0]['id'] = this.sortItems.length - 2
 
-        this.itemCards[1]['cardTitle'] = this.sortItems[this.pivotId]['name']
-        this.itemCards[1]['src'] = this.sortItems[this.pivotId]['src']
-        this.itemCards[1]['id'] = this.pivotId
+        this.itemCards[1]['cardTitle'] =
+            this.sortItems[this.sortItems.length - 1]['name']
+        this.itemCards[1]['src'] =
+            this.sortItems[this.sortItems.length - 1]['src']
+        this.itemCards[1]['id'] = this.sortItems.length - 1
     },
     name: 'PlaySortProcess',
 }
