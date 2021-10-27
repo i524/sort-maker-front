@@ -1,5 +1,5 @@
 <template>
-    <VCard class="text-left" :width="240" :height="450" @click="clickCard">
+    <VCard class="text-left" @click="clickCard">
         <VImg :src="src" />
         <VCardTitle>{{ cardTitle }}</VCardTitle>
     </VCard>

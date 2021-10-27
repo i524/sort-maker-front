@@ -25,6 +25,32 @@ export const initializeApp = function () {
     }
 }
 
+// =================================
+// firebasecloudstorageからの画像取得
+// =================================
+export const getDownloadURL = async (path) => {
+    // firebaseの初期設定
+    const firebase = initializeApp()
+
+    // 初期設定ができていなかったらエラーメッセージを出す
+    if (!firebase) {
+        showAlert('画像を表示できませんでした')
+        return
+    }
+
+    const storageRef = firebase.storage().ref()
+
+    return await storageRef
+        .child(path)
+        .getDownloadURL()
+        .then((url) => {
+            return url
+        })
+        .catch(() => {
+            showAlert('画像を表示できませんでした')
+        })
+}
+
 // ===========
 // ページ遷移
 // ===========

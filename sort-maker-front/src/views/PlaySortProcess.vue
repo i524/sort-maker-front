@@ -14,8 +14,13 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { Layout, SortItemCard } from '../components'
-import { transitionPage, showAlert } from '../common_functions/common'
+import {
+    getDownloadURL,
+    transitionPage,
+    showAlert,
+} from '../common_functions/common'
 import { searchSortItems } from '../common_functions/request'
 
 export default {
@@ -44,7 +49,7 @@ export default {
         }
     },
     methods: {
-        clickCard(choosedIndex) {
+        clickCard: async function (choosedIndex) {
             // もし右に位置する要素がユーザーに選ばれた要素だったら入れ替えを行う
             if (!(this.leftIndex === choosedIndex)) {
                 let temp = this.sortItems[this.leftIndex]
@@ -61,6 +66,7 @@ export default {
                 // もし基点の要素が最後の要素だったら並び替えは終了
                 if (this.topIndex === this.sortItems.length - 1) {
                     // vuexに結果を格納する
+                    this.updateResultOfSort(this.sortItems)
 
                     // 結果ページに遷移する
                     transitionPage(this, 'play_sort_result')
@@ -73,14 +79,21 @@ export default {
             // 表示する要素を変更する
             this.itemCards[0]['cardTitle'] =
                 this.sortItems[this.leftIndex]['name']
-            this.itemCards[0]['src'] = this.sortItems[this.leftIndex]['src']
+            this.itemCards[0]['src'] = await getDownloadURL(
+                `/images/sort_items/${this.sortItems[this.leftIndex]['image']}`
+            )
             this.itemCards[0]['id'] = this.leftIndex
 
             this.itemCards[1]['cardTitle'] =
                 this.sortItems[this.leftIndex + 1]['name']
-            this.itemCards[1]['src'] = this.sortItems[this.leftIndex + 1]['src']
+            this.itemCards[1]['src'] = await getDownloadURL(
+                `/images/sort_items/${
+                    this.sortItems[this.leftIndex + 1]['image']
+                }`
+            )
             this.itemCards[1]['id'] = this.leftIndex + 1
         },
+        ...mapActions(['updateResultOfSort']),
     },
     async mounted() {
         // ソートidを渡してソートアイテムのデータを取得する
@@ -105,14 +118,20 @@ export default {
         // sortItemsの最後の要素とその一個前の要素をitemCardsに格納する
         this.itemCards[0]['cardTitle'] =
             this.sortItems[this.sortItems.length - 2]['name']
-        this.itemCards[0]['src'] =
-            this.sortItems[this.sortItems.length - 2]['src']
+        this.itemCards[0]['src'] = await getDownloadURL(
+            `/images/sort_items/${
+                this.sortItems[this.sortItems.length - 2]['image']
+            }`
+        )
         this.itemCards[0]['id'] = this.sortItems.length - 2
 
         this.itemCards[1]['cardTitle'] =
             this.sortItems[this.sortItems.length - 1]['name']
-        this.itemCards[1]['src'] =
-            this.sortItems[this.sortItems.length - 1]['src']
+        this.itemCards[1]['src'] = await getDownloadURL(
+            `/images/sort_items/${
+                this.sortItems[this.sortItems.length - 1]['image']
+            }`
+        )
         this.itemCards[1]['id'] = this.sortItems.length - 1
     },
     name: 'PlaySortProcess',

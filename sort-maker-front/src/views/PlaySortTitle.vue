@@ -16,7 +16,7 @@
 <script>
 import { Layout, SortCard } from '../components'
 import {
-    initializeApp,
+    getDownloadURL,
     transitionPage,
     showAlert,
 } from '../common_functions/common'
@@ -65,25 +65,7 @@ export default {
         this.userName = res['user_name']
 
         // firebasecloudstorageから画像を取得
-        // firebaseの初期設定
-        const firebase = initializeApp()
-        // 初期設定ができていなかったらエラーメッセージを出す
-        if (!firebase) {
-            showAlert('ソートの画像を表示できませんでした')
-            return
-        }
-
-        const storageRef = firebase.storage().ref()
-
-        storageRef
-            .child(`/images/sort_titles/${res['image']}`)
-            .getDownloadURL()
-            .then((url) => {
-                this.src = url
-            })
-            .catch(() => {
-                showAlert('ソートの画像を表示できませんでした')
-            })
+        this.src = await getDownloadURL(`/images/sort_titles/${res['image']}`)
     },
     name: 'PlaySort',
 }
