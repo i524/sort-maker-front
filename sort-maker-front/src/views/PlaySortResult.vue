@@ -8,7 +8,7 @@
             icon="fab fa-twitter"
             text="ツイッターで結果をシェアする"
             textColor="white"
-            @click="share"
+            @click="openDialog"
         />
         <CustomButton :block="true" text="もう一度遊ぶ" @click="replay" />
     </Layout>
@@ -17,6 +17,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { CustomButton, CustomDataTable, Layout } from '../components'
+import { postTweet } from '../common_functions/request'
 
 export default {
     components: {
@@ -36,7 +37,7 @@ export default {
     },
     methods: {
         replay() {},
-        share() {},
+        openDialog() {},
     },
     mounted() {
         // vuexからソートの結果を取得して、itemsに格納する

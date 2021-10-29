@@ -65,7 +65,7 @@ export default {
                     hash.update(res.user.uid)
                     const hashedUid = hash.digest('hex')
 
-                    // credential,accesToken,secretを暗号化
+                    // accesToken,secretを暗号化
                     const credential = res.credential
                     const key = 'zEaM4cfD8jzSUdgbn3ZgxEe9rVZw'
 

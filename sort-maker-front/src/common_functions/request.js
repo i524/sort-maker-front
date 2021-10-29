@@ -172,7 +172,15 @@ export const deleteLike = async (postData) => {
 //=========================================
 
 export const postTweet = async () => {
-    return await apiRequest('post-tweet').then((res) => {
-        return res
-    })
+    return await apiRequest('post-tweet')
+        .then((res) => {
+            if (res.data.code === 0) {
+                return true
+            } else {
+                return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
 }
