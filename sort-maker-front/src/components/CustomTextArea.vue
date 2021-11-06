@@ -20,7 +20,7 @@ export default {
     name: 'CustomTextArea',
     props: {
         counter: {
-            required: true,
+            required: false,
         },
         label: {
             required: true,

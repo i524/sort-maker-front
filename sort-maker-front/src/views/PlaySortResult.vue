@@ -1,29 +1,27 @@
 <template>
     <Layout subTitle="結果">
         <CustomDataTable :headers="headers" :items="items" />
-        <CustomButton
-            :block="true"
-            color="twitter"
-            class="white--text"
-            icon="fab fa-twitter"
-            text="ツイッターで結果をシェアする"
-            textColor="white"
-            @click="openDialog"
-        />
+        <TwitterTextInput :block="true" text="ツイッターで結果をシェアする" />
         <CustomButton :block="true" text="もう一度遊ぶ" @click="replay" />
     </Layout>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { CustomButton, CustomDataTable, Layout } from '../components'
-import { postTweet } from '../common_functions/request'
+import {
+    TwitterTextInput,
+    CustomButton,
+    CustomDataTable,
+    Layout,
+} from '../components'
+// import { postTweet } from '../common_functions/request'
 
 export default {
     components: {
         CustomButton,
         CustomDataTable,
         Layout,
+        TwitterTextInput,
     },
     computed: mapGetters(['resultOfSort']),
     data: function () {
