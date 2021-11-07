@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { Layout, SortCard } from '../components'
 import {
     getDownloadURL,
@@ -42,6 +43,7 @@ export default {
         clickCard() {
             transitionPage(this, 'play_sort_process', { sortId: this.id })
         },
+        ...mapActions(['updateName']),
     },
     async mounted() {
         // ソートidを渡してソートのデータを取ってくる
@@ -63,6 +65,9 @@ export default {
         this.name = res['user_name']
         this.playCount = res['play_count']
         this.userName = res['user_name']
+
+        // vuexにソートの名前を保存
+        this.updateName(res['name'])
 
         // firebasecloudstorageから画像を取得
         this.src = await getDownloadURL(`/images/sort_titles/${res['image']}`)

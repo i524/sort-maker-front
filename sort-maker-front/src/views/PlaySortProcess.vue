@@ -69,7 +69,9 @@ export default {
                     this.updateResultOfSort(this.sortItems)
 
                     // 結果ページに遷移する
-                    transitionPage(this, 'play_sort_result')
+                    transitionPage(this, 'play_sort_result', {
+                        sortId: this.$route.params.sortId,
+                    })
                 }
             } else {
                 // もし左に位置する要素が基点の要素でなかったら左に位置する要素を一つ左にずらす

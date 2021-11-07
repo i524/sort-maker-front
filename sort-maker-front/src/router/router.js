@@ -35,7 +35,7 @@ const router = new VueRouter({
         },
         {
             name: 'play_sort_result',
-            path: '/play_sort/result/',
+            path: '/play_sort/result/:sortId',
             component: PlaySortResult,
         },
         {

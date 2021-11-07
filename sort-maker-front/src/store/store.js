@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import { auth, common, ui } from './modules'
+import { auth, sort, ui } from './modules'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     modules: {
         auth,
-        common,
+        sort,
         ui,
     },
     plugins: [
         createPersistedState({
             key: 'sortMaker',
-            paths: ['auth', 'common', 'ui'],
+            paths: ['auth', 'sort', 'ui'],
             storage: window.localStorage,
         }),
     ],

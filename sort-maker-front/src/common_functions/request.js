@@ -171,8 +171,8 @@ export const deleteLike = async (postData) => {
 // ツイッターの投稿
 //=========================================
 
-export const postTweet = async () => {
-    return await apiRequest('post-tweet')
+export const postTweet = async (postData) => {
+    return await apiRequest('post-tweet', postData)
         .then((res) => {
             if (res.data.code === 0) {
                 return true
