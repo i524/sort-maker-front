@@ -21,7 +21,7 @@ import {
     transitionPage,
     showAlert,
 } from '../common_functions/common'
-import { searchSortItems } from '../common_functions/request'
+import { searchMultipleSortItems } from '../common_functions/request'
 
 export default {
     components: {
@@ -103,7 +103,7 @@ export default {
             id: this.id,
         }
 
-        const res = await searchSortItems(postData)
+        const res = await searchMultipleSortItems(postData)
 
         if (!res) {
             showAlert('ソートアイテムの取得に失敗しました')
