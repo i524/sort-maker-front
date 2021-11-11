@@ -16,6 +16,7 @@ const apiEndPath = {
     'search-multiple-sorts': 'search-multiple-sorts',
     'search-multiple-sort-items': 'search-multiple-sort-items',
     'search-like': '/search-like',
+    'search-multiple-like-sorts': '/search-multiple-like-sorts',
     'update-play-count': '/update-play-count',
     'post-tweet': '/post-tweet',
 }
@@ -35,7 +36,7 @@ export const registerLike = async (postData) => {
             if (res.data.code === 0) {
                 return true
             } else {
-                return res
+                return false
             }
         })
         .catch(() => {
@@ -89,7 +90,7 @@ export const registerUser = async (postData) => {
             if (res.data.code === 0) {
                 return true
             } else {
-                return res
+                return false
             }
         })
         .catch(() => {
@@ -107,7 +108,25 @@ export const searchLike = async (postData) => {
             if (res.data.code === 0) {
                 return res.data.data
             } else {
-                return res
+                return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
+// 複数個のお気に入りのソートの検索
+//=========================================
+
+export const searchMultipleLikeSorts = async (postData) => {
+    return await apiRequest('search-multiple-like-sorts', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return res.data.data
+            } else {
+                return false
             }
         })
         .catch(() => {

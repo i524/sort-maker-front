@@ -174,8 +174,6 @@ export default {
             // 必要な情報を渡してソートのデータを取ってくる
             let postData = {
                 part_of_sort_name: this.searchText,
-                is_sort_by_popularity: false,
-                is_sort_by_time: false,
             }
 
             let res = await searchMultipleSorts(postData)
@@ -202,7 +200,6 @@ export default {
             let postData = {
                 part_of_sort_name: this.searchText,
                 is_sort_by_popularity: true,
-                is_sort_by_time: false,
             }
 
             let res = await searchMultipleSorts(postData)
@@ -228,7 +225,6 @@ export default {
             // 必要な情報を渡してソートのデータを取ってくる
             let postData = {
                 part_of_sort_name: this.searchText,
-                is_sort_by_popularity: false,
                 is_sort_by_time: true,
             }
 
@@ -255,11 +251,7 @@ export default {
     async mounted() {
         // ソートの情報をsortCardsに格納
         // 必要な情報を渡してソートのデータを取ってくる
-        let postData = {
-            part_of_sort_name: '',
-            is_sort_by_popularity: false,
-            is_sort_by_time: false,
-        }
+        let postData = {}
 
         let res = await searchMultipleSorts(postData)
 
@@ -283,9 +275,7 @@ export default {
         // 人気ソートの情報をpopularSortCardsに格納
         // 必要な情報を渡してソートのデータを取ってくる
         postData = {
-            part_of_sort_name: '',
             is_sort_by_popularity: true,
-            is_sort_by_time: false,
         }
 
         res = await searchMultipleSorts(postData)
