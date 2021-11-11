@@ -25,9 +25,9 @@ export const initializeApp = function () {
     }
 }
 
-// =================================
-// firebasecloudstorageからの画像取得
-// =================================
+// =====================================
+// firebasecloudstorageからの画像URL取得
+// =====================================
 export const getDownloadURL = async (path) => {
     // firebaseの初期設定
     const firebase = initializeApp()
@@ -45,6 +45,41 @@ export const getDownloadURL = async (path) => {
         .getDownloadURL()
         .then((url) => {
             return url
+        })
+        .catch(() => {
+            showAlert('画像を表示できませんでした')
+        })
+}
+
+// =======================================
+// firebasecloudstorageからの画像Blob取得
+// =======================================
+export const getBlob = async (path) => {
+    // firebaseの初期設定
+    const firebase = initializeApp()
+
+    // 初期設定ができていなかったらエラーメッセージを出す
+    if (!firebase) {
+        showAlert('画像を表示できませんでした')
+        return
+    }
+
+    const storageRef = firebase.storage().ref()
+
+    return await storageRef
+        .child(path)
+        .getDownloadURL()
+        .then((url) => {
+            let blob = null
+            const xhr = new XMLHttpRequest()
+            xhr.responseType = 'blob'
+            xhr.onload = () => {
+                blob = xhr.response
+            }
+            xhr.open('GET', url)
+            xhr.send()
+
+            return blob
         })
         .catch(() => {
             showAlert('画像を表示できませんでした')

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import {
+    EditSort,
     Home,
     Login,
     MyPage,
@@ -15,6 +16,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
     mode: 'history',
     routes: [
+        { name: 'edit_sort', path: '/edit_sort/:sortId', component: EditSort },
         { name: 'home', path: '/', component: Home },
         { name: 'login', path: '/login', component: Login },
         {
