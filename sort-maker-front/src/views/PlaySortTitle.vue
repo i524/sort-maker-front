@@ -21,7 +21,7 @@ import {
     transitionPage,
     showAlert,
 } from '../common_functions/common'
-import { searchSort } from '../common_functions/request'
+import { searchSort, updatePlayCount } from '../common_functions/request'
 
 export default {
     components: {
@@ -40,7 +40,19 @@ export default {
         }
     },
     methods: {
-        clickCard() {
+        async clickCard() {
+            // ソートidを渡してソートの遊ばれた回数を更新する
+            const postData = {
+                sort_id: this.id,
+            }
+
+            const res = await updatePlayCount(postData)
+
+            // 失敗したらアラートを出す
+            if (!res) {
+                showAlert('遊ばれた回数の更新に失敗しました')
+            }
+
             transitionPage(this, 'play_sort_process', { sortId: this.id })
         },
         ...mapActions(['updateName']),

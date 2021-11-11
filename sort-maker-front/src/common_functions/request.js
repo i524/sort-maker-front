@@ -13,8 +13,10 @@ const apiEndPath = {
     'register-sort-image': '/register-sort-image',
     'register-user': '/register-user',
     'search-sort': '/search-sort',
+    'search-multiple-sorts': 'search-multiple-sorts',
     'search-multiple-sort-items': 'search-multiple-sort-items',
     'search-like': '/search-like',
+    'update-play-count': '/update-play-count',
     'post-tweet': '/post-tweet',
 }
 
@@ -132,6 +134,24 @@ export const searchSort = async (postData) => {
 }
 
 // ========================================
+// 複数個のソートの検索
+//=========================================
+
+export const searchMultipleSorts = async (postData) => {
+    return await apiRequest('search-multiple-sorts', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return res.data.data
+            } else {
+                return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
 // ソートアイテムの検索
 //=========================================
 
@@ -141,7 +161,25 @@ export const searchMultipleSortItems = async (postData) => {
             if (res.data.code === 0) {
                 return res.data.data
             } else {
-                return res
+                return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
+// 遊ばれた回数の更新
+//=========================================
+
+export const updatePlayCount = async (postData) => {
+    return await apiRequest('update-play-count', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return true
+            } else {
+                return false
             }
         })
         .catch(() => {

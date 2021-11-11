@@ -15,7 +15,7 @@
                     ><CustomTextArea
                         counter="128"
                         label="ツイッターへの投稿文"
-                        :rules="[required, isValidPostTextLength]"
+                        :rules="[required, isValidTextLength]"
                         :value="postText"
                         @input="inputPostText"
                 /></VCardText>
@@ -36,7 +36,7 @@
 
 <script>
 import { ButtonDialog, CustomButton, CustomTextArea } from '../components'
-import { required, isValidPostTextLength } from '../common_functions/validation'
+import { required, isValidTextLength } from '../common_functions/validation'
 
 export default {
     components: {
@@ -47,7 +47,7 @@ export default {
     data() {
         return {
             required,
-            isValidPostTextLength,
+            isValidTextLength: isValidTextLength(1, 128),
         }
     },
     methods: {

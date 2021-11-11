@@ -31,7 +31,7 @@ export default {
     },
     data() {
         return {
-            isValidTextLength,
+            isValidTextLength: isValidTextLength(1, 255),
             required,
         }
     },

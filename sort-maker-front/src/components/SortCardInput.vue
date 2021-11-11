@@ -44,7 +44,7 @@ export default {
     data() {
         return {
             required,
-            isValidTextLength,
+            isValidTextLength: isValidTextLength(1, 255),
         }
     },
     methods: {
