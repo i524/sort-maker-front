@@ -60,7 +60,9 @@
                 ) in displayPopularSortCards"
                 :key="index"
             >
-                <h2 class="mb-5">{{ index + 1 }}位</h2>
+                <h2 class="mb-5">
+                    {{ (popularSortCardsPage - 1) * 3 + index + 1 }}位
+                </h2>
                 <SortCard
                     :src="displayPopularSortCard.src"
                     :cardTitle="displayPopularSortCard.cardTitle"
@@ -187,7 +189,10 @@ export default {
             }
 
             // ページネーションの長さをsortsの数から算出して変更する
-            this.sortCardsPageLength = Math.floor(this.sorts.length / 3) + 1
+            this.sortCardsPageLength =
+                this.sorts.length % 3
+                    ? Math.floor(this.sorts.length / 3) + 1
+                    : this.sorts.length / 3
 
             // 表示するソートを1ページ目のソートにする
             this.inputSortCardsPage(1)
@@ -211,7 +216,10 @@ export default {
             }
 
             // ページネーションの長さをsortsの数から算出して変更する
-            this.sortCardsPageLength = Math.floor(this.sorts.length / 3) + 1
+            this.popularSortCardsPageLength =
+                this.popularSorts.length % 3
+                    ? Math.floor(this.popularSorts.length / 3) + 1
+                    : this.popularSorts.length / 3
 
             // 表示するソートを1ページ目のソートにする
             this.inputSortCardsPage(1)
@@ -235,7 +243,10 @@ export default {
             }
 
             // ページネーションの長さをsortsの数から算出して変更する
-            this.sortCardsPageLength = Math.floor(this.sorts.length / 3) + 1
+            this.sortCardsPageLength =
+                this.sorts.length % 3
+                    ? Math.floor(this.sorts.length / 3) + 1
+                    : this.sorts.length / 3
 
             // 表示するソートを1ページ目のソートにする
             this.inputSortCardsPage(1)
@@ -261,7 +272,10 @@ export default {
         }
 
         // ページネーションの長さをsortsの数から算出して変更する
-        this.sortCardsPageLength = Math.floor(this.sorts.length / 3) + 1
+        this.sortCardsPageLength =
+            this.sorts.length % 3
+                ? Math.floor(this.sorts.length / 3) + 1
+                : this.sorts.length / 3
 
         // 初回レンダリング時の選択されたページは1なのでinputSortCardsPageに1を渡して実行、1ページ目のソートを表示する
         this.inputSortCardsPage(this.sortCardsPage)
@@ -286,7 +300,9 @@ export default {
 
         // ページネーションの長さをsortsの数から算出して変更する
         this.popularSortCardsPageLength =
-            Math.floor(this.popularSorts.length / 3) + 1
+            this.popularSorts.length % 3
+                ? Math.floor(this.popularSorts.length / 3) + 1
+                : this.popularSorts.length / 3
 
         // 初回レンダリング時の選択されたページは1なのでinputPopularSortCardsPageに1を渡して実行、1ページ目の人気ソートを表示する
         this.inputPopularSortCardsPage(this.popularSortCardsPage)
