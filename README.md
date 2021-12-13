@@ -1,9 +1,9 @@
-#開発メモ
-#イメージ
+# 開発メモ
+# イメージ
 暖色系
 ソートメーカーを使えば楽しいことができるようなポップなイメージ
 
-#必要機能
+# 必要機能
 ・外部ファイルのインポート
 └componentsに書く
 ・$_POSTによるフォームからの値受け取り
@@ -24,7 +24,7 @@
 ・urlの設定
 └vue-routerの使用
 
-#使用ライブラリ
+# 使用ライブラリ
 ・フロント
 Vue.js
 Vuex
@@ -43,7 +43,7 @@ eslint
 prettier
 vetur
 
-#フォルダ構成
+# フォルダ構成
 ・sort-maker-front
 public
 └静的ファイル
@@ -68,7 +68,7 @@ route
 common_functions
 └共通する処理(認証等)
 
-#データベース設計
+# データベース設計
 ・users
 └user_id
 	└プライマリーキー兼firebase上で保存されている一意のid
@@ -128,29 +128,29 @@ common_functions
 └update_date
 	└更新された日付と時刻
 
-#firebaseのディレクトリ構造
+# firebaseのディレクトリ構造
 images
   └sort_titles
   	└{sort_id}
   └sort_items
 	└{sort_id}_{sort_item_id}
 	
-#公開する前にやること
+# 公開する前にやること
 ・heroku公開用のgithubのリポジトリはprivateにする
 ・accesstoken,secret保存時の暗号化用のkeyは変える
 ・環境変数内のurlを設定する
 ・ツイッターに投稿するurlを変える
 	
-#画像サイズ
+# 画像サイズ
 大　1920
 中　1000
 小　600
 
-#作成の流れ
+# 作成の流れ
 1.まずユーザーの使用する画面を一つ簡単につくる
 2.その後不随する機能をつける
 3.リファクタリング、関数による処理の省略をする
 4.その後画面デザイン
 
-#やり残し
+# やり残し
 twitterをredirectで認証
