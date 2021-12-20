@@ -105,7 +105,7 @@ export default {
                     cardTitle: this.likeSorts[i]['name'],
                     cardText: this.likeSorts[i]['description'],
                     clickCard: () => {
-                        this.callTransitionPage('edit_sort', {
+                        this.callTransitionPage('play_sort_title', {
                             sortId: this.likeSorts[i]['id'],
                         })
                     },

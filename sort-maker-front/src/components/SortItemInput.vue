@@ -22,7 +22,6 @@
 
 <script>
 import { CroppingImageInput, CustomTextField } from '../components'
-import { required, isValidTextLength } from '../common_functions/validation'
 
 export default {
     components: {
@@ -31,8 +30,10 @@ export default {
     },
     data() {
         return {
-            isValidTextLength: isValidTextLength(1, 255),
-            required,
+            required: (value) => !!value || '必ず入力してください',
+            isValidTextLength: (value) =>
+                (value.length >= 1 && value.length <= 255) ||
+                `1文字以上255文字以下で入力してください`,
         }
     },
     methods: {

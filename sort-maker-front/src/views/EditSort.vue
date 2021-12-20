@@ -298,14 +298,14 @@ export default {
 
         const res = await searchSort(postData)
 
-        // 失敗したらアラートを出す
-        if (!res) {
+        // ユーザー認証が通らない、または失敗したらアラートを出す
+        if (!res || this.uid !== res['user_id']) {
             showAlert('ソートの表示に失敗しました')
             return
         }
 
         // 成功したらソートのデータを格納
-        this.blob = getBlob(res['image'])
+        this.blob = getBlob(`/images/sort_titles/${res['image']}`)
         this.name = res['name']
         this.description = res['description']
     },

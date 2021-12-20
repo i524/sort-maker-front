@@ -36,7 +36,6 @@
 
 <script>
 import { ButtonDialog, CustomButton, CustomTextArea } from '../components'
-import { required, isValidTextLength } from '../common_functions/validation'
 
 export default {
     components: {
@@ -46,8 +45,10 @@ export default {
     },
     data() {
         return {
-            required,
-            isValidTextLength: isValidTextLength(1, 128),
+            required: (value) => !!value || '必ず入力してください',
+            isValidTextLength: (value) =>
+                (value.length >= 1 && value.length <= 128) ||
+                `1文字以上128文字以下で入力してください`,
         }
     },
     methods: {
