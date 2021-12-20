@@ -9,6 +9,7 @@
                     :description="description"
                     :name="name"
                     :width="300"
+                    :initialImage="initialImage"
                     @inputDescription="inputDescription"
                     @inputName="inputName"
                     @sendBlob="sendBlob"
@@ -68,7 +69,11 @@ import {
     SortCardInput,
     SortItemInput,
 } from '../components'
-import { initializeApp, showAlert, getBlob } from '@/common_functions/common'
+import {
+    initializeApp,
+    showAlert,
+    getDownloadURL,
+} from '@/common_functions/common'
 import {
     searchSort,
     updateSort,
@@ -97,6 +102,7 @@ export default {
             itemNames: [],
             itemBlobs: [],
             itemValid: true,
+            initialImage: '',
             valid: true,
         }
     },
@@ -305,7 +311,8 @@ export default {
         }
 
         // 成功したらソートのデータを格納
-        this.blob = getBlob(`/images/sort_titles/${res['image']}`)
+        this.blob = await getDownloadURL(`/images/sort_titles/${res['image']}`)
+        this.initialImage = this.blob
         this.name = res['name']
         this.description = res['description']
     },

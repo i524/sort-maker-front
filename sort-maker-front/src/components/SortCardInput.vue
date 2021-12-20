@@ -2,6 +2,7 @@
     <VCard :width="width" :class="className + ' text-left'">
         <CroppingImageInput
             :blob="blob"
+            :initialImage="initialImage"
             @sendBlob="sendBlob"
         ></CroppingImageInput>
         <VCardTitle

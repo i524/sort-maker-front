@@ -61,7 +61,12 @@ export default {
                 !(this.blob === '') &&
                 !(this.blob === require('../assets/no_image.png'))
             ) {
-                return URL.createObjectURL(this.blob)
+                // blobオブジェクトの時はurl化
+                try {
+                    return URL.createObjectURL(this.blob)
+                } catch {
+                    return this.blob
+                }
             } else {
                 return require('../assets/no_image.png')
             }
