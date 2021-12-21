@@ -102,6 +102,7 @@ export default {
             itemBlob: require('../assets/no_image.png'),
             itemNames: [],
             itemBlobs: [],
+            initialImages: [],
             itemValid: true,
             initialImage: '',
             valid: true,
@@ -124,12 +125,9 @@ export default {
             this.itemBlobs.push(this.itemBlob)
         },
         createInitialImage(col, row) {
-            const blob = this.itemBlobs[(row - 1) * 3 + (col - 1)]
-            if (
-                !(blob === '') &&
-                !(blob === require('../assets/no_image.png'))
-            ) {
-                return URL.createObjectURL(blob)
+            const url = this.initialImages[(row - 1) * 3 + (col - 1)]
+            if (!(url === '') && !(url === require('../assets/no_image.png'))) {
+                return url
             } else {
                 return require('../assets/no_image.png')
             }
@@ -299,11 +297,11 @@ export default {
     },
     async mounted() {
         // ソートidを渡してソートのデータを取ってくる
-        const postData = {
+        let postData = {
             id: this.sortId,
         }
 
-        const res = await searchSort(postData)
+        let res = await searchSort(postData)
 
         // ユーザー認証が通らない、または失敗したらアラートを出す
         if (!res || this.uid !== res['user_id']) {
@@ -311,7 +309,7 @@ export default {
             return
         }
 
-        // 成功したらソートのタイトルを格納
+        // 成功したらソートのタイトルの情報を格納
         const url = await getDownloadURL(`/images/sort_titles/${res['image']}`)
 
         this.initialImage = url
@@ -330,6 +328,34 @@ export default {
         this.description = res['description']
 
         // ソートidを渡してソートのアイテムを取ってくる
+        postData = {
+            id: this.sortId,
+        }
+
+        res = await searchMultipleSortItems(postData)
+
+        // ソートのアイテムから値をとってきてitemNamesとitemBlobsに格納する
+        for (let i = 0; res['sort_items'].length > i; i++) {
+            const url = await getDownloadURL(
+                `/images/sort_items/${res['sort_items'][i]['image']}`
+            )
+
+            // 初期画像のurlの格納
+            this.initialImages.push(url)
+
+            // blobオブジェクトの作成、格納
+            const xhr = new XMLHttpRequest()
+            xhr.open('GET', url, true)
+            xhr.responseType = 'blob'
+            xhr.onload = () => {
+                const blob = xhr.response
+                this.itemBlobs.push(blob)
+            }
+            xhr.send()
+
+            // 名前の格納
+            this.itemNames.push(res['sort_items'][i]['name'])
+        }
     },
     name: 'EditSort',
 }
