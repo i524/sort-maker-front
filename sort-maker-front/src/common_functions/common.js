@@ -69,14 +69,15 @@ export const getBlob = async (path) => {
     return await storageRef
         .child(path)
         .getDownloadURL()
-        .then(async (url) => {
+        .then((url) => {
             let blob = null
             const xhr = new XMLHttpRequest()
+            xhr.open('GET', url, true)
             xhr.responseType = 'blob'
             xhr.onload = () => {
-                blob = xhr.response
+                const blob = xhr.response
+                console.log(blob)
             }
-            xhr.open('GET', url)
             xhr.send()
 
             return blob

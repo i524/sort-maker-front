@@ -76,6 +76,7 @@ import {
 } from '@/common_functions/common'
 import {
     searchSort,
+    searchMultipleSortItems,
     updateSort,
     updateSortImage,
 } from '@/common_functions/request'
@@ -310,11 +311,25 @@ export default {
             return
         }
 
-        // 成功したらソートのデータを格納
-        this.blob = await getDownloadURL(`/images/sort_titles/${res['image']}`)
-        this.initialImage = this.blob
+        // 成功したらソートのタイトルを格納
+        const url = await getDownloadURL(`/images/sort_titles/${res['image']}`)
+
+        this.initialImage = url
+
+        // blobオブジェクトの作成、格納
+        const xhr = new XMLHttpRequest()
+        xhr.open('GET', url, true)
+        xhr.responseType = 'blob'
+        xhr.onload = () => {
+            const blob = xhr.response
+            this.blob = blob
+        }
+        xhr.send()
+
         this.name = res['name']
         this.description = res['description']
+
+        // ソートidを渡してソートのアイテムを取ってくる
     },
     name: 'EditSort',
 }
