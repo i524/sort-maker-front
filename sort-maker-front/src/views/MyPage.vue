@@ -61,6 +61,7 @@ import {
     searchMultipleSorts,
     searchMultipleLikeSorts,
 } from '../common_functions/request'
+import { noImage } from '../assets/no_image.png'
 
 export default {
     components: {
@@ -99,9 +100,12 @@ export default {
                 if (!(i in this.likeSorts)) break
 
                 this.displayLikeSortCards.push({
-                    src: await getDownloadURL(
-                        `/images/sort_titles/${this.likeSorts[i]['image']}`
-                    ),
+                    src:
+                        this.likeSorts[i]['image'] === ''
+                            ? noImage
+                            : await getDownloadURL(
+                                  `/images/sort_titles/${this.likeSorts[i]['image']}`
+                              ),
                     cardTitle: this.likeSorts[i]['name'],
                     cardText: this.likeSorts[i]['description'],
                     clickCard: () => {
@@ -127,9 +131,12 @@ export default {
                 if (!(i in this.registerSorts)) break
 
                 this.displayRegisterSortCards.push({
-                    src: await getDownloadURL(
-                        `/images/sort_titles/${this.registerSorts[i]['image']}`
-                    ),
+                    src:
+                        this.registerSorts[i]['image'] === ''
+                            ? noImage
+                            : await getDownloadURL(
+                                  `/images/sort_titles/${this.registerSorts[i]['image']}`
+                              ),
                     cardTitle: this.registerSorts[i]['name'],
                     cardText: this.registerSorts[i]['description'],
                     clickCard: () => {

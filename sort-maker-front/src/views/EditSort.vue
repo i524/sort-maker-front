@@ -37,7 +37,10 @@
                             :blob="itemBlobs[(row - 1) * 3 + (col - 1)]"
                             :icon="true"
                             :initialImage="createInitialImage(col, row)"
-                            v-if="itemNames[(row - 1) * 3 + (col - 1)]"
+                            v-if="
+                                itemNames[(row - 1) * 3 + (col - 1)] ||
+                                itemNames[(row - 1) * 3 + (col - 1)] === ''
+                            "
                             v-model="itemNames[(row - 1) * 3 + (col - 1)]"
                             @clickIcon="
                                 removeSortItem((row - 1) * 3 + (col - 1))
@@ -54,7 +57,7 @@
                 <CustomButton
                     :block="true"
                     text="ソート更新"
-                    @click="updateSort"
+                    @click="editSort"
                 />
             </VForm>
         </Layout>
@@ -77,9 +80,10 @@ import {
 import {
     searchSort,
     searchMultipleSortItems,
-    updateSort,
-    updateSortImage,
+    editSort,
+    registerSortImage,
 } from '@/common_functions/request'
+import { noImage } from '../assets/no_image.png'
 
 export default {
     components: {
@@ -173,22 +177,23 @@ export default {
 
             this.blob = blob
         },
-        updateSort: async function () {
+        editSort: async function () {
             // バリデーション
             this.$refs.form.validate()
             if (!this.valid) return
             // ソートとソートアイテムをデータベースに登録
             let postData = {
                 user_id: this.uid,
+                sort_id: this.sortId,
                 name: this.name,
                 description: this.description,
                 itemNames: this.itemNames,
             }
 
-            let res = await updateSort(postData)
+            let res = await editSort(postData)
 
             if (!res) {
-                showAlert('ソートの登録に失敗しました')
+                showAlert('ソートの編集に失敗しました')
                 return
             }
 
@@ -281,14 +286,14 @@ export default {
                 sort_item_ids: sortItemIds,
             }
 
-            res = await updateSortImage(postData)
+            res = await registerSortImage(postData)
 
             if (!res) {
-                showAlert('ソートの登録に失敗しました')
+                showAlert('ソートの編集に失敗しました')
                 return
             }
 
-            showAlert('ソートを登録しました', 'success')
+            showAlert('ソートを編集しました', 'success')
         },
         removeSortItem(index) {
             this.itemNames.splice(index, 1)
@@ -309,20 +314,26 @@ export default {
             return
         }
 
-        // 成功したらソートのタイトルの情報を格納
-        const url = await getDownloadURL(`/images/sort_titles/${res['image']}`)
+        // 成功したらソートの情報を格納
+        if (res['image'] !== '') {
+            const url = await getDownloadURL(
+                `/images/sort_titles/${res['image']}`
+            )
 
-        this.initialImage = url
+            this.initialImage = url
 
-        // blobオブジェクトの作成、格納
-        const xhr = new XMLHttpRequest()
-        xhr.open('GET', url, true)
-        xhr.responseType = 'blob'
-        xhr.onload = () => {
-            const blob = xhr.response
-            this.blob = blob
+            // blobオブジェクトの作成、格納
+            const xhr = new XMLHttpRequest()
+            xhr.open('GET', url, true)
+            xhr.responseType = 'blob'
+            xhr.onload = () => {
+                const blob = xhr.response
+                this.blob = blob
+            }
+            xhr.send()
+        } else {
+            this.initialImage = noImage
         }
-        xhr.send()
 
         this.name = res['name']
         this.description = res['description']
@@ -336,22 +347,27 @@ export default {
 
         // ソートのアイテムから値をとってきてitemNamesとitemBlobsに格納する
         for (let i = 0; res['sort_items'].length > i; i++) {
-            const url = await getDownloadURL(
-                `/images/sort_items/${res['sort_items'][i]['image']}`
-            )
+            if (res['sort_items'][i]['image'] !== '') {
+                const url = await getDownloadURL(
+                    `/images/sort_items/${res['sort_items'][i]['image']}`
+                )
 
-            // 初期画像のurlの格納
-            this.initialImages.push(url)
+                // 初期画像のurlの格納
+                this.initialImages.push(url)
 
-            // blobオブジェクトの作成、格納
-            const xhr = new XMLHttpRequest()
-            xhr.open('GET', url, true)
-            xhr.responseType = 'blob'
-            xhr.onload = () => {
-                const blob = xhr.response
-                this.itemBlobs.push(blob)
+                // blobオブジェクトの作成、格納
+                const xhr = new XMLHttpRequest()
+                xhr.open('GET', url, true)
+                xhr.responseType = 'blob'
+                xhr.onload = () => {
+                    const blob = xhr.response
+                    this.itemBlobs.push(blob)
+                }
+                xhr.send()
+            } else {
+                this.initialImages.push(noImage)
+                this.itemBlobs.push(require('../assets/no_image.png'))
             }
-            xhr.send()
 
             // 名前の格納
             this.itemNames.push(res['sort_items'][i]['name'])

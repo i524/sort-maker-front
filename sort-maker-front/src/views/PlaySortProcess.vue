@@ -22,6 +22,7 @@ import {
     showAlert,
 } from '../common_functions/common'
 import { searchMultipleSortItems } from '../common_functions/request'
+import { noImage } from '../assets/no_image.png'
 
 export default {
     components: {
@@ -81,18 +82,26 @@ export default {
             // 表示する要素を変更する
             this.itemCards[0]['cardTitle'] =
                 this.sortItems[this.leftIndex]['name']
-            this.itemCards[0]['src'] = await getDownloadURL(
-                `/images/sort_items/${this.sortItems[this.leftIndex]['image']}`
-            )
+            this.itemCards[0]['src'] =
+                this.sortItems[this.leftIndex]['image'] === ''
+                    ? noImage
+                    : await getDownloadURL(
+                          `/images/sort_items/${
+                              this.sortItems[this.leftIndex]['image']
+                          }`
+                      )
             this.itemCards[0]['id'] = this.leftIndex
 
             this.itemCards[1]['cardTitle'] =
                 this.sortItems[this.leftIndex + 1]['name']
-            this.itemCards[1]['src'] = await getDownloadURL(
-                `/images/sort_items/${
-                    this.sortItems[this.leftIndex + 1]['image']
-                }`
-            )
+            this.itemCards[1]['src'] =
+                this.sortItems[this.leftIndex + 1]['image'] === ''
+                    ? noImage
+                    : await getDownloadURL(
+                          `/images/sort_items/${
+                              this.sortItems[this.leftIndex + 1]['image']
+                          }`
+                      )
             this.itemCards[1]['id'] = this.leftIndex + 1
         },
         ...mapActions(['updateResultOfSort']),
@@ -120,20 +129,26 @@ export default {
         // sortItemsの最後の要素とその一個前の要素をitemCardsに格納する
         this.itemCards[0]['cardTitle'] =
             this.sortItems[this.sortItems.length - 2]['name']
-        this.itemCards[0]['src'] = await getDownloadURL(
-            `/images/sort_items/${
-                this.sortItems[this.sortItems.length - 2]['image']
-            }`
-        )
+        this.itemCards[0]['src'] =
+            this.sortItems[this.sortItems.length - 2]['image'] === ''
+                ? noImage
+                : await getDownloadURL(
+                      `/images/sort_items/${
+                          this.sortItems[this.sortItems.length - 2]['image']
+                      }`
+                  )
         this.itemCards[0]['id'] = this.sortItems.length - 2
 
         this.itemCards[1]['cardTitle'] =
             this.sortItems[this.sortItems.length - 1]['name']
-        this.itemCards[1]['src'] = await getDownloadURL(
-            `/images/sort_items/${
-                this.sortItems[this.sortItems.length - 1]['image']
-            }`
-        )
+        this.itemCards[1]['src'] =
+            this.sortItems[this.sortItems.length - 1]['image'] === ''
+                ? noImage
+                : await getDownloadURL(
+                      `/images/sort_items/${
+                          this.sortItems[this.sortItems.length - 1]['image']
+                      }`
+                  )
         this.itemCards[1]['id'] = this.sortItems.length - 1
     },
     name: 'PlaySortProcess',

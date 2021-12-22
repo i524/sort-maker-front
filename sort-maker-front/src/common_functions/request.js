@@ -8,6 +8,7 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL
 
 const apiEndPath = {
     'delete-like': 'delete-like',
+    'edit-sort': 'edit-sort',
     'register-like': '/register-like',
     'register-sort': '/register-sort',
     'register-sort-image': '/register-sort-image',
@@ -181,6 +182,24 @@ export const searchMultipleSortItems = async (postData) => {
                 return res.data.data
             } else {
                 return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
+// ソートの編集
+//=========================================
+
+export const editSort = async (postData) => {
+    return await apiRequest('edit-sort', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return res.data.data
+            } else {
+                console.log(res.data)
             }
         })
         .catch(() => {

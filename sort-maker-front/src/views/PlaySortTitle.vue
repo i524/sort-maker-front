@@ -22,6 +22,7 @@ import {
     showAlert,
 } from '../common_functions/common'
 import { searchSort, updatePlayCount } from '../common_functions/request'
+import { noImage } from '../assets/no_image.png'
 
 export default {
     components: {
@@ -82,7 +83,10 @@ export default {
         this.updateName(res['name'])
 
         // firebasecloudstorageから画像を取得
-        this.src = await getDownloadURL(`/images/sort_titles/${res['image']}`)
+        this.src =
+            res['image'] === ''
+                ? noImage
+                : await getDownloadURL(`/images/sort_titles/${res['image']}`)
     },
     name: 'PlaySort',
 }

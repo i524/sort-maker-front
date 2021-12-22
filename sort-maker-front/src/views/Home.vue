@@ -68,6 +68,7 @@
                     :cardTitle="displayPopularSortCard.cardTitle"
                     :cardText="displayPopularSortCard.cardText"
                     :id="displayPopularSortCard.id"
+                    @clickCard="displayPopularSortCard.clickCard"
                 >
                 </SortCard>
             </VCol>
@@ -89,6 +90,7 @@ import {
     getDownloadURL,
 } from '../common_functions/common'
 import { searchMultipleSorts } from '../common_functions/request'
+import { noImage } from '../assets/no_image.png'
 
 export default {
     components: {
@@ -128,9 +130,12 @@ export default {
                 if (!(i in this.sorts)) break
 
                 this.displaySortCards.push({
-                    src: await getDownloadURL(
-                        `/images/sort_titles/${this.sorts[i]['image']}`
-                    ),
+                    src:
+                        this.sorts[i]['image'] === ''
+                            ? noImage
+                            : await getDownloadURL(
+                                  `/images/sort_titles/${this.sorts[i]['image']}`
+                              ),
                     cardTitle: this.sorts[i]['name'],
                     cardText: this.sorts[i]['description'],
                     clickCard: () => {
@@ -156,9 +161,12 @@ export default {
                 if (!(i in this.popularSorts)) break
 
                 this.displayPopularSortCards.push({
-                    src: await getDownloadURL(
-                        `/images/sort_titles/${this.popularSorts[i]['image']}`
-                    ),
+                    src:
+                        this.popularSorts[i]['image'] === ''
+                            ? noImage
+                            : await getDownloadURL(
+                                  `/images/sort_titles/${this.popularSorts[i]['image']}`
+                              ),
                     cardTitle: this.popularSorts[i]['name'],
                     cardText: this.popularSorts[i]['description'],
                     clickCard: () => {

@@ -36,7 +36,10 @@
                             :blob="itemBlobs[(row - 1) * 3 + (col - 1)]"
                             :icon="true"
                             :initialImage="createInitialImage(col, row)"
-                            v-if="itemNames[(row - 1) * 3 + (col - 1)]"
+                            v-if="
+                                itemNames[(row - 1) * 3 + (col - 1)] ||
+                                itemNames[(row - 1) * 3 + (col - 1)] === ''
+                            "
                             v-model="itemNames[(row - 1) * 3 + (col - 1)]"
                             @clickIcon="
                                 removeSortItem((row - 1) * 3 + (col - 1))
