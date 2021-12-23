@@ -89,15 +89,12 @@ export default {
                 name: this.resultOfSort[i]['name'],
             })
         }
-
         // vuexからソートの結果を取得して、ツイッターに投稿する文章を成形する
         let moldedText = `${this.name}のソート結果\n`
-
-        for (let i = 0; i < 5; i++) {
-            let rank = i + 1
+        for (let i in this.resultOfSort) {
+            let rank = Number(i) + 1
             moldedText += `${rank}位：${this.resultOfSort[i]['name']}\n`
         }
-
         moldedText += '#ソートメーカー\nhttp://localhost:8080'
         this.postText = moldedText
     },

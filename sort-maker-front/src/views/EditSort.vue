@@ -120,7 +120,7 @@ export default {
 
             // ソートアイテムの数が範囲外の時エラーメッセージをだす
             if (this.itemNames.length + 1 > 100) {
-                this.message = '1個以上100個以下で設定してください'
+                this.message = '2個以上100個以下で設定してください'
                 return
             }
 
@@ -181,13 +181,20 @@ export default {
             // バリデーション
             this.$refs.form.validate()
             if (!this.valid) return
+
+            // ソートアイテムの数が範囲外の時エラーメッセージをだす
+            if (this.itemNames.length < 2 || this.itemNames.length > 100) {
+                this.message = '2個以上100個以下で設定してください'
+                return
+            }
+
             // ソートとソートアイテムをデータベースに登録
             let postData = {
                 user_id: this.uid,
                 sort_id: this.sortId,
                 name: this.name,
                 description: this.description,
-                itemNames: this.itemNames,
+                item_names: this.itemNames,
             }
 
             let res = await editSort(postData)
@@ -296,6 +303,12 @@ export default {
             showAlert('ソートを編集しました', 'success')
         },
         removeSortItem(index) {
+            // ソートアイテムの数が範囲外の時エラーメッセージをだす
+            if (this.itemNames.length - 1 < 2) {
+                this.message = '2個以上100個以下で設定してください'
+                return
+            }
+
             this.itemNames.splice(index, 1)
             this.itemBlobs.splice(index, 1)
         },
