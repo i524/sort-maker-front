@@ -61,11 +61,12 @@
                 />
             </VForm>
         </Layout>
+        <Progress :isProgress="isProgress" />
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import {
     CustomButton,
     Layout,
@@ -178,13 +179,20 @@ export default {
             this.blob = blob
         },
         editSort: async function () {
+            // ローディングする
+            this.updateIsProgress(true)
+
             // バリデーション
             this.$refs.form.validate()
-            if (!this.valid) return
+            if (!this.valid) {
+                this.updateIsProgress(false)
+                return
+            }
 
             // ソートアイテムの数が範囲外の時エラーメッセージをだす
             if (this.itemNames.length < 2 || this.itemNames.length > 100) {
                 this.message = '2個以上100個以下で設定してください'
+                this.updateIsProgress(false)
                 return
             }
 
@@ -201,6 +209,7 @@ export default {
 
             if (!res) {
                 showAlert('ソートの編集に失敗しました')
+                this.updateIsProgress(false)
                 return
             }
 
@@ -231,6 +240,7 @@ export default {
                         break
                     default:
                         showAlert('画像の登録に失敗しました')
+                        this.updateIsProgress(false)
                         return
                 }
             }
@@ -245,6 +255,7 @@ export default {
                     .put(this.blob, metadata)
                     .catch(() => {
                         showAlert('画像の登録に失敗しました')
+                        this.updateIsProgress(false)
                         return
                     })
             }
@@ -267,6 +278,7 @@ export default {
                             break
                         default:
                             showAlert('画像の登録に失敗しました')
+                            this.updateIsProgress(false)
                             return
                     }
 
@@ -277,6 +289,7 @@ export default {
                         .put(this.itemBlobs[i], metadata)
                         .catch(() => {
                             showAlert('画像の登録に失敗しました')
+                            this.updateIsProgress(false)
                             return
                         })
                 } else {
@@ -297,10 +310,12 @@ export default {
 
             if (!res) {
                 showAlert('ソートの編集に失敗しました')
+                this.updateIsProgress(false)
                 return
             }
 
             showAlert('ソートを編集しました', 'success')
+            this.updateIsProgress(false)
         },
         removeSortItem(index) {
             // ソートアイテムの数が範囲外の時エラーメッセージをだす
@@ -312,6 +327,7 @@ export default {
             this.itemNames.splice(index, 1)
             this.itemBlobs.splice(index, 1)
         },
+        ...mapActions(['updateIsProgress']),
     },
     async mounted() {
         // ソートidを渡してソートのデータを取ってくる
