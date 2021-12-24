@@ -25,7 +25,6 @@
                     />
                 </VForm>
                 <CustomButton :block="true" text="追加" @click="addSortItem" />
-                <p class="primary--text text-caption">{{ message }}</p>
                 <!-- 行を一行に3列アイテムが置かれるときの行数だけ作成する -->
                 <VRow
                     v-for="row in Math.floor(itemNames.length / 3) + 1"
@@ -100,7 +99,6 @@ export default {
             sortId: this.$route.params.sortId,
             blob: require('../assets/no_image.png'),
             description: '',
-            message: '',
             name: '',
             itemName: '',
             itemBlob: require('../assets/no_image.png'),
@@ -120,7 +118,7 @@ export default {
 
             // ソートアイテムの数が範囲外の時エラーメッセージをだす
             if (this.itemNames.length + 1 > 100) {
-                this.message = '2個以上100個以下で設定してください'
+                showAlert('2個以上100個以下で設定してください')
                 return
             }
 
@@ -190,7 +188,7 @@ export default {
 
             // ソートアイテムの数が範囲外の時エラーメッセージをだす
             if (this.itemNames.length < 2 || this.itemNames.length > 100) {
-                this.message = '2個以上100個以下で設定してください'
+                showAlert('2個以上100個以下で設定してください')
                 this.updateIsProgress(false)
                 return
             }
@@ -319,7 +317,7 @@ export default {
         removeSortItem(index) {
             // ソートアイテムの数が範囲外の時エラーメッセージをだす
             if (this.itemNames.length - 1 < 2) {
-                this.message = '2個以上100個以下で設定してください'
+                showAlert('2個以上100個以下で設定してください')
                 return
             }
 

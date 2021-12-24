@@ -1,18 +1,14 @@
 <template>
-    <VCard
-        :class="className + ' text-left'"
-        :width="240"
-        :height="450"
-        @click="clickCard"
-    >
-        <VImg :src="src">
-            <VBtn @click="clickIcon" color="warning" icon>
-                <VIcon>{{ icon }}</VIcon>
-            </VBtn>
-        </VImg>
-        <VCardTitle>{{ cardTitle }}</VCardTitle>
-        <VCardText>{{ cardText }}</VCardText>
-    </VCard>
+    <div :class="className + ' v-card-wrapper'">
+        <VCard :width="225" :height="450" @click="clickCard">
+            <VImg :src="src" />
+            <VCardTitle>{{ cardTitle }}</VCardTitle>
+            <VCardText>{{ cardText }}</VCardText>
+        </VCard>
+        <VBtn @click="clickIcon" color="warning" icon class="v-btn">
+            <VIcon>{{ icon }}</VIcon>
+        </VBtn>
+    </div>
 </template>
 
 <script>
@@ -122,3 +118,17 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.v-card-wrapper {
+    position: relative;
+    width: 225px;
+    height: 450px;
+}
+
+.v-btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+</style>

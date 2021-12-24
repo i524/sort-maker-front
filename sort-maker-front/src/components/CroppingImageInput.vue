@@ -1,56 +1,59 @@
 <template>
-    <VDialog @click:outside="sendBlob()" v-model="dialog" width="500">
-        <template v-slot:activator="{ on, attrs }">
-            <VImg class="v-img" :src="src" v-bind="attrs" v-on="on">
-                <template v-if="icon">
-                    <VBtn @click="clickIcon" color="secondary" icon>
-                        <VIcon>fas fa-minus-circle</VIcon>
-                    </VBtn>
-                </template>
-            </VImg>
+    <div class="v-dialog-wrapper">
+        <template v-if="icon">
+            <VBtn @click="clickIcon" color="secondary" icon class="v-btn">
+                <VIcon>fas fa-minus-circle</VIcon>
+            </VBtn>
         </template>
-        <VCard class="text-center v-card">
-            <h2 class="mb-5">画像編集</h2>
-            <croppa
-                accept=".png, .jpg, .jpeg"
-                canvas-color="#CBCBCB"
-                class="croppa"
-                @file-size-exceed="fileSizeExceed"
-                @file-type-mismatch="fileTypeMismatch"
-                :file-size-limit="1677721"
-                :initial-image="initialImage"
-                @new-image-drawn="newImagedrawn"
-                placeholder="NO IMAGE"
-                :placeholder-font-size="25"
-                placeholder-color="#FFF"
-                remove-button-color="#FEC81A"
-                :show-loading="true"
-                :show-remove-button="true"
-                v-model="croppa"
-                @zoom="zoom"
-                :zoom-speed="15"
-            ></croppa>
-            <VSlider
-                class="v-slider"
-                color="secondary"
-                @input="input"
-                :max="max"
-                :min="min"
-                :step="0.001"
-                track-color="secondary"
-                v-model="sliderValue"
-            >
-                <template v-slot:prepend>
-                    <VIcon color="secondary"> fas fa-minus-circle </VIcon>
-                </template>
+        <VDialog @click:outside="sendBlob()" v-model="dialog" width="500">
+            <template v-slot:activator="{ on, attrs }">
+                <VImg class="v-img" :src="src" v-bind="attrs" v-on="on" />
+            </template>
+            <VCard class="text-center v-card">
+                <h2 class="mb-5">画像編集</h2>
+                <croppa
+                    accept=".png, .jpg, .jpeg"
+                    canvas-color="#CBCBCB"
+                    class="croppa"
+                    @file-size-exceed="fileSizeExceed"
+                    @file-type-mismatch="fileTypeMismatch"
+                    :file-size-limit="1677721"
+                    :initial-image="initialImage"
+                    @new-image-drawn="newImagedrawn"
+                    placeholder="NO IMAGE"
+                    :placeholder-font-size="25"
+                    placeholder-color="#FFF"
+                    remove-button-color="#FEC81A"
+                    :show-loading="true"
+                    :show-remove-button="true"
+                    v-model="croppa"
+                    @zoom="zoom"
+                    :zoom-speed="15"
+                ></croppa>
+                <VSlider
+                    class="v-slider"
+                    color="secondary"
+                    @input="input"
+                    :max="max"
+                    :min="min"
+                    :step="0.001"
+                    track-color="secondary"
+                    v-model="sliderValue"
+                >
+                    <template v-slot:prepend>
+                        <VIcon color="secondary"> fas fa-minus-circle </VIcon>
+                    </template>
 
-                <template v-slot:append>
-                    <VIcon color="secondary"> fas fa-plus-circle </VIcon>
-                </template>
-            </VSlider>
-            <p class="text-caption text--center primary--text">{{ message }}</p>
-        </VCard>
-    </VDialog>
+                    <template v-slot:append>
+                        <VIcon color="secondary"> fas fa-plus-circle </VIcon>
+                    </template>
+                </VSlider>
+                <p class="text-caption text--center primary--text">
+                    {{ message }}
+                </p>
+            </VCard>
+        </VDialog>
+    </div>
 </template>
 
 <script>
@@ -143,6 +146,17 @@ export default {
 </script>
 
 <style scoped>
+.v-dialog-wrapper {
+    position: relative;
+}
+
+.v-btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+}
+
 .v-card {
     padding: 16px;
 }

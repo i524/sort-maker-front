@@ -5,7 +5,7 @@
             <VContainer>
                 <RouterView />
                 <VOverlay :value="displayIsProgress">
-                    <VProgressCircular indeterminate />
+                    <VProgressCircular indeterminate color="secondary" />
                 </VOverlay>
             </VContainer>
         </VMain>
