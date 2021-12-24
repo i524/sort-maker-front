@@ -9,6 +9,7 @@ import {
     PlaySortTitle,
     PlaySortResult,
     RegisterSort,
+    RegisterSortResult,
 } from '../views'
 
 Vue.use(VueRouter)
@@ -44,6 +45,12 @@ const router = new VueRouter({
             name: 'register_sort',
             path: '/register_sort',
             component: RegisterSort,
+            meta: { requiresAuth: true },
+        },
+        {
+            name: 'register_sort_result',
+            path: '/register_sort_result/:sortId',
+            component: RegisterSortResult,
             meta: { requiresAuth: true },
         },
     ],

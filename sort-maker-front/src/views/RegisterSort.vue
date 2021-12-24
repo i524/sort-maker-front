@@ -71,7 +71,11 @@ import {
     SortCardInput,
     SortItemInput,
 } from '../components'
-import { initializeApp, showAlert } from '@/common_functions/common'
+import {
+    initializeApp,
+    showAlert,
+    transitionPage,
+} from '@/common_functions/common'
 import { registerSort, registerSortImage } from '@/common_functions/request'
 
 export default {
@@ -288,7 +292,9 @@ export default {
                 return
             }
 
-            showAlert('ソートを登録しました', 'success')
+            transitionPage(this, 'register_sort_result', {
+                sortId: sortId,
+            })
         },
         removeSortItem(index) {
             // ソートアイテムの数が範囲外の時エラーメッセージをだす
