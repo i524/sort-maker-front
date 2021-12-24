@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import {
     TwitterTextInput,
     CustomButton,
@@ -51,6 +51,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions(['updateIsProgress']),
         inputPostText(value) {
             this.postText = value
         },
@@ -58,6 +59,9 @@ export default {
             this.dialog = dialog
         },
         postTweet: async function () {
+            // ローディングを開始する
+            this.updateIsProgress(true)
+
             const postData = {
                 user_id: this.uid,
                 text: this.postText,
@@ -73,6 +77,8 @@ export default {
             } else {
                 showAlert('結果のシェアに失敗しました')
             }
+            // ローディングを終了する
+            this.updateIsProgress(false)
         },
         replay() {
             transitionPage(this, 'play_sort_title', {

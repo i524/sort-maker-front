@@ -61,7 +61,6 @@
                 />
             </VForm>
         </Layout>
-        <Progress :isProgress="isProgress" />
     </div>
 </template>
 

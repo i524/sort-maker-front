@@ -4,6 +4,9 @@
         <VMain class="v-main">
             <VContainer>
                 <RouterView />
+                <VOverlay :value="displayIsProgress">
+                    <VProgressCircular indeterminate />
+                </VOverlay>
             </VContainer>
         </VMain>
         <Footer />
@@ -11,6 +14,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { Header, Footer } from './components'
 
 export default {
@@ -18,6 +22,12 @@ export default {
     components: {
         Header,
         Footer,
+    },
+    computed: {
+        ...mapGetters(['isProgress']),
+        displayIsProgress() {
+            return this.isProgress
+        },
     },
 }
 </script>

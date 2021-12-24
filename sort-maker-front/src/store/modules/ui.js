@@ -2,6 +2,7 @@ const state = {
     isShowAlert: false,
     message: '',
     color: 'warning',
+    isProgress: false,
 }
 
 const getters = {
@@ -13,6 +14,9 @@ const getters = {
     },
     color(state) {
         return state.color
+    },
+    isProgress(state) {
+        return state.isProgress
     },
 }
 
@@ -26,6 +30,9 @@ const mutations = {
     setColor(state, payload) {
         state.color = payload.color
     },
+    setIsProgress(state, payload) {
+        state.isProgress = payload.isProgress
+    },
 }
 
 const actions = {
@@ -37,6 +44,9 @@ const actions = {
     },
     updateColor({ commit }, color) {
         commit('setColor', { color })
+    },
+    updateIsProgress({ commit }, isProgress) {
+        commit('setIsProgress', { isProgress })
     },
 }
 
