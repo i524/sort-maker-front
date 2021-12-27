@@ -16,31 +16,45 @@
                 ソートメーカー
             </VToolbarTitle>
             <VSpacer />
-            <ul class="d-flex">
-                <li>
-                    <CustomUserIcon
-                        :width="48"
-                        :height="48"
+            <VMenu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <img
+                        class="img"
                         :src="src"
-                    ></CustomUserIcon>
-                </li>
-                <li @click="callTransitionPage('register_sort')">作る</li>
-                <li @click="callTransitionPage('home')">遊ぶ</li>
-                <li @click="callTransitionPage('mypage')">マイページ</li>
-                <template v-if="uid">
-                    <li @click="logout">ログアウト</li>
+                        :height="48"
+                        v-bind="attrs"
+                        v-on="on"
+                    />
                 </template>
-                <template v-else>
-                    <li @click="callTransitionPage('login')">ログイン</li>
-                </template>
-            </ul>
+                <VList>
+                    <VListItem
+                        v-for="(item, index) in items"
+                        :key="index"
+                        class="v-list-item"
+                    >
+                        <VListItemTitle @click="item.clickTitle">{{
+                            item.title
+                        }}</VListItemTitle>
+                    </VListItem>
+                    <VListItem v-if="uid" :key="3" class="v-list-item">
+                        <VListItemTitle @click="logout"
+                            >ログアウト</VListItemTitle
+                        >
+                    </VListItem>
+                    <VListItem v-else :key="3" class="v-list-item">
+                        <VListItemTitle @click="callTransitionPage('login')">
+                            ログイン
+                        </VListItemTitle>
+                    </VListItem>
+                </VList>
+            </VMenu>
         </VAppBar>
     </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { CustomAlert, CustomUserIcon } from '../components'
+import { CustomAlert } from '../components'
 import {
     initializeApp,
     showAlert,
@@ -49,7 +63,6 @@ import {
 
 export default {
     components: {
-        CustomUserIcon,
         CustomAlert,
     },
     computed: {
@@ -62,6 +75,30 @@ export default {
             }
         },
         ...mapGetters(['uid', 'photoURL', 'isShowAlert', 'message', 'color']),
+    },
+    data() {
+        return {
+            items: [
+                {
+                    title: '作る',
+                    clickTitle: () => {
+                        this.callTransitionPage('register_sort')
+                    },
+                },
+                {
+                    title: '遊ぶ',
+                    clickTitle: () => {
+                        this.callTransitionPage('home')
+                    },
+                },
+                {
+                    title: 'マイページ',
+                    clickTitle: () => {
+                        this.callTransitionPage('mypage')
+                    },
+                },
+            ],
+        }
     },
     methods: {
         inputAlert() {
@@ -105,13 +142,17 @@ export default {
     cursor: pointer;
 }
 
-ul {
-    list-style-type: none;
+.img {
+    border-radius: 50%;
 }
 
-li {
-    margin-left: 20px;
+.v-list-item {
     cursor: pointer;
-    line-height: 48px;
+}
+
+@media screen and (max-width: 325px) {
+    .v-toolbar-title {
+        font-size: 25px;
+    }
 }
 </style>

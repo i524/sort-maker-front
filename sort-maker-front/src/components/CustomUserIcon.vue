@@ -1,5 +1,5 @@
 <template>
-    <VImg class="v-img" :src="src" :width="width" :height="height"></VImg>
+    <VImg class="v-img" :src="src" :width="width" :height="height" />
 </template>
 
 <script>
