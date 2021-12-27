@@ -1,6 +1,6 @@
 <template>
     <VCard>
-        <VCardTitle>{{ title }}</VCardTitle>
+        <VCardTitle class="text-left">{{ title }}</VCardTitle>
         <VCardText class="v-card-text text-left">{{ text }}</VCardText>
     </VCard>
 </template>

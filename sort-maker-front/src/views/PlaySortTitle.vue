@@ -73,8 +73,8 @@ export default {
         }
 
         // 成功したらソートのデータを表示
-        this.cardTitle = res['name']
-        this.cardText = res['description']
+        this.cardTitle = res['name'].substr(0, 18)
+        this.cardText = res['description'].substr(0, 65)
         this.name = res['user_name']
         this.playCount = res['play_count']
         this.userName = res['user_name']

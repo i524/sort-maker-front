@@ -1,21 +1,41 @@
 <template>
     <Layout subTitle="マイページ">
         <h2>お気に入りの編集</h2>
-        <VRow>
-            <VCol
-                cols="4"
-                v-for="(displayLikeSortCard, index) in displayLikeSortCards"
-                :key="index"
-            >
-                <SortCard
-                    :src="displayLikeSortCard.src"
-                    :cardTitle="displayLikeSortCard.cardTitle"
-                    :cardText="displayLikeSortCard.cardText"
-                    :id="displayLikeSortCard.id"
-                    @clickCard="displayLikeSortCard.clickCard"
-                />
-            </VCol>
-        </VRow>
+        <template v-if="$mq === 'lg'">
+            <VRow>
+                <VCol
+                    cols="4"
+                    v-for="(displayLikeSortCard, index) in displayLikeSortCards"
+                    :key="index"
+                >
+                    <SortCard
+                        :src="displayLikeSortCard.src"
+                        :cardTitle="displayLikeSortCard.cardTitle"
+                        :cardText="displayLikeSortCard.cardText"
+                        :id="displayLikeSortCard.id"
+                        @clickCard="displayLikeSortCard.clickCard"
+                    />
+                </VCol>
+            </VRow>
+        </template>
+        <template v-if="$mq === 'md'">
+            <VRow>
+                <VCol
+                    cols="12"
+                    v-for="(displayLikeSortCard, index) in displayLikeSortCards"
+                    :key="index"
+                >
+                    <SortCard
+                        :src="displayLikeSortCard.src"
+                        :cardTitle="displayLikeSortCard.cardTitle"
+                        :cardText="displayLikeSortCard.cardText"
+                        :id="displayLikeSortCard.id"
+                        className="mx-auto"
+                        @clickCard="displayLikeSortCard.clickCard"
+                    />
+                </VCol>
+            </VRow>
+        </template>
         <CustomPagenation
             :length="likeSortCardsPageLength"
             :value="likeSortCardsPage"
@@ -23,23 +43,45 @@
             @input="inputLikeSortCardsPage"
         />
         <h2>作成したソートの編集</h2>
-        <VRow>
-            <VCol
-                cols="4"
-                v-for="(
-                    displayRegisterSortCard, index
-                ) in displayRegisterSortCards"
-                :key="index"
-            >
-                <SortCard
-                    :src="displayRegisterSortCard.src"
-                    :cardTitle="displayRegisterSortCard.cardTitle"
-                    :cardText="displayRegisterSortCard.cardText"
-                    :id="displayRegisterSortCard.id"
-                    @clickCard="displayRegisterSortCard.clickCard"
-                />
-            </VCol>
-        </VRow>
+        <template v-if="$mq === 'lg'">
+            <VRow>
+                <VCol
+                    cols="4"
+                    v-for="(
+                        displayRegisterSortCard, index
+                    ) in displayRegisterSortCards"
+                    :key="index"
+                >
+                    <SortCard
+                        :src="displayRegisterSortCard.src"
+                        :cardTitle="displayRegisterSortCard.cardTitle"
+                        :cardText="displayRegisterSortCard.cardText"
+                        :id="displayRegisterSortCard.id"
+                        @clickCard="displayRegisterSortCard.clickCard"
+                    />
+                </VCol>
+            </VRow>
+        </template>
+        <template v-if="$mq === 'md'">
+            <VRow>
+                <VCol
+                    cols="12"
+                    v-for="(
+                        displayRegisterSortCard, index
+                    ) in displayRegisterSortCards"
+                    :key="index"
+                >
+                    <SortCard
+                        :src="displayRegisterSortCard.src"
+                        :cardTitle="displayRegisterSortCard.cardTitle"
+                        :cardText="displayRegisterSortCard.cardText"
+                        :id="displayRegisterSortCard.id"
+                        className="mx-auto"
+                        @clickCard="displayRegisterSortCard.clickCard"
+                    />
+                </VCol>
+            </VRow>
+        </template>
         <CustomPagenation
             :length="registerSortCardsPageLength"
             :value="registerSortCardsPage"
@@ -106,8 +148,8 @@ export default {
                             : await getDownloadURL(
                                   `/images/sort_titles/${this.likeSorts[i]['image']}`
                               ),
-                    cardTitle: this.likeSorts[i]['name'],
-                    cardText: this.likeSorts[i]['description'],
+                    cardTitle: this.likeSorts[i]['name'].substr(0, 18),
+                    cardText: this.likeSorts[i]['description'].substr(0, 65),
                     clickCard: () => {
                         this.callTransitionPage('play_sort_title', {
                             sortId: this.likeSorts[i]['id'],
@@ -137,8 +179,11 @@ export default {
                             : await getDownloadURL(
                                   `/images/sort_titles/${this.registerSorts[i]['image']}`
                               ),
-                    cardTitle: this.registerSorts[i]['name'],
-                    cardText: this.registerSorts[i]['description'],
+                    cardTitle: this.registerSorts[i]['name'].substr(0, 18),
+                    cardText: this.registerSorts[i]['description'].substr(
+                        0,
+                        65
+                    ),
                     clickCard: () => {
                         this.callTransitionPage('edit_sort', {
                             sortId: this.registerSorts[i]['id'],

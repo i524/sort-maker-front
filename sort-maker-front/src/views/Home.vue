@@ -5,46 +5,61 @@
             :block="true"
             text="作る"
             @click="callTransitionPage('register_sort')"
-        ></CustomButton>
+        />
         <h2 class="mt-10">ソートで遊ぶ</h2>
         <VTextField
             label="ソートを検索する"
             prependIcon="fas fa-search"
             v-model="searchText"
         />
-        <CustomButton :block="true" text="検索" @click="searchSort">
-        </CustomButton>
+        <CustomButton :block="true" text="検索" @click="searchSort" />
         <VRow>
             <VCol cols="6">
                 <CustomButton
                     :block="true"
                     text="人気順"
                     @click="sortByPopularity"
-                ></CustomButton>
-            </VCol>
-            <VCol cols="6">
-                <CustomButton
-                    :block="true"
-                    text="新着順"
-                    @click="sortByTime"
-                ></CustomButton>
-            </VCol>
-        </VRow>
-        <VRow>
-            <VCol
-                cols="4"
-                v-for="(displaySortCard, index) in displaySortCards"
-                :key="index"
-            >
-                <SortCard
-                    :src="displaySortCard.src"
-                    :cardTitle="displaySortCard.cardTitle"
-                    :cardText="displaySortCard.cardText"
-                    :id="displaySortCard.id"
-                    @clickCard="displaySortCard.clickCard"
                 />
             </VCol>
+            <VCol cols="6">
+                <CustomButton :block="true" text="新着順" @click="sortByTime" />
+            </VCol>
         </VRow>
+        <template v-if="$mq === 'lg'">
+            <VRow>
+                <VCol
+                    cols="4"
+                    v-for="(displaySortCard, index) in displaySortCards"
+                    :key="index"
+                >
+                    <SortCard
+                        :src="displaySortCard.src"
+                        :cardTitle="displaySortCard.cardTitle"
+                        :cardText="displaySortCard.cardText"
+                        :id="displaySortCard.id"
+                        @clickCard="displaySortCard.clickCard"
+                    />
+                </VCol>
+            </VRow>
+        </template>
+        <template v-if="$mq === 'md'">
+            <VRow>
+                <VCol
+                    cols="12"
+                    v-for="(displaySortCard, index) in displaySortCards"
+                    :key="index"
+                >
+                    <SortCard
+                        :src="displaySortCard.src"
+                        :cardTitle="displaySortCard.cardTitle"
+                        :cardText="displaySortCard.cardText"
+                        :id="displaySortCard.id"
+                        className="mx-auto"
+                        @clickCard="displaySortCard.clickCard"
+                    />
+                </VCol>
+            </VRow>
+        </template>
         <CustomPagenation
             :length="sortCardsPageLength"
             :value="sortCardsPage"
@@ -52,27 +67,53 @@
             @input="inputSortCardsPage"
         />
         <h2>人気のソート</h2>
-        <VRow>
-            <VCol
-                cols="4"
-                v-for="(
-                    displayPopularSortCard, index
-                ) in displayPopularSortCards"
-                :key="index"
-            >
-                <h2 class="mb-5">
-                    {{ (popularSortCardsPage - 1) * 3 + index + 1 }}位
-                </h2>
-                <SortCard
-                    :src="displayPopularSortCard.src"
-                    :cardTitle="displayPopularSortCard.cardTitle"
-                    :cardText="displayPopularSortCard.cardText"
-                    :id="displayPopularSortCard.id"
-                    @clickCard="displayPopularSortCard.clickCard"
+        <template v-if="$mq === 'lg'">
+            <VRow>
+                <VCol
+                    cols="4"
+                    v-for="(
+                        displayPopularSortCard, index
+                    ) in displayPopularSortCards"
+                    :key="index"
                 >
-                </SortCard>
-            </VCol>
-        </VRow>
+                    <h2 class="mb-5">
+                        {{ (popularSortCardsPage - 1) * 3 + index + 1 }}位
+                    </h2>
+                    <SortCard
+                        :src="displayPopularSortCard.src"
+                        :cardTitle="displayPopularSortCard.cardTitle"
+                        :cardText="displayPopularSortCard.cardText"
+                        :id="displayPopularSortCard.id"
+                        @clickCard="displayPopularSortCard.clickCard"
+                    >
+                    </SortCard>
+                </VCol>
+            </VRow>
+        </template>
+        <template v-if="$mq === 'md'">
+            <VRow>
+                <VCol
+                    cols="12"
+                    v-for="(
+                        displayPopularSortCard, index
+                    ) in displayPopularSortCards"
+                    :key="index"
+                >
+                    <h2 class="mb-5">
+                        {{ (popularSortCardsPage - 1) * 3 + index + 1 }}位
+                    </h2>
+                    <SortCard
+                        :src="displayPopularSortCard.src"
+                        :cardTitle="displayPopularSortCard.cardTitle"
+                        :cardText="displayPopularSortCard.cardText"
+                        :id="displayPopularSortCard.id"
+                        className="mx-auto"
+                        @clickCard="displayPopularSortCard.clickCard"
+                    >
+                    </SortCard>
+                </VCol>
+            </VRow>
+        </template>
         <CustomPagenation
             :length="popularSortCardsPageLength"
             :value="popularSortCardsPage"
@@ -136,8 +177,8 @@ export default {
                             : await getDownloadURL(
                                   `/images/sort_titles/${this.sorts[i]['image']}`
                               ),
-                    cardTitle: this.sorts[i]['name'],
-                    cardText: this.sorts[i]['description'],
+                    cardTitle: this.sorts[i]['name'].substr(0, 18),
+                    cardText: this.sorts[i]['description'].substr(0, 65),
                     clickCard: () => {
                         this.callTransitionPage('play_sort_title', {
                             sortId: this.sorts[i]['id'],
@@ -167,8 +208,8 @@ export default {
                             : await getDownloadURL(
                                   `/images/sort_titles/${this.popularSorts[i]['image']}`
                               ),
-                    cardTitle: this.popularSorts[i]['name'],
-                    cardText: this.popularSorts[i]['description'],
+                    cardTitle: this.popularSorts[i]['name'].substr(0, 18),
+                    cardText: this.popularSorts[i]['description'].substr(0, 65),
                     clickCard: () => {
                         this.callTransitionPage('play_sort_title', {
                             sortId: this.popularSorts[i]['id'],

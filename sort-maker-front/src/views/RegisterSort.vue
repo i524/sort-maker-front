@@ -24,34 +24,57 @@
                     />
                 </VForm>
                 <CustomButton :block="true" text="追加" @click="addSortItem" />
-                <!-- 行を一行に3列アイテムが置かれるときの行数だけ作成する -->
-                <VRow
-                    v-for="row in Math.floor(itemNames.length / 3) + 1"
-                    :key="'row' + row"
-                >
-                    <!-- 列を一行に3列作り、行と列の値からitems配列中から表示する要素のindexを計算する -->
-                    <VCol cols="4" v-for="col in 3" :key="'col' + col">
-                        <SortItemInput
-                            :blob="itemBlobs[(row - 1) * 3 + (col - 1)]"
-                            :icon="true"
-                            :initialImage="createInitialImage(col, row)"
-                            v-if="
-                                itemNames[(row - 1) * 3 + (col - 1)] ||
-                                itemNames[(row - 1) * 3 + (col - 1)] === ''
-                            "
-                            v-model="itemNames[(row - 1) * 3 + (col - 1)]"
-                            @clickIcon="
-                                removeSortItem((row - 1) * 3 + (col - 1))
-                            "
-                            @sendBlob="
-                                sendEditedItemBlob(
-                                    (row - 1) * 3 + (col - 1),
-                                    $event
-                                )
-                            "
-                        />
-                    </VCol>
-                </VRow>
+                <template v-if="$mq === 'lg'">
+                    <!-- 行を一行に3列アイテムが置かれるときの行数だけ作成する -->
+                    <VRow
+                        v-for="row in Math.floor(itemNames.length / 3) + 1"
+                        :key="'row' + row"
+                    >
+                        <!-- 列を一行に3列作り、行と列の値からitems配列中から表示する要素のindexを計算する -->
+                        <VCol cols="4" v-for="col in 3" :key="'col' + col">
+                            <SortItemInput
+                                :blob="itemBlobs[(row - 1) * 3 + (col - 1)]"
+                                :icon="true"
+                                :initialImage="
+                                    createInitialImage(
+                                        (row - 1) * 3 + (col - 1)
+                                    )
+                                "
+                                v-if="
+                                    itemNames[(row - 1) * 3 + (col - 1)] ||
+                                    itemNames[(row - 1) * 3 + (col - 1)] === ''
+                                "
+                                v-model="itemNames[(row - 1) * 3 + (col - 1)]"
+                                @clickIcon="
+                                    removeSortItem((row - 1) * 3 + (col - 1))
+                                "
+                                @sendBlob="
+                                    sendEditedItemBlob(
+                                        (row - 1) * 3 + (col - 1),
+                                        $event
+                                    )
+                                "
+                            />
+                        </VCol>
+                    </VRow>
+                </template>
+                <template v-if="$mq === 'md'">
+                    <!-- 行を一行に1列アイテムが置かれるときの行数だけ作成する -->
+                    <VRow v-for="row in itemNames.length" :key="'row' + row">
+                        <!-- 列を一行に1列作り、行と列の値からitems配列中から表示する要素のindexを計算する -->
+                        <VCol cols="12">
+                            <SortItemInput
+                                :blob="itemBlobs[row]"
+                                :icon="true"
+                                :initialImage="createInitialImage(row)"
+                                v-if="itemNames[row] || itemNames[row] === ''"
+                                v-model="itemNames[row]"
+                                @clickIcon="removeSortItem(row)"
+                                @sendBlob="sendEditedItemBlob(row, $event)"
+                            />
+                        </VCol>
+                    </VRow>
+                </template>
                 <CustomButton
                     :block="true"
                     text="ソート作成"
@@ -117,8 +140,8 @@ export default {
             this.itemNames.push(this.itemName)
             this.itemBlobs.push(this.itemBlob)
         },
-        createInitialImage(col, row) {
-            const blob = this.itemBlobs[(row - 1) * 3 + (col - 1)]
+        createInitialImage(index) {
+            const blob = this.itemBlobs[index]
             if (
                 !(blob === '') &&
                 !(blob === require('../assets/no_image.png'))

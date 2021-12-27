@@ -2,8 +2,8 @@
     <div :class="className + ' v-card-wrapper'">
         <VCard :width="225" :height="450" @click="clickCard">
             <VImg :src="src" />
-            <VCardTitle>{{ cardTitle }}</VCardTitle>
-            <VCardText>{{ cardText }}</VCardText>
+            <VCardTitle class="text-left">{{ cardTitle }}</VCardTitle>
+            <VCardText class="text-left">{{ cardText }}</VCardText>
         </VCard>
         <VBtn @click="clickIcon" color="warning" icon class="v-btn">
             <VIcon>{{ icon }}</VIcon>
