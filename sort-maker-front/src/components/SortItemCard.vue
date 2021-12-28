@@ -1,7 +1,7 @@
 <template>
     <VCard class="text-left" @click="clickCard">
         <VImg :src="src" />
-        <VCardTitle>{{ cardTitle }}</VCardTitle>
+        <VCardTitle class="sort-item-card">{{ cardTitle }}</VCardTitle>
     </VCard>
 </template>
 
@@ -17,6 +17,9 @@ export default {
         cardTitle: {
             required: true,
         },
+        className: {
+            required: false,
+        },
         src: {
             required: false,
             default: require('../assets/no_image.png'),
@@ -24,3 +27,12 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+@media screen and (max-width: 769px) {
+    .sort-item-card {
+        font-size: 10px;
+        line-height: 1.2;
+    }
+}
+</style>

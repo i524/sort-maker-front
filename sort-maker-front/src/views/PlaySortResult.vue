@@ -4,7 +4,7 @@
         <TwitterTextInput
             :block="true"
             :dialog="dialog"
-            text="ツイッターで結果をシェアする"
+            text="結果をシェアする"
             :postText="postText"
             :buttonBlock="true"
             @inputDialog="inputDialog"

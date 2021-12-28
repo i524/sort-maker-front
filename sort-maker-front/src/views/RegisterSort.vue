@@ -135,7 +135,6 @@ export default {
                 showAlert('2個以上100個以下で設定してください')
                 return
             }
-
             // ソートアイテムの名前と画像を追加
             this.itemNames.push(this.itemName)
             this.itemBlobs.push(this.itemBlob)
