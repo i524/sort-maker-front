@@ -9,10 +9,10 @@
         </CustomAlert>
         <VAppBar color="primary" class="white--text">
             <VToolbarTitle
-                class="v-toolbar-title"
+                class="v-toolbar-title d-flex"
                 @click="callTransitionPage('home')"
             >
-                <VIcon color="white">fas fa-random</VIcon>
+                <VImg :src="sortSrc" :width="30" :height="30" class="mt-2" />
                 ソートメーカー
             </VToolbarTitle>
             <VSpacer />
@@ -73,6 +73,9 @@ export default {
             } else {
                 return require('../assets/no_user_image.png')
             }
+        },
+        sortSrc: function () {
+            return require('../assets/sort.png')
         },
         ...mapGetters(['uid', 'photoURL', 'isShowAlert', 'message', 'color']),
     },
