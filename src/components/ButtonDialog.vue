@@ -31,7 +31,7 @@ export default {
         },
         dialog: {
             default: false,
-            required: true,
+            required: false,
         },
         text: {
             required: true,

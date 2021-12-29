@@ -76,11 +76,43 @@
                         </VCol>
                     </VRow>
                 </template>
-                <CustomButton
-                    :block="true"
-                    text="ソート更新"
-                    @click="editSort"
-                />
+                <VRow>
+                    <VCol cols="6">
+                        <CustomButton
+                            :block="true"
+                            text="ソート更新"
+                            @click="editSort"
+                        />
+                    </VCol>
+                    <VCol cols="6">
+                        <ButtonDialog
+                            :block="true"
+                            color="warning"
+                            classObject="white--text"
+                            text="削除する"
+                            textColor="white"
+                            :dialog="dialog"
+                            @inputDialog="inputDialog"
+                        >
+                            <template v-slot:content>
+                                <VCard>
+                                    <VCardTitle class="pt-5"
+                                        >本当に削除しますか？</VCardTitle
+                                    >
+                                    <VCardActions>
+                                        <CustomButton
+                                            :block="true"
+                                            color="warning"
+                                            classObject="white--text"
+                                            text="削除する"
+                                            @click="deleteSort"
+                                        />
+                                    </VCardActions>
+                                </VCard>
+                            </template>
+                        </ButtonDialog>
+                    </VCol>
+                </VRow>
             </VForm>
         </Layout>
     </div>
@@ -93,17 +125,20 @@ import {
     Layout,
     SortCardInput,
     SortItemInput,
+    ButtonDialog,
 } from '../components'
 import {
     initializeApp,
     showAlert,
     getDownloadURL,
+    transitionPage,
 } from '@/common_functions/common'
 import {
     searchSort,
     searchMultipleSortItems,
     editSort,
     registerSortImage,
+    deleteSort,
 } from '@/common_functions/request'
 import { noImage } from '../assets/no_image.png'
 
@@ -113,12 +148,14 @@ export default {
         Layout,
         SortCardInput,
         SortItemInput,
+        ButtonDialog,
     },
     computed: {
         ...mapGetters(['uid']),
     },
     data() {
         return {
+            dialog: false,
             sortId: this.$route.params.sortId,
             blob: require('../assets/no_image.png'),
             description: '',
@@ -156,6 +193,9 @@ export default {
             } else {
                 return require('../assets/no_image.png')
             }
+        },
+        inputDialog(dialog) {
+            this.dialog = dialog
         },
         inputDescription(value) {
             this.description = value
@@ -346,6 +386,28 @@ export default {
 
             this.itemNames.splice(index, 1)
             this.itemBlobs.splice(index, 1)
+        },
+        deleteSort: async function () {
+            this.updateIsProgress(true)
+
+            const postData = {
+                user_id: this.uid,
+                sort_id: this.sortId,
+            }
+
+            const res = await deleteSort(postData)
+
+            if (!res) {
+                showAlert('ソートの削除に失敗しました')
+                this.updateIsProgress(false)
+                this.inputDialog(false)
+                return
+            }
+
+            showAlert('ソートを削除しました', 'success')
+            this.updateIsProgress(false)
+            this.inputDialog(false)
+            transitionPage(this, 'mypage')
         },
         ...mapActions(['updateIsProgress']),
     },

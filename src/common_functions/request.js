@@ -8,6 +8,7 @@ axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL
 
 const apiEndPath = {
     'delete-like': 'delete-like',
+    'delete-sort': 'delete-sort',
     'edit-sort': 'edit-sort',
     'register-like': '/register-like',
     'register-sort': '/register-sort',
@@ -231,6 +232,24 @@ export const updatePlayCount = async (postData) => {
 
 export const deleteLike = async (postData) => {
     return await apiRequest('delete-like', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return true
+            } else {
+                return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
+// ソートの削除
+//=========================================
+
+export const deleteSort = async (postData) => {
+    return await apiRequest('delete-sort', postData)
         .then((res) => {
             if (res.data.code === 0) {
                 return true
