@@ -19,6 +19,7 @@ const apiEndPath = {
     'search-multiple-sort-items': 'search-multiple-sort-items',
     'search-like': '/search-like',
     'search-multiple-like-sorts': '/search-multiple-like-sorts',
+    'search-multiple-register-sorts': '/search-multiple-register-sorts',
     'update-play-count': '/update-play-count',
     'post-tweet': '/post-tweet',
 }
@@ -173,6 +174,24 @@ export const searchMultipleSorts = async (postData) => {
 }
 
 // ========================================
+// 複数個の作成したソートの検索
+//=========================================
+
+export const searchMultipleRegisterSorts = async (postData) => {
+    return await apiRequest('search-multiple-register-sorts', postData)
+        .then((res) => {
+            if (res.data.code === 0) {
+                return res.data.data
+            } else {
+                return false
+            }
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+// ========================================
 // ソートアイテムの検索
 //=========================================
 
@@ -200,7 +219,7 @@ export const editSort = async (postData) => {
             if (res.data.code === 0) {
                 return res.data.data
             } else {
-                console.log(res.data)
+                return false
             }
         })
         .catch(() => {

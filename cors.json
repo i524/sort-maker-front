@@ -1,8 +1,11 @@
 [
-  {
-    "origin": ["http://localhost:8080"],
-    "responseHeader": ["*"],
-    "method": ["GET"],
-    "maxAgeSeconds": 86400
-  }
+    {
+        "origin": [
+            "http://localhost:8080",
+            "https://sort-maker-front-heroku.herokuapp.com"
+        ],
+        "responseHeader": ["*"],
+        "method": ["GET"],
+        "maxAgeSeconds": 86400
+    }
 ]

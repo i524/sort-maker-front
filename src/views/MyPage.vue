@@ -100,7 +100,7 @@ import {
     getDownloadURL,
 } from '../common_functions/common'
 import {
-    searchMultipleSorts,
+    searchMultipleRegisterSorts,
     searchMultipleLikeSorts,
 } from '../common_functions/request'
 import { noImage } from '../assets/no_image.png'
@@ -226,7 +226,7 @@ export default {
             user_id: this.uid,
         }
 
-        res = await searchMultipleSorts(postData)
+        res = await searchMultipleRegisterSorts(postData)
 
         // 失敗したらアラートを出す
         if (!res) {
