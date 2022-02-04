@@ -12,7 +12,8 @@
         "start": "npm run serve",
         "format": "prettier --write ../sort-maker-front",
         "lint": "vue-cli-service lint",
-        "fix": "npm run format && npm run lint"
+        "fix": "npm run format && npm run lint",
+        "test": "jest"
     },
     "dependencies": {
         "axios": "^0.21.4",
@@ -37,6 +38,7 @@
         "eslint": "^6.7.2",
         "eslint-plugin-prettier": "^3.3.1",
         "eslint-plugin-vue": "^6.2.2",
+        "jest": "^27.4.7",
         "prettier": "^2.2.1",
         "sass": "~1.32.0",
         "sass-loader": "^10.0.0",
